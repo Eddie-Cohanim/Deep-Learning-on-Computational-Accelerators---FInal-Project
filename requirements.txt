@@ -1,0 +1,7 @@
+# Project dependencies
+# Add packages below as needed
+
+Pillow>=10.1.0
+imagehash>=4.3.2
+pillow-heif>=0.18.0
+

@@ -255,7 +255,7 @@ class CNN(nn.Module):
         epoch_losses = []
         epoch_accuracies = []
 
-        for _ in range(self._num_epochs):
+        for epoch_index, _ in enumerate(range(self._num_epochs), start=1):
             cumulative_loss = 0.0
             total_correct_predictions = 0
             total_samples = 0
@@ -276,6 +276,8 @@ class CNN(nn.Module):
             epoch_accuracy = total_correct_predictions / total_samples
             epoch_losses.append(epoch_average_loss)
             epoch_accuracies.append(epoch_accuracy)
+
+            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%")
 
         return {"train_loss": epoch_losses, "train_accuracy": epoch_accuracies}
 

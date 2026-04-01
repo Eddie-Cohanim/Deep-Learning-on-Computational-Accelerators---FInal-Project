@@ -1,7 +1,7 @@
 {
     "model": {
         "in_size": [3, 224, 224],
-        "class_names": [],
+        "class_names": ["orange wine", "rose wine", "Sauvignon blanc", "Chardonnay", "Cabernet Sauvignon", "Pinot Noir", "Malbec"],
         "channels": [32, 32, 64, 64, 128, 128],
         "pool_every": 2,
         "hidden_dims": [512, 256],
@@ -22,5 +22,13 @@
         "num_dataloader_workers": 0,
         "optimizer": "Adam",
         "loss_function": "CrossEntropyLoss"
+    },
+
+    "preprocessing": {
+        "run_augmentation": true,
+        "augmentation_rotation_max_degrees": 15.0,
+        "augmentation_brightness_jitter": 0.2,
+        "augmentation_contrast_jitter": 0.2,
+        "augmentation_saturation_jitter": 0.2
     }
 }

@@ -32,6 +32,7 @@ def main() -> None:
 
     model_config = loaded_config["model"]
     training_config = loaded_config["training"]
+    preprocessing_config = loaded_config["preprocessing"]
 
     # --- 2. Preprocess ---
     preprocessing_pipeline = PreprocessingPipeline(
@@ -69,6 +70,11 @@ def main() -> None:
         learning_rate=training_config["learning_rate"],
         weight_decay=training_config["weight_decay"],
         early_stopping_patience=training_config["early_stopping_patience"],
+        number_of_augmented_copies_per_image=preprocessing_config["number_of_augmented_copies_per_image"],
+        augmentation_rotation_max_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
+        augmentation_brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
+        augmentation_contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
+        augmentation_saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
     )
 
     # --- 4. Train ---
@@ -140,12 +146,14 @@ def main() -> None:
         "hyperparameters": {
             "model": model_config,
             "training": training_config,
+            "preprocessing": preprocessing_config,
         },
         "results": {
             "val_loss": validation_results["val_loss"],
             "val_accuracy": validation_results["val_accuracy"],
             "test_accuracy": test_results["test_accuracy"],
             "per_class_results": test_results["per_class_results"],
+            "raw_predictions": test_results["raw_predictions"],
         },
     }
 

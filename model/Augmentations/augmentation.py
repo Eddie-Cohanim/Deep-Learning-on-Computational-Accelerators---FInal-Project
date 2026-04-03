@@ -108,3 +108,16 @@ class Augmentation(abc.ABC):
         For example: 'hflip', 'rotation', 'colorjitter'.
         """
         raise NotImplementedError
+
+    def apply_to_image(self, image: Image.Image) -> Image.Image:
+        """
+        Public entry point for applying this augmentation to a single PIL image.
+
+        Delegates to _apply_to_image so that callers outside the class hierarchy
+        (such as an online augmentation dataset) can use the transformation
+        without triggering any file I/O.
+
+        :param image: The input PIL image.
+        :return: The augmented PIL image.
+        """
+        return self._apply_to_image(image)

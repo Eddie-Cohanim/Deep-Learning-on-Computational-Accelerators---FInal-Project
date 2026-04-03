@@ -29,6 +29,7 @@
     "preprocessing": {
         "run_augmentation": false,
         "augmentation_fraction": 0.5,
+        "number_of_augmented_copies_per_image": 2,
         "augmentation_rotation_max_degrees": 15.0,
         "augmentation_brightness_jitter": 0.2,
         "augmentation_contrast_jitter": 0.2,

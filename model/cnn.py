@@ -13,6 +13,12 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from typing import Sequence
 
+from model.Augmentations.horizontal_flip_augmentation import HorizontalFlipAugmentation
+from model.Augmentations.rotation_augmentation import RotationAugmentation
+from model.Augmentations.color_jitter_augmentation import ColorJitterAugmentation
+from model.Augmentations.gaussian_blur_augmentation import GaussianBlurAugmentation
+from model.augmented_dataset import AugmentedTrainingDataset
+
 
 _SUPPORTED_POOLING_TYPES = {
     "max": nn.MaxPool2d,
@@ -69,6 +75,11 @@ class CNN(nn.Module):
         learning_rate: float,
         weight_decay: float,
         early_stopping_patience: int,
+        number_of_augmented_copies_per_image: int,
+        augmentation_rotation_max_degrees: float,
+        augmentation_brightness_jitter: float,
+        augmentation_contrast_jitter: float,
+        augmentation_saturation_jitter: float,
     ):
         """
         :param in_size: Shape of a single input image as (channels, height, width).
@@ -106,6 +117,18 @@ class CNN(nn.Module):
             Effective with AdamW; has no effect when using plain Adam.
         :param early_stopping_patience: Number of epochs without improvement in validation
             loss before training is stopped early. Set to 0 to disable early stopping.
+        :param number_of_augmented_copies_per_image: Number of additional augmented versions
+            to generate for each training image on the fly. The effective training set size
+            is multiplied by (1 + number_of_augmented_copies_per_image). Set to 0 to disable.
+        :param augmentation_rotation_max_degrees: Maximum rotation magnitude in degrees for
+            online augmentation. The angle is sampled uniformly from
+            [-max, +max] for each augmented copy.
+        :param augmentation_brightness_jitter: Maximum fractional change in brightness for
+            online augmentation.
+        :param augmentation_contrast_jitter: Maximum fractional change in contrast for
+            online augmentation.
+        :param augmentation_saturation_jitter: Maximum fractional change in saturation for
+            online augmentation.
         """
         super().__init__()
 
@@ -140,6 +163,18 @@ class CNN(nn.Module):
         self._optimizer_class = optimizer_class
         self._num_dataloader_workers = num_dataloader_workers
         self._early_stopping_patience = early_stopping_patience
+        self._number_of_augmented_copies_per_image = number_of_augmented_copies_per_image
+
+        self._online_augmentation_sequence = [
+            HorizontalFlipAugmentation(),
+            RotationAugmentation(max_rotation_degrees=augmentation_rotation_max_degrees),
+            ColorJitterAugmentation(
+                brightness_jitter=augmentation_brightness_jitter,
+                contrast_jitter=augmentation_contrast_jitter,
+                saturation_jitter=augmentation_saturation_jitter,
+            ),
+            GaussianBlurAugmentation(),
+        ]
 
         _, image_height, image_width = in_size
         self._image_transforms = transforms.Compose([
@@ -170,6 +205,35 @@ class CNN(nn.Module):
             dataset,
             batch_size=self._batch_size,
             shuffle=shuffle,
+            num_workers=self._num_dataloader_workers,
+            pin_memory=self._device.type == "cuda",
+        )
+
+    def _load_augmented_training_dataset(self, dataset_path: pathlib.Path) -> DataLoader:
+        """
+        Loads the training set as an augmented dataset that exposes
+        (1 + number_of_augmented_copies_per_image) versions of each image.
+
+        The original copy receives only the base transform (resize + normalize).
+        Each augmented copy is passed through the full online augmentation
+        sequence — horizontal flip, rotation, color jitter, gaussian blur —
+        before the base transform is applied. The augmentations are applied in
+        memory; nothing is written to disk.
+
+        :param dataset_path: Root folder containing one subfolder per class.
+        :return: A DataLoader over the expanded augmented training dataset.
+        """
+        base_dataset = ImageFolder(root=str(dataset_path), transform=None)
+        augmented_training_dataset = AugmentedTrainingDataset(
+            base_dataset=base_dataset,
+            base_transform=self._image_transforms,
+            augmentation_sequence=self._online_augmentation_sequence,
+            number_of_augmented_copies=self._number_of_augmented_copies_per_image,
+        )
+        return DataLoader(
+            augmented_training_dataset,
+            batch_size=self._batch_size,
+            shuffle=True,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
         )
@@ -275,7 +339,7 @@ class CNN(nn.Module):
         :return: Dictionary with keys 'train_loss' and 'train_accuracy',
             each a list of floats with one value per epoch.
         """
-        train_loader = self._load_dataset(dataset_path, shuffle=True)
+        train_loader = self._load_augmented_training_dataset(dataset_path)
         self.train()
         epoch_losses = []
         epoch_accuracies = []
@@ -393,27 +457,39 @@ class CNN(nn.Module):
         total_samples = 0
         all_predicted_labels = []
         all_true_labels = []
+        all_confidence_scores = []
 
         with torch.no_grad():
             for images, labels in test_loader:
                 images = images.to(self._device)
                 labels = labels.to(self._device)
                 class_scores = self.forward(images)
+                class_probabilities = torch.softmax(class_scores, dim=1)
                 predicted_labels = class_scores.argmax(dim=1)
+                max_confidence_per_sample = class_probabilities.max(dim=1).values
                 all_predicted_labels.append(predicted_labels.cpu())
                 all_true_labels.append(labels.cpu())
+                all_confidence_scores.append(max_confidence_per_sample.cpu())
                 total_correct_predictions += (predicted_labels == labels).sum().item()
                 total_samples += images.shape[0]
 
         all_predicted_labels_tensor = torch.cat(all_predicted_labels)
         all_true_labels_tensor = torch.cat(all_true_labels)
+        all_confidence_scores_tensor = torch.cat(all_confidence_scores)
 
         per_class_results = {}
         for class_index, class_name in enumerate(class_names_from_dataset):
             true_positives = ((all_predicted_labels_tensor == class_index) & (all_true_labels_tensor == class_index)).sum().item()
             false_positives = ((all_predicted_labels_tensor == class_index) & (all_true_labels_tensor != class_index)).sum().item()
             false_negatives = ((all_predicted_labels_tensor != class_index) & (all_true_labels_tensor == class_index)).sum().item()
+            true_negatives = total_samples - true_positives - false_positives - false_negatives
             total_class_samples = true_positives + false_negatives
+
+            predicted_as_this_class_mask = all_predicted_labels_tensor == class_index
+            if predicted_as_this_class_mask.sum().item() > 0:
+                mean_confidence = all_confidence_scores_tensor[predicted_as_this_class_mask].mean().item()
+            else:
+                mean_confidence = 0.0
 
             precision = true_positives / (true_positives + false_positives) if (true_positives + false_positives) > 0 else 0.0
             recall = true_positives / total_class_samples if total_class_samples > 0 else 0.0
@@ -421,15 +497,33 @@ class CNN(nn.Module):
 
             per_class_results[class_name] = {
                 "total_samples_tested": total_class_samples,
+                "true_positives": true_positives,
+                "false_positives": false_positives,
+                "false_negatives": false_negatives,
+                "true_negatives": true_negatives,
+                "mean_confidence": round(mean_confidence, 4),
                 "precision": round(precision, 4),
                 "recall": round(recall, 4),
                 "f1": round(f1_score, 4),
             }
 
+        raw_predictions = [
+            {
+                "ground_truth": class_names_from_dataset[true_label_index],
+                "predicted": class_names_from_dataset[predicted_label_index],
+                "confidence": round(confidence_score, 4),
+            }
+            for true_label_index, predicted_label_index, confidence_score in zip(
+                all_true_labels_tensor.tolist(),
+                all_predicted_labels_tensor.tolist(),
+                all_confidence_scores_tensor.tolist(),
+            )
+        ]
+
         return {
             "test_accuracy": total_correct_predictions / total_samples,
-            "predictions": all_predicted_labels_tensor,
             "per_class_results": per_class_results,
+            "raw_predictions": raw_predictions,
         }
 
     def save_checkpoint(self, file_path: pathlib.Path):

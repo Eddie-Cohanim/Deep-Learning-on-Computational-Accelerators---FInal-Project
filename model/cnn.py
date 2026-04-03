@@ -340,11 +340,34 @@ class CNN(nn.Module):
             each a list of floats with one value per epoch.
         """
         train_loader = self._load_augmented_training_dataset(dataset_path)
-        self.train()
+        val_loader = self._load_dataset(val_dataset_path, shuffle=False) if val_dataset_path is not None else None
+        return self.train_on_data_loaders(train_loader, val_loader)
+
+    def train_on_data_loaders(
+        self,
+        train_data_loader: DataLoader,
+        val_data_loader: DataLoader = None,
+    ) -> dict:
+        """
+        Trains the model using pre-built DataLoaders.
+
+        This is the core training implementation. train_on_dataset delegates to
+        this method after constructing its DataLoaders from disk paths.
+
+        If val_data_loader is provided and early_stopping_patience > 0, training
+        stops early when validation loss has not improved for that many epochs.
+        The best weights (lowest validation loss) are restored at the end.
+
+        :param train_data_loader: DataLoader over the training set.
+        :param val_data_loader: Optional DataLoader over the validation set, used
+            for early stopping. Required when early_stopping_patience > 0.
+        :return: Dictionary with keys 'train_loss' and 'train_accuracy',
+            each a list of floats with one value per epoch.
+        """
         epoch_losses = []
         epoch_accuracies = []
 
-        early_stopping_enabled = self._early_stopping_patience > 0 and val_dataset_path is not None
+        early_stopping_enabled = self._early_stopping_patience > 0 and val_data_loader is not None
         epochs_without_improvement = 0
         best_val_loss = float("inf")
         best_weights = None
@@ -355,7 +378,7 @@ class CNN(nn.Module):
             total_samples = 0
 
             self.train()
-            for images, labels in train_loader:
+            for images, labels in train_data_loader:
                 images = images.to(self._device)
                 labels = labels.to(self._device)
                 self._optimizer.zero_grad()
@@ -377,7 +400,7 @@ class CNN(nn.Module):
             print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="")
 
             if early_stopping_enabled:
-                val_results = self.validate_on_dataset(val_dataset_path)
+                val_results = self.validate_on_data_loader(val_data_loader)
                 current_val_loss = val_results["val_loss"]
                 print(f"  val_loss: {current_val_loss:.4f}", end="")
 
@@ -407,13 +430,25 @@ class CNN(nn.Module):
         :return: Dictionary with keys 'val_loss' and 'val_accuracy' as floats.
         """
         val_loader = self._load_dataset(dataset_path, shuffle=False)
+        return self.validate_on_data_loader(val_loader)
+
+    def validate_on_data_loader(self, val_data_loader: DataLoader) -> dict:
+        """
+        Evaluates the model using a pre-built DataLoader, without updating weights.
+
+        This is the core validation implementation. validate_on_dataset delegates
+        to this method after constructing its DataLoader from a disk path.
+
+        :param val_data_loader: DataLoader over the validation set.
+        :return: Dictionary with keys 'val_loss' and 'val_accuracy' as floats.
+        """
         self.eval()
         cumulative_loss = 0.0
         total_correct_predictions = 0
         total_samples = 0
 
         with torch.no_grad():
-            for images, labels in val_loader:
+            for images, labels in val_data_loader:
                 images = images.to(self._device)
                 labels = labels.to(self._device)
                 class_scores = self.forward(images)

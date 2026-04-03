@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch.optim
 
 from model.cnn import CNN
+from model.cross_validator import CrossValidator
 from model.preprocessing_pipeline import PreprocessingPipeline
 
 
@@ -22,6 +23,126 @@ _LOSS_FUNCTION_INSTANCES = {
 }
 
 
+def _build_versioned_experiment_folder(results_root_path: pathlib.Path) -> pathlib.Path:
+    """
+    Creates and returns the next versioned experiment folder (e.g. results/v3/).
+
+    :param results_root_path: Root directory where all versioned folders live.
+    :return: Path to the newly created experiment folder.
+    """
+    results_root_path.mkdir(exist_ok=True)
+    existing_version_numbers = [
+        int(folder.name[1:])
+        for folder in results_root_path.iterdir()
+        if folder.is_dir() and folder.name.startswith("v") and folder.name[1:].isdigit()
+    ]
+    next_version_number = max(existing_version_numbers, default=0) + 1
+    experiment_folder_path = results_root_path / f"v{next_version_number}"
+    experiment_folder_path.mkdir()
+    return experiment_folder_path
+
+
+def _run_cross_validation(
+    model_config: dict,
+    training_config: dict,
+    preprocessing_config: dict,
+    cross_validation_config: dict,
+    dataset_root_path: pathlib.Path,
+    optimizer_class: type,
+    loss_function: nn.Module,
+) -> None:
+    """
+    Runs K-fold cross-validation and saves the results to a versioned folder.
+
+    :param model_config: Model hyperparameter block from config.json.
+    :param training_config: Training hyperparameter block from config.json.
+    :param preprocessing_config: Preprocessing block from config.json.
+    :param cross_validation_config: Cross-validation block from config.json.
+    :param dataset_root_path: Root path containing train/, val/, and test/ splits.
+    :param optimizer_class: Resolved optimizer class to use for each fold model.
+    :param loss_function: Instantiated loss function to use for each fold model.
+    """
+    print("=" * 70)
+    print(f"Cross-Validation  ({cross_validation_config['num_folds']} folds)")
+    print("=" * 70)
+
+    cross_validator = CrossValidator(
+        num_folds=cross_validation_config["num_folds"],
+        in_size=tuple(model_config["in_size"]),
+        class_names=model_config["class_names"],
+        channels=model_config["channels"],
+        pool_every=model_config["pool_every"],
+        hidden_dims=model_config["hidden_dims"],
+        num_epochs=training_config["num_epochs"],
+        optimizer_class=optimizer_class,
+        loss_function=loss_function,
+        conv_kernel_size=model_config["conv_kernel_size"],
+        pooling_type=model_config["pooling_type"],
+        pool_kernel_size=model_config["pool_kernel_size"],
+        image_normalization_mean=model_config["image_normalization_mean"],
+        image_normalization_std=model_config["image_normalization_std"],
+        num_dataloader_workers=training_config["num_dataloader_workers"],
+        batch_size=training_config["batch_size"],
+        activation=model_config["activation"],
+        use_batchnorm=model_config["use_batchnorm"],
+        dropout_probability=model_config["dropout_probability"],
+        learning_rate=training_config["learning_rate"],
+        weight_decay=training_config["weight_decay"],
+        early_stopping_patience=training_config["early_stopping_patience"],
+        number_of_augmented_copies_per_image=preprocessing_config["number_of_augmented_copies_per_image"],
+        augmentation_rotation_max_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
+        augmentation_brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
+        augmentation_contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
+        augmentation_saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
+    )
+
+    cv_output = cross_validator.run(
+        train_dataset_path=dataset_root_path / "train",
+        val_dataset_path=dataset_root_path / "val",
+        test_dataset_path=dataset_root_path / "test",
+    )
+
+    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
+
+    final_model = cv_output["final_model"]
+    checkpoint_file_path = experiment_folder_path / "checkpoint.pth"
+    final_model.save_checkpoint(checkpoint_file_path)
+    print(f"\n  Checkpoint saved to {checkpoint_file_path}")
+
+    cv_metrics = cv_output["cross_validation"]
+    test_results = cv_output["test_results"]
+
+    experiment_record = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        "mode": "cross_validation",
+        "hyperparameters": {
+            "model": model_config,
+            "training": training_config,
+            "preprocessing": preprocessing_config,
+            "cross_validation": cross_validation_config,
+        },
+        "cross_validation": {
+            "num_folds": cv_metrics["num_folds"],
+            "per_fold_results": cv_metrics["per_fold_results"],
+            "mean_val_loss": cv_metrics["mean_val_loss"],
+            "std_val_loss": cv_metrics["std_val_loss"],
+            "mean_val_accuracy": cv_metrics["mean_val_accuracy"],
+            "std_val_accuracy": cv_metrics["std_val_accuracy"],
+        },
+        "results": {
+            "test_accuracy": test_results["test_accuracy"],
+            "per_class_results": test_results["per_class_results"],
+            "raw_predictions": test_results["raw_predictions"],
+        },
+    }
+
+    experiment_file_path = experiment_folder_path / "results.json"
+    with experiment_file_path.open("w", encoding="utf-8") as experiment_file:
+        json.dump(experiment_record, experiment_file, indent=4)
+
+    print(f"  Results saved to {experiment_file_path}")
+
+
 def main() -> None:
     config_file_path = pathlib.Path("config.json")
     dataset_root_path = pathlib.Path("dataset")
@@ -33,6 +154,7 @@ def main() -> None:
     model_config = loaded_config["model"]
     training_config = loaded_config["training"]
     preprocessing_config = loaded_config["preprocessing"]
+    cross_validation_config = loaded_config.get("cross_validation", {"enabled": False, "num_folds": 5})
 
     # --- 2. Preprocess ---
     preprocessing_pipeline = PreprocessingPipeline(
@@ -44,10 +166,25 @@ def main() -> None:
     if not dataset_validation_report.is_valid:
         raise RuntimeError("Dataset validation failed. Aborting training.")
 
-    # --- 3. Build CNN ---
     optimizer_class = _OPTIMIZER_CLASSES[training_config["optimizer"]]
     loss_function = _LOSS_FUNCTION_INSTANCES[training_config["loss_function"]]
 
+    # --- 3. Branch: cross-validation or standard training ---
+    if cross_validation_config["enabled"]:
+        _run_cross_validation(
+            model_config=model_config,
+            training_config=training_config,
+            preprocessing_config=preprocessing_config,
+            cross_validation_config=cross_validation_config,
+            dataset_root_path=dataset_root_path,
+            optimizer_class=optimizer_class,
+            loss_function=loss_function,
+        )
+        return
+
+    # --- Standard training path ---
+
+    # --- 4. Build CNN ---
     my_model = CNN(
         in_size=tuple(model_config["in_size"]),
         class_names=model_config["class_names"],
@@ -77,7 +214,7 @@ def main() -> None:
         augmentation_saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
     )
 
-    # --- 4. Train ---
+    # --- 5. Train ---
     print("=" * 70)
     print("Training")
     print("=" * 70)
@@ -87,7 +224,7 @@ def main() -> None:
         val_dataset_path=dataset_root_path / "val",
     )
 
-    # --- 5. Validate ---
+    # --- 6. Validate ---
     print("\n" + "=" * 70)
     print("Validation")
     print("=" * 70)
@@ -99,7 +236,7 @@ def main() -> None:
     print(f"  Validation loss:     {validation_results['val_loss']:.4f}")
     print(f"  Validation accuracy: {validation_results['val_accuracy'] * 100:.2f}%")
 
-    # --- 6. Test ---
+    # --- 7. Test ---
     print("\n" + "=" * 70)
     print("Testing")
     print("=" * 70)
@@ -122,27 +259,18 @@ def main() -> None:
         )
     print("=" * 70)
 
-    # --- 7. Create versioned experiment folder ---
-    results_root_path = pathlib.Path("results")
-    results_root_path.mkdir(exist_ok=True)
+    # --- 8. Create versioned experiment folder ---
+    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
 
-    existing_version_numbers = [
-        int(folder.name[1:])
-        for folder in results_root_path.iterdir()
-        if folder.is_dir() and folder.name.startswith("v") and folder.name[1:].isdigit()
-    ]
-    next_version_number = max(existing_version_numbers, default=0) + 1
-    experiment_folder_path = results_root_path / f"v{next_version_number}"
-    experiment_folder_path.mkdir()
-
-    # --- 8. Save checkpoint ---
+    # --- 9. Save checkpoint ---
     checkpoint_file_path = experiment_folder_path / "checkpoint.pth"
     my_model.save_checkpoint(checkpoint_file_path)
     print(f"\n  Checkpoint saved to {checkpoint_file_path}")
 
-    # --- 9. Save experiment results ---
+    # --- 10. Save experiment results ---
     experiment_record = {
         "timestamp": datetime.datetime.now().isoformat(),
+        "mode": "standard",
         "hyperparameters": {
             "model": model_config,
             "training": training_config,

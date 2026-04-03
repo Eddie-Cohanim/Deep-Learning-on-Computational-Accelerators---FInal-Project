@@ -34,5 +34,10 @@
         "augmentation_brightness_jitter": 0.2,
         "augmentation_contrast_jitter": 0.2,
         "augmentation_saturation_jitter": 0.2
+    },
+
+    "cross_validation": {
+        "enabled": false,
+        "num_folds": 5
     }
 }

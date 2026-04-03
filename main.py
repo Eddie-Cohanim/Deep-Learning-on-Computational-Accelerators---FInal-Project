@@ -1,3 +1,4 @@
+import datetime
 import json
 import pathlib
 
@@ -66,6 +67,8 @@ def main() -> None:
         use_batchnorm=model_config["use_batchnorm"],
         dropout_probability=model_config["dropout_probability"],
         learning_rate=training_config["learning_rate"],
+        weight_decay=training_config["weight_decay"],
+        early_stopping_patience=training_config["early_stopping_patience"],
     )
 
     # --- 4. Train ---
@@ -74,12 +77,9 @@ def main() -> None:
     print("=" * 70)
 
     my_model.train_on_dataset(
-        dataset_root_path / "train"
+        dataset_root_path / "train",
+        val_dataset_path=dataset_root_path / "val",
     )
-
-    checkpoint_file_path = pathlib.Path("checkpoint.pth")
-    my_model.save_checkpoint(checkpoint_file_path)
-    print(f"\n  Checkpoint saved to {checkpoint_file_path}")
 
     # --- 5. Validate ---
     print("\n" + "=" * 70)
@@ -103,7 +103,57 @@ def main() -> None:
     )
 
     print(f"  Test accuracy: {test_results['test_accuracy'] * 100:.2f}%")
+    print()
+    print(f"  {'Class':<25} {'Samples':>8} {'Precision':>10} {'Recall':>8} {'F1':>8}")
+    print("  " + "-" * 63)
+    for class_name, class_metrics in test_results["per_class_results"].items():
+        print(
+            f"  {class_name:<25}"
+            f"  {class_metrics['total_samples_tested']:>6}"
+            f"  {class_metrics['precision']:>9.4f}"
+            f"  {class_metrics['recall']:>7.4f}"
+            f"  {class_metrics['f1']:>7.4f}"
+        )
     print("=" * 70)
+
+    # --- 7. Create versioned experiment folder ---
+    results_root_path = pathlib.Path("results")
+    results_root_path.mkdir(exist_ok=True)
+
+    existing_version_numbers = [
+        int(folder.name[1:])
+        for folder in results_root_path.iterdir()
+        if folder.is_dir() and folder.name.startswith("v") and folder.name[1:].isdigit()
+    ]
+    next_version_number = max(existing_version_numbers, default=0) + 1
+    experiment_folder_path = results_root_path / f"v{next_version_number}"
+    experiment_folder_path.mkdir()
+
+    # --- 8. Save checkpoint ---
+    checkpoint_file_path = experiment_folder_path / "checkpoint.pth"
+    my_model.save_checkpoint(checkpoint_file_path)
+    print(f"\n  Checkpoint saved to {checkpoint_file_path}")
+
+    # --- 9. Save experiment results ---
+    experiment_record = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        "hyperparameters": {
+            "model": model_config,
+            "training": training_config,
+        },
+        "results": {
+            "val_loss": validation_results["val_loss"],
+            "val_accuracy": validation_results["val_accuracy"],
+            "test_accuracy": test_results["test_accuracy"],
+            "per_class_results": test_results["per_class_results"],
+        },
+    }
+
+    experiment_file_path = experiment_folder_path / "results.json"
+    with experiment_file_path.open("w", encoding="utf-8") as experiment_file:
+        json.dump(experiment_record, experiment_file, indent=4)
+
+    print(f"  Results saved to {experiment_file_path}")
 
 
 if __name__ == "__main__":

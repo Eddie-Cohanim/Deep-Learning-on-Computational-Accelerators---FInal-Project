@@ -164,9 +164,9 @@ if __name__ == "__main__":
     )
 
     print(f"Splitting dataset from: {parsed_arguments.source}")
-    print(f"  Train ({parsed_arguments.train_percent}%) → {parsed_arguments.train}")
-    print(f"  Val   ({(100 - parsed_arguments.train_percent) // 2}%) → {parsed_arguments.val}")
-    print(f"  Test  ({(100 - parsed_arguments.train_percent) // 2}%) → {parsed_arguments.test}")
+    print(f"  Train ({parsed_arguments.train_percent}%) -> {parsed_arguments.train}")
+    print(f"  Val   ({(100 - parsed_arguments.train_percent) // 2}%) -> {parsed_arguments.val}")
+    print(f"  Test  ({(100 - parsed_arguments.train_percent) // 2}%) -> {parsed_arguments.test}")
     print()
 
     splitter.split()

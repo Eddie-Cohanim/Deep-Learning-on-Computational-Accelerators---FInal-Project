@@ -60,7 +60,7 @@ class DatasetValidationReport:
                 continue
 
             for class_name, image_count in class_image_counts.items():
-                print(f"    {class_name:<30} →  {image_count} images")
+                print(f"    {class_name:<30}    {image_count} images")
 
             missing_classes_in_split = self._missing_class_directories.get(split_name, [])
             for missing_class_name in missing_classes_in_split:
@@ -123,14 +123,20 @@ class PreprocessingPipeline:
         self._class_names: list = model_config["class_names"]
         self._run_augmentation: bool = preprocessing_config["run_augmentation"]
 
-        self._horizontal_flip_augmentation = HorizontalFlipAugmentation()
+        augmentation_fraction = preprocessing_config["augmentation_fraction"]
+
+        self._horizontal_flip_augmentation = HorizontalFlipAugmentation(
+            augmentation_fraction=augmentation_fraction,
+        )
         self._rotation_augmentation = RotationAugmentation(
-            max_rotation_degrees=preprocessing_config["augmentation_rotation_max_degrees"]
+            max_rotation_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
+            augmentation_fraction=augmentation_fraction,
         )
         self._color_jitter_augmentation = ColorJitterAugmentation(
             brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
             contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
             saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
+            augmentation_fraction=augmentation_fraction,
         )
 
     def validate_dataset(self) -> DatasetValidationReport:

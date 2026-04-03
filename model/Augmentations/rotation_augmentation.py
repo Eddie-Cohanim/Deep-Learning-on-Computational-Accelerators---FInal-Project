@@ -9,12 +9,14 @@ from .augmentation import Augmentation
 class RotationAugmentation(Augmentation):
     """Augmentation that rotates images by a random angle within a configured range."""
 
-    def __init__(self, max_rotation_degrees: float = 15.0):
+    def __init__(self, max_rotation_degrees: float = 15.0, augmentation_fraction: float = 0.5) -> None:
         """
         :param max_rotation_degrees: Maximum rotation magnitude in degrees.
             The actual angle is sampled uniformly from
             [-max_rotation_degrees, +max_rotation_degrees].
+        :param augmentation_fraction: Fraction of eligible images to augment.
         """
+        super().__init__(augmentation_fraction=augmentation_fraction)
         self._max_rotation_degrees = max_rotation_degrees
 
     def _apply_to_image(self, image: Image.Image) -> Image.Image:

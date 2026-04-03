@@ -14,13 +14,16 @@ class ColorJitterAugmentation(Augmentation):
         brightness_jitter: float = 0.2,
         contrast_jitter: float = 0.2,
         saturation_jitter: float = 0.2,
-    ):
+        augmentation_fraction: float = 0.5,
+    ) -> None:
         """
         :param brightness_jitter: Maximum fractional change in brightness.
             A value of 0.2 means brightness is scaled by a factor in [0.8, 1.2].
         :param contrast_jitter: Maximum fractional change in contrast.
         :param saturation_jitter: Maximum fractional change in saturation.
+        :param augmentation_fraction: Fraction of eligible images to augment.
         """
+        super().__init__(augmentation_fraction=augmentation_fraction)
         self._brightness_jitter = brightness_jitter
         self._contrast_jitter = contrast_jitter
         self._saturation_jitter = saturation_jitter

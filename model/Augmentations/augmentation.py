@@ -25,6 +25,19 @@ class Augmentation(abc.ABC):
     in by the caller so that no image is ever augmented twice.
     """
 
+    def __init__(self, augmentation_fraction: float = 0.5) -> None:
+        """
+        :param augmentation_fraction: Fraction of eligible images to augment,
+            in the range (0.0, 1.0]. For example, 0.5 augments up to half the
+            eligible images. Defaults to 0.5.
+        :raises ValueError: If augmentation_fraction is not in (0.0, 1.0].
+        """
+        if not 0.0 < augmentation_fraction <= 1.0:
+            raise ValueError(
+                f"augmentation_fraction must be in (0.0, 1.0], got {augmentation_fraction}."
+            )
+        self._augmentation_fraction = augmentation_fraction
+
     def augment(
         self,
         dataset_path: pathlib.Path,
@@ -57,11 +70,12 @@ class Augmentation(abc.ABC):
         if not eligible_image_paths:
             return augmented_files
 
-        number_of_files_to_augment = random.randint(1, len(eligible_image_paths))
+        number_of_files_to_augment = max(1, int(len(eligible_image_paths) * self._augmentation_fraction))
         selected_image_paths = random.sample(eligible_image_paths, number_of_files_to_augment)
 
         for original_image_path in selected_image_paths:
-            original_image = Image.open(original_image_path).convert("RGB")
+            with Image.open(original_image_path) as raw_image:
+                original_image = raw_image.convert("RGB")
             augmented_image = self._apply_to_image(original_image)
 
             augmented_file_name = (

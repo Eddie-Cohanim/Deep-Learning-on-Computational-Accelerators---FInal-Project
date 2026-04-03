@@ -24,7 +24,10 @@ _SUPPORTED_ACTIVATIONS = {
     "lrelu": nn.LeakyReLU,
     "tanh": nn.Tanh,
     "sigmoid": nn.Sigmoid,
-    "softmax": nn.Softmax,
+    # Softmax is intentionally excluded: it normalises outputs to sum to 1,
+    # which destroys relative magnitude information and kills gradient flow
+    # when used as a hidden-layer activation. Use it only at inference time
+    # on the final output, not as an intermediate activation.
 }
 
 
@@ -64,6 +67,8 @@ class CNN(nn.Module):
         use_batchnorm: bool,
         dropout_probability: float,
         learning_rate: float,
+        weight_decay: float,
+        early_stopping_patience: int,
     ):
         """
         :param in_size: Shape of a single input image as (channels, height, width).
@@ -97,6 +102,10 @@ class CNN(nn.Module):
         :param dropout_probability: Dropout probability applied after each hidden FC layer.
             Set to 0.0 to disable dropout.
         :param learning_rate: Learning rate passed to the optimizer at construction.
+        :param weight_decay: L2 regularization coefficient passed to the optimizer.
+            Effective with AdamW; has no effect when using plain Adam.
+        :param early_stopping_patience: Number of epochs without improvement in validation
+            loss before training is stopped early. Set to 0 to disable early stopping.
         """
         super().__init__()
 
@@ -127,8 +136,10 @@ class CNN(nn.Module):
         self._use_batchnorm = use_batchnorm
         self._dropout_probability = dropout_probability
         self._learning_rate = learning_rate
+        self._weight_decay = weight_decay
         self._optimizer_class = optimizer_class
         self._num_dataloader_workers = num_dataloader_workers
+        self._early_stopping_patience = early_stopping_patience
 
         _, image_height, image_width = in_size
         self._image_transforms = transforms.Compose([
@@ -137,9 +148,12 @@ class CNN(nn.Module):
             transforms.Normalize(mean=image_normalization_mean, std=image_normalization_std),
         ])
 
+        self._device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
         self._feature_extractor = self._build_feature_extractor()
         self._classifier_head = self._build_classifier_head()
-        self._optimizer = optimizer_class(self.parameters(), lr=learning_rate)
+        self.to(self._device)
+        self._optimizer = optimizer_class(self.parameters(), lr=learning_rate, weight_decay=weight_decay)
         self._loss_function = loss_function
 
     def _load_dataset(self, dataset_path: pathlib.Path, shuffle: bool) -> DataLoader:
@@ -157,6 +171,7 @@ class CNN(nn.Module):
             batch_size=self._batch_size,
             shuffle=shuffle,
             num_workers=self._num_dataloader_workers,
+            pin_memory=self._device.type == "cuda",
         )
 
     def _build_feature_extractor(self) -> nn.Sequential:
@@ -240,13 +255,23 @@ class CNN(nn.Module):
         class_scores = self._classifier_head(flattened_features)
         return class_scores
 
-    def train_on_dataset(self, dataset_path: pathlib.Path) -> dict:
+    def train_on_dataset(
+        self,
+        dataset_path: pathlib.Path,
+        val_dataset_path: pathlib.Path = None,
+    ) -> dict:
         """
         Trains the model on images loaded from the given folder.
 
         Expects the folder structure: dataset_path/<class_name>/<image_file>
 
+        If val_dataset_path is provided and early_stopping_patience > 0, training
+        stops early when validation loss has not improved for that many epochs.
+        The best weights (lowest validation loss) are restored at the end.
+
         :param dataset_path: Path to the folder containing class subfolders.
+        :param val_dataset_path: Optional path to the validation split, used for
+            early stopping. Required when early_stopping_patience > 0.
         :return: Dictionary with keys 'train_loss' and 'train_accuracy',
             each a list of floats with one value per epoch.
         """
@@ -255,12 +280,20 @@ class CNN(nn.Module):
         epoch_losses = []
         epoch_accuracies = []
 
-        for epoch_index, _ in enumerate(range(self._num_epochs), start=1):
+        early_stopping_enabled = self._early_stopping_patience > 0 and val_dataset_path is not None
+        epochs_without_improvement = 0
+        best_val_loss = float("inf")
+        best_weights = None
+
+        for epoch_index in range(1, self._num_epochs + 1):
             cumulative_loss = 0.0
             total_correct_predictions = 0
             total_samples = 0
 
+            self.train()
             for images, labels in train_loader:
+                images = images.to(self._device)
+                labels = labels.to(self._device)
                 self._optimizer.zero_grad()
                 class_scores = self.forward(images)
                 batch_loss = self._loss_function(class_scores, labels)
@@ -277,7 +310,26 @@ class CNN(nn.Module):
             epoch_losses.append(epoch_average_loss)
             epoch_accuracies.append(epoch_accuracy)
 
-            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%")
+            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="")
+
+            if early_stopping_enabled:
+                val_results = self.validate_on_dataset(val_dataset_path)
+                current_val_loss = val_results["val_loss"]
+                print(f"  val_loss: {current_val_loss:.4f}", end="")
+
+                if current_val_loss < best_val_loss:
+                    best_val_loss = current_val_loss
+                    epochs_without_improvement = 0
+                    best_weights = {key: value.cpu().clone() for key, value in self.state_dict().items()}
+                else:
+                    epochs_without_improvement += 1
+
+                if epochs_without_improvement >= self._early_stopping_patience:
+                    print(f"\n  Early stopping triggered after {epoch_index} epochs (no improvement for {self._early_stopping_patience} epochs).")
+                    self.load_state_dict({key: value.to(self._device) for key, value in best_weights.items()})
+                    break
+
+            print()
 
         return {"train_loss": epoch_losses, "train_accuracy": epoch_accuracies}
 
@@ -298,6 +350,8 @@ class CNN(nn.Module):
 
         with torch.no_grad():
             for images, labels in val_loader:
+                images = images.to(self._device)
+                labels = labels.to(self._device)
                 class_scores = self.forward(images)
                 batch_loss = self._loss_function(class_scores, labels)
                 cumulative_loss += batch_loss.item() * images.shape[0]
@@ -312,31 +366,70 @@ class CNN(nn.Module):
 
     def test_on_dataset(self, dataset_path: pathlib.Path) -> dict:
         """
-        Evaluates the model on images loaded from the given folder and returns predictions.
+        Evaluates the model on images loaded from the given folder and returns predictions
+        along with per-class precision, recall, F1, and sample counts.
 
         Expects the folder structure: dataset_path/<class_name>/<image_file>
 
         :param dataset_path: Path to the folder containing class subfolders.
-        :return: Dictionary with keys 'test_accuracy' (float) and
-            'predictions' (1D Tensor of predicted class indices).
+        :return: Dictionary with keys:
+            - 'test_accuracy': overall accuracy as a float
+            - 'predictions': 1D Tensor of predicted class indices
+            - 'per_class_results': dict mapping each class name to its metrics
         """
-        test_loader = self._load_dataset(dataset_path, shuffle=False)
+        dataset = ImageFolder(root=str(dataset_path), transform=self._image_transforms)
+        test_loader = DataLoader(
+            dataset,
+            batch_size=self._batch_size,
+            shuffle=False,
+            num_workers=self._num_dataloader_workers,
+            pin_memory=self._device.type == "cuda",
+        )
+        class_names_from_dataset = dataset.classes
+        number_of_classes = len(class_names_from_dataset)
+
         self.eval()
         total_correct_predictions = 0
         total_samples = 0
         all_predicted_labels = []
+        all_true_labels = []
 
         with torch.no_grad():
             for images, labels in test_loader:
+                images = images.to(self._device)
+                labels = labels.to(self._device)
                 class_scores = self.forward(images)
                 predicted_labels = class_scores.argmax(dim=1)
-                all_predicted_labels.append(predicted_labels)
+                all_predicted_labels.append(predicted_labels.cpu())
+                all_true_labels.append(labels.cpu())
                 total_correct_predictions += (predicted_labels == labels).sum().item()
                 total_samples += images.shape[0]
 
+        all_predicted_labels_tensor = torch.cat(all_predicted_labels)
+        all_true_labels_tensor = torch.cat(all_true_labels)
+
+        per_class_results = {}
+        for class_index, class_name in enumerate(class_names_from_dataset):
+            true_positives = ((all_predicted_labels_tensor == class_index) & (all_true_labels_tensor == class_index)).sum().item()
+            false_positives = ((all_predicted_labels_tensor == class_index) & (all_true_labels_tensor != class_index)).sum().item()
+            false_negatives = ((all_predicted_labels_tensor != class_index) & (all_true_labels_tensor == class_index)).sum().item()
+            total_class_samples = true_positives + false_negatives
+
+            precision = true_positives / (true_positives + false_positives) if (true_positives + false_positives) > 0 else 0.0
+            recall = true_positives / total_class_samples if total_class_samples > 0 else 0.0
+            f1_score = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+
+            per_class_results[class_name] = {
+                "total_samples_tested": total_class_samples,
+                "precision": round(precision, 4),
+                "recall": round(recall, 4),
+                "f1": round(f1_score, 4),
+            }
+
         return {
             "test_accuracy": total_correct_predictions / total_samples,
-            "predictions": torch.cat(all_predicted_labels),
+            "predictions": all_predicted_labels_tensor,
+            "per_class_results": per_class_results,
         }
 
     def save_checkpoint(self, file_path: pathlib.Path):

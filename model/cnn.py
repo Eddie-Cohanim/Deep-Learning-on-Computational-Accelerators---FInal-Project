@@ -399,12 +399,12 @@ class CNN(nn.Module):
             epoch_losses.append(epoch_average_loss)
             epoch_accuracies.append(epoch_accuracy)
 
-            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="")
+            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="", flush=True)
 
             if early_stopping_enabled:
                 val_results = self.validate_on_data_loader(val_data_loader)
                 current_val_loss = val_results["val_loss"]
-                print(f"  val_loss: {current_val_loss:.4f}", end="")
+                print(f"  val_loss: {current_val_loss:.4f}", end="", flush=True)
 
                 if current_val_loss < best_val_loss:
                     best_val_loss = current_val_loss

@@ -18,6 +18,8 @@ from model.Augmentations.augmentations import (
     RotationAugmentation,
     ColorJitterAugmentation,
     GaussianBlurAugmentation,
+    PerspectiveAugmentation,
+    GammaAugmentation,
 )
 from model.augmented_dataset import AugmentedTrainingDataset
 
@@ -78,6 +80,7 @@ class CNN(nn.Module):
         weight_decay: float,
         early_stopping_patience: int,
         number_of_augmented_copies_per_image: int,
+        run_augmentation: bool,
         augmentation_rotation_max_degrees: float,
         augmentation_brightness_jitter: float,
         augmentation_contrast_jitter: float,
@@ -121,7 +124,9 @@ class CNN(nn.Module):
             loss before training is stopped early. Set to 0 to disable early stopping.
         :param number_of_augmented_copies_per_image: Number of additional augmented versions
             to generate for each training image on the fly. The effective training set size
-            is multiplied by (1 + number_of_augmented_copies_per_image). Set to 0 to disable.
+            is multiplied by (1 + number_of_augmented_copies_per_image).
+        :param run_augmentation: Whether to apply online augmentation during training.
+            When False, training images are loaded as-is with no augmentation applied.
         :param augmentation_rotation_max_degrees: Maximum rotation magnitude in degrees for
             online augmentation. The angle is sampled uniformly from
             [-max, +max] for each augmented copy.
@@ -166,6 +171,7 @@ class CNN(nn.Module):
         self._num_dataloader_workers = num_dataloader_workers
         self._early_stopping_patience = early_stopping_patience
         self._number_of_augmented_copies_per_image = number_of_augmented_copies_per_image
+        self._run_augmentation = run_augmentation
 
         self._online_augmentation_sequence = [
             HorizontalFlipAugmentation(),
@@ -176,6 +182,8 @@ class CNN(nn.Module):
                 saturation_jitter=augmentation_saturation_jitter,
             ),
             GaussianBlurAugmentation(),
+            PerspectiveAugmentation(),
+            GammaAugmentation(),
         ]
 
         _, image_height, image_width = in_size
@@ -341,7 +349,10 @@ class CNN(nn.Module):
         :return: Dictionary with keys 'train_loss' and 'train_accuracy',
             each a list of floats with one value per epoch.
         """
-        train_loader = self._load_augmented_training_dataset(dataset_path)
+        if self._run_augmentation:
+            train_loader = self._load_augmented_training_dataset(dataset_path)
+        else:
+            train_loader = self._load_dataset(dataset_path, shuffle=True)
         val_loader = self._load_dataset(val_dataset_path, shuffle=False) if val_dataset_path is not None else None
         return self.train_on_data_loaders(train_loader, val_loader)
 

@@ -16,6 +16,8 @@ from model.Augmentations.augmentations import (
     RotationAugmentation,
     ColorJitterAugmentation,
     GaussianBlurAugmentation,
+    PerspectiveAugmentation,
+    GammaAugmentation,
 )
 from model.cnn import CNN
 
@@ -59,6 +61,7 @@ class CrossValidator:
         weight_decay: float,
         early_stopping_patience: int,
         number_of_augmented_copies_per_image: int,
+        run_augmentation: bool,
         augmentation_rotation_max_degrees: float,
         augmentation_brightness_jitter: float,
         augmentation_contrast_jitter: float,
@@ -89,6 +92,8 @@ class CrossValidator:
         :param weight_decay: L2 regularisation coefficient.
         :param early_stopping_patience: Epochs without validation improvement before stopping.
         :param number_of_augmented_copies_per_image: Online augmented copies per training image.
+        :param run_augmentation: Whether to apply online augmentation during training.
+            When False, training images are loaded as-is with no augmentation applied.
         :param augmentation_rotation_max_degrees: Max rotation angle for online augmentation.
         :param augmentation_brightness_jitter: Brightness jitter magnitude.
         :param augmentation_contrast_jitter: Contrast jitter magnitude.
@@ -117,6 +122,7 @@ class CrossValidator:
         self._weight_decay = weight_decay
         self._early_stopping_patience = early_stopping_patience
         self._number_of_augmented_copies_per_image = number_of_augmented_copies_per_image
+        self._run_augmentation = run_augmentation
         self._augmentation_rotation_max_degrees = augmentation_rotation_max_degrees
         self._augmentation_brightness_jitter = augmentation_brightness_jitter
         self._augmentation_contrast_jitter = augmentation_contrast_jitter
@@ -138,6 +144,8 @@ class CrossValidator:
                 saturation_jitter=augmentation_saturation_jitter,
             ),
             GaussianBlurAugmentation(),
+            PerspectiveAugmentation(),
+            GammaAugmentation(),
         ]
 
     def run(
@@ -308,19 +316,29 @@ class CrossValidator:
         sample_list: List[Tuple[str, int]],
     ) -> DataLoader:
         """
-        Builds a DataLoader for a training split, including online augmentation.
+        Builds a DataLoader for a training split.
+
+        When run_augmentation is True, wraps the data in AugmentedSampleListDataset
+        to apply online augmentation in memory. When False, uses a plain
+        SampleListDataset with no augmentation.
 
         :param sample_list: List of (file_path, label_index) tuples for this split.
-        :return: A shuffled DataLoader wrapping an AugmentedSampleListDataset.
+        :return: A shuffled DataLoader over the training samples.
         """
-        augmented_training_dataset = AugmentedSampleListDataset(
-            sample_list=sample_list,
-            base_transform=self._image_transforms,
-            augmentation_sequence=self._online_augmentation_sequence,
-            number_of_augmented_copies=self._number_of_augmented_copies_per_image,
-        )
+        if self._run_augmentation:
+            training_dataset = AugmentedSampleListDataset(
+                sample_list=sample_list,
+                base_transform=self._image_transforms,
+                augmentation_sequence=self._online_augmentation_sequence,
+                number_of_augmented_copies=self._number_of_augmented_copies_per_image,
+            )
+        else:
+            training_dataset = SampleListDataset(
+                sample_list=sample_list,
+                transform=self._image_transforms,
+            )
         return DataLoader(
-            augmented_training_dataset,
+            training_dataset,
             batch_size=self._batch_size,
             shuffle=True,
             num_workers=self._num_dataloader_workers,
@@ -381,6 +399,7 @@ class CrossValidator:
             weight_decay=self._weight_decay,
             early_stopping_patience=self._early_stopping_patience,
             number_of_augmented_copies_per_image=self._number_of_augmented_copies_per_image,
+            run_augmentation=self._run_augmentation,
             augmentation_rotation_max_degrees=self._augmentation_rotation_max_degrees,
             augmentation_brightness_jitter=self._augmentation_brightness_jitter,
             augmentation_contrast_jitter=self._augmentation_contrast_jitter,

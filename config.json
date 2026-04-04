@@ -2,9 +2,9 @@
     "model": {
         "in_size": [3, 224, 224],
         "class_names": ["orange wine", "rose wine", "Sauvignon blanc", "Chardonnay", "Cabernet Sauvignon", "Pinot Noir", "Malbec"],
-        "channels": [16, 32, 64, 64],
+        "channels": [32, 32, 64, 64, 128, 128],
         "pool_every": 2,
-        "hidden_dims": [256, 128],
+        "hidden_dims": [512, 256],
         "activation": "relu",
         "use_batchnorm": true,
         "dropout_probability": 0.5,
@@ -20,15 +20,13 @@
         "batch_size": 16,
         "learning_rate": 0.0002,
         "num_dataloader_workers": 0,
-        "optimizer": "AdamW",
-        "weight_decay": 1e-4,
+        "optimizer": "Adam",
         "loss_function": "CrossEntropyLoss",
         "early_stopping_patience": 50
     },
 
     "preprocessing": {
-        "run_augmentation": false,
-        "augmentation_fraction": 0.5,
+        "run_augmentation": true,
         "number_of_augmented_copies_per_image": 2,
         "augmentation_rotation_max_degrees": 15.0,
         "augmentation_brightness_jitter": 0.2,

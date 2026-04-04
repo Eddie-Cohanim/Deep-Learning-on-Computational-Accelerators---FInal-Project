@@ -217,14 +217,21 @@ class PreprocessingPipeline:
 
         shared_augmented_file_paths: list = []
 
+        print("  Applying horizontal flip augmentation...")
         shared_augmented_file_paths = self._horizontal_flip_augmentation.augment(
             self._training_split_path,
             shared_augmented_file_paths,
         )
+        print(f"  Done. {len(shared_augmented_file_paths)} images created so far.")
+
+        print("  Applying rotation augmentation...")
         shared_augmented_file_paths = self._rotation_augmentation.augment(
             self._training_split_path,
             shared_augmented_file_paths,
         )
+        print(f"  Done. {len(shared_augmented_file_paths)} images created so far.")
+
+        print("  Applying color jitter augmentation...")
         shared_augmented_file_paths = self._color_jitter_augmentation.augment(
             self._training_split_path,
             shared_augmented_file_paths,

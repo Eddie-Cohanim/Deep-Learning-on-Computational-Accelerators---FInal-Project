@@ -11,10 +11,12 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
 from model.augmented_dataset import AugmentedSampleListDataset, SampleListDataset
-from model.Augmentations.horizontal_flip_augmentation import HorizontalFlipAugmentation
-from model.Augmentations.rotation_augmentation import RotationAugmentation
-from model.Augmentations.color_jitter_augmentation import ColorJitterAugmentation
-from model.Augmentations.gaussian_blur_augmentation import GaussianBlurAugmentation
+from model.Augmentations.augmentations import (
+    HorizontalFlipAugmentation,
+    RotationAugmentation,
+    ColorJitterAugmentation,
+    GaussianBlurAugmentation,
+)
 from model.cnn import CNN
 
 

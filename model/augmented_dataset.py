@@ -6,7 +6,7 @@ from torch.utils.data import Dataset
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
 
-from model.Augmentations.augmentation import Augmentation
+from model.Augmentations.augmentations import Augmentation
 
 
 class AugmentedTrainingDataset(Dataset):
@@ -71,7 +71,7 @@ class AugmentedTrainingDataset(Dataset):
             return self._base_transform(pil_image), label
 
         for augmentation in self._augmentation_sequence:
-            pil_image = augmentation.apply_to_image(pil_image)
+            pil_image = augmentation._apply_to_image(pil_image)
 
         return self._base_transform(pil_image), label
 
@@ -168,6 +168,6 @@ class AugmentedSampleListDataset(Dataset):
             return self._base_transform(pil_image), label
 
         for augmentation in self._augmentation_sequence:
-            pil_image = augmentation.apply_to_image(pil_image)
+            pil_image = augmentation._apply_to_image(pil_image)
 
         return self._base_transform(pil_image), label

@@ -2,10 +2,12 @@ import json
 import pathlib
 from typing import Optional
 
-from model.Augmentations.augmentation import _SUPPORTED_IMAGE_EXTENSIONS
-from model.Augmentations.horizontal_flip_augmentation import HorizontalFlipAugmentation
-from model.Augmentations.rotation_augmentation import RotationAugmentation
-from model.Augmentations.color_jitter_augmentation import ColorJitterAugmentation
+from model.Augmentations.augmentations import (
+    _SUPPORTED_IMAGE_EXTENSIONS,
+    HorizontalFlipAugmentation,
+    RotationAugmentation,
+    ColorJitterAugmentation,
+)
 
 
 class DatasetValidationReport:
@@ -123,20 +125,14 @@ class PreprocessingPipeline:
         self._class_names: list = model_config["class_names"]
         self._run_augmentation: bool = preprocessing_config["run_augmentation"]
 
-        augmentation_fraction = preprocessing_config["augmentation_fraction"]
-
-        self._horizontal_flip_augmentation = HorizontalFlipAugmentation(
-            augmentation_fraction=augmentation_fraction,
-        )
+        self._horizontal_flip_augmentation = HorizontalFlipAugmentation()
         self._rotation_augmentation = RotationAugmentation(
             max_rotation_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
-            augmentation_fraction=augmentation_fraction,
         )
         self._color_jitter_augmentation = ColorJitterAugmentation(
             brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
             contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
             saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
-            augmentation_fraction=augmentation_fraction,
         )
 
     def validate_dataset(self) -> DatasetValidationReport:

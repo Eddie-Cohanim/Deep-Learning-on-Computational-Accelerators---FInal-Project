@@ -6,8 +6,9 @@ import torch.nn as nn
 import torch.optim
 
 from model.cnn import CNN
+from model.pretrained_classifier import PretrainedClassifier
 from model.cross_validator import CrossValidator
-from model.preprocessing_pipeline import PreprocessingPipeline
+from model.dataset_validator import DatasetValidator
 
 
 _OPTIMIZER_CLASSES = {
@@ -157,12 +158,12 @@ def main() -> None:
     preprocessing_config = loaded_config["preprocessing"]
     cross_validation_config = loaded_config.get("cross_validation", {"enabled": False, "num_folds": 5})
 
-    # --- 2. Preprocess ---
-    preprocessing_pipeline = PreprocessingPipeline(
+    # --- 2. Validate dataset ---
+    dataset_validator = DatasetValidator(
         dataset_root_path=dataset_root_path,
         config_file_path=config_file_path,
     )
-    dataset_validation_report = preprocessing_pipeline.run_full_pipeline()
+    dataset_validation_report = dataset_validator.run_full_pipeline()
 
     if not dataset_validation_report.is_valid:
         raise RuntimeError("Dataset validation failed. Aborting training.")
@@ -185,36 +186,66 @@ def main() -> None:
 
     # --- Standard training path ---
 
-    # --- 4. Build CNN ---
-    my_model = CNN(
-        in_size=tuple(model_config["in_size"]),
-        class_names=model_config["class_names"],
-        channels=model_config["channels"],
-        pool_every=model_config["pool_every"],
-        hidden_dims=model_config["hidden_dims"],
-        num_epochs=training_config["num_epochs"],
-        optimizer_class=optimizer_class,
-        loss_function=loss_function,
-        conv_kernel_size=model_config["conv_kernel_size"],
-        pooling_type=model_config["pooling_type"],
-        pool_kernel_size=model_config["pool_kernel_size"],
-        image_normalization_mean=model_config["image_normalization_mean"],
-        image_normalization_std=model_config["image_normalization_std"],
-        num_dataloader_workers=training_config["num_dataloader_workers"],
-        batch_size=training_config["batch_size"],
-        activation=model_config["activation"],
-        use_batchnorm=model_config["use_batchnorm"],
-        dropout_probability=model_config["dropout_probability"],
-        learning_rate=training_config["learning_rate"],
-        weight_decay=training_config["weight_decay"],
-        early_stopping_patience=training_config["early_stopping_patience"],
-        number_of_augmented_copies_per_image=preprocessing_config["number_of_augmented_copies_per_image"],
-        run_augmentation=preprocessing_config["run_augmentation"],
-        augmentation_rotation_max_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
-        augmentation_brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
-        augmentation_contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
-        augmentation_saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
-    )
+    # --- 4. Build model ---
+    model_type = model_config.get("model_type", "cnn")
+
+    if model_type == "cnn":
+        my_model = CNN(
+            in_size=tuple(model_config["in_size"]),
+            class_names=model_config["class_names"],
+            channels=model_config["channels"],
+            pool_every=model_config["pool_every"],
+            hidden_dims=model_config["hidden_dims"],
+            num_epochs=training_config["num_epochs"],
+            optimizer_class=optimizer_class,
+            loss_function=loss_function,
+            conv_kernel_size=model_config["conv_kernel_size"],
+            pooling_type=model_config["pooling_type"],
+            pool_kernel_size=model_config["pool_kernel_size"],
+            image_normalization_mean=model_config["image_normalization_mean"],
+            image_normalization_std=model_config["image_normalization_std"],
+            num_dataloader_workers=training_config["num_dataloader_workers"],
+            batch_size=training_config["batch_size"],
+            activation=model_config["activation"],
+            use_batchnorm=model_config["use_batchnorm"],
+            dropout_probability=model_config["dropout_probability"],
+            learning_rate=training_config["learning_rate"],
+            weight_decay=training_config["weight_decay"],
+            early_stopping_patience=training_config["early_stopping_patience"],
+            number_of_augmented_copies_per_image=preprocessing_config["number_of_augmented_copies_per_image"],
+            run_augmentation=preprocessing_config["run_augmentation"],
+            augmentation_rotation_max_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
+            augmentation_brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
+            augmentation_contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
+            augmentation_saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
+        )
+    elif model_type in ("dino", "efficientnet"):
+        my_model = PretrainedClassifier(
+            model_type=model_type,
+            class_names=model_config["class_names"],
+            fine_tune_backbone=model_config.get("fine_tune_backbone", False),
+            image_normalization_mean=model_config["image_normalization_mean"],
+            image_normalization_std=model_config["image_normalization_std"],
+            num_epochs=training_config["num_epochs"],
+            optimizer_class=optimizer_class,
+            loss_function=loss_function,
+            learning_rate=training_config["learning_rate"],
+            weight_decay=training_config["weight_decay"],
+            batch_size=training_config["batch_size"],
+            num_dataloader_workers=training_config["num_dataloader_workers"],
+            early_stopping_patience=training_config["early_stopping_patience"],
+            run_augmentation=preprocessing_config["run_augmentation"],
+            number_of_augmented_copies_per_image=preprocessing_config["number_of_augmented_copies_per_image"],
+            augmentation_rotation_max_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
+            augmentation_brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
+            augmentation_contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
+            augmentation_saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
+        )
+    else:
+        raise ValueError(
+            f"Unsupported model_type '{model_type}'. "
+            "Choose from: 'cnn', 'dino', 'efficientnet'."
+        )
 
     # --- 5. Train ---
     print("=" * 70)

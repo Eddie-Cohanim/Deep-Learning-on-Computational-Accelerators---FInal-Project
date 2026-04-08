@@ -1,5 +1,8 @@
 {
     "model": {
+        "model_type": "cnn",
+        "fine_tune_backbone": false,
+
         "in_size": [3, 224, 224],
         "class_names": ["orange wine", "rose wine", "Sauvignon blanc", "Chardonnay", "Cabernet Sauvignon", "Pinot Noir", "Malbec"],
         "channels": [32, 32, 64, 64, 128, 128],

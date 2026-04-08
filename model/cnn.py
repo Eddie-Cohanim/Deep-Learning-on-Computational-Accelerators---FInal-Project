@@ -200,6 +200,7 @@ class CNN(nn.Module):
         self.to(self._device)
         self._optimizer = optimizer_class(self.parameters(), lr=learning_rate, weight_decay=weight_decay)
         self._loss_function = loss_function
+        self._grad_scaler = torch.cuda.amp.GradScaler(enabled=self._device.type == "cuda")
 
     def _load_dataset(self, dataset_path: pathlib.Path, shuffle: bool) -> DataLoader:
         """
@@ -217,6 +218,7 @@ class CNN(nn.Module):
             shuffle=shuffle,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
 
     def _load_augmented_training_dataset(self, dataset_path: pathlib.Path) -> DataLoader:
@@ -246,6 +248,7 @@ class CNN(nn.Module):
             shuffle=True,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
 
     def _build_feature_extractor(self) -> nn.Sequential:
@@ -395,10 +398,12 @@ class CNN(nn.Module):
                 images = images.to(self._device)
                 labels = labels.to(self._device)
                 self._optimizer.zero_grad()
-                class_scores = self.forward(images)
-                batch_loss = self._loss_function(class_scores, labels)
-                batch_loss.backward()
-                self._optimizer.step()
+                with torch.amp.autocast(device_type=self._device.type, enabled=self._device.type == "cuda"):
+                    class_scores = self.forward(images)
+                    batch_loss = self._loss_function(class_scores, labels)
+                self._grad_scaler.scale(batch_loss).backward()
+                self._grad_scaler.step(self._optimizer)
+                self._grad_scaler.update()
 
                 cumulative_loss += batch_loss.item() * images.shape[0]
                 predicted_labels = class_scores.argmax(dim=1)
@@ -496,6 +501,7 @@ class CNN(nn.Module):
             shuffle=False,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
         class_names_from_dataset = dataset.classes
         number_of_classes = len(class_names_from_dataset)

@@ -1,0 +1,64 @@
+{
+    "timestamp": "2026-04-02T17:59:05.218034",
+    "hyperparameters": {
+        "model": {
+            "in_size": [
+                3,
+                224,
+                224
+            ],
+            "class_names": [
+                "orange wine",
+                "rose wine",
+                "Sauvignon blanc",
+                "Chardonnay",
+                "Cabernet Sauvignon",
+                "Pinot Noir",
+                "Malbec"
+            ],
+            "channels": [
+                32,
+                32,
+                64,
+                64,
+                128,
+                128
+            ],
+            "pool_every": 2,
+            "hidden_dims": [
+                256,
+                128
+            ],
+            "activation": "relu",
+            "use_batchnorm": true,
+            "dropout_probability": 0.4,
+            "conv_kernel_size": 3,
+            "pooling_type": "max",
+            "pool_kernel_size": 2,
+            "image_normalization_mean": [
+                0.485,
+                0.456,
+                0.406
+            ],
+            "image_normalization_std": [
+                0.229,
+                0.224,
+                0.225
+            ]
+        },
+        "training": {
+            "num_epochs": 300,
+            "batch_size": 16,
+            "learning_rate": 0.001,
+            "num_dataloader_workers": 0,
+            "optimizer": "Adam",
+            "loss_function": "CrossEntropyLoss",
+            "early_stopping_patience": 50
+        }
+    },
+    "results": {
+        "val_loss": 0.842119604837699,
+        "val_accuracy": 0.5792349726775956,
+        "test_accuracy": 0.5888324873096447
+    }
+}

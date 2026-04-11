@@ -1,0 +1,176 @@
+
+Dataset Validation
+======================================================================
+
+  Split: train    STATUS: OK
+    orange wine                       147 images
+    rose wine                         412 images
+    Sauvignon blanc                   137 images
+    Chardonnay                        144 images
+    Cabernet Sauvignon                131 images
+    Pinot Noir                        102 images
+    Malbec                            108 images
+
+  Split: val    STATUS: OK
+    orange wine                       31 images
+    rose wine                         88 images
+    Sauvignon blanc                   29 images
+    Chardonnay                        31 images
+    Cabernet Sauvignon                28 images
+    Pinot Noir                        22 images
+    Malbec                            23 images
+
+  Split: test    STATUS: OK
+    orange wine                       33 images
+    rose wine                         89 images
+    Sauvignon blanc                   31 images
+    Chardonnay                        32 images
+    Cabernet Sauvignon                29 images
+    Pinot Noir                        23 images
+    Malbec                            24 images
+
+======================================================================
+VALIDATION RESULT: PASSED   (all splits and classes found)
+======================================================================
+
+======================================================================
+Training
+======================================================================
+  Epoch [1/300]  loss: 2.8393  accuracy: 25.32%  val_loss: 2.0745
+  Epoch [2/300]  loss: 1.7943  accuracy: 32.77%  val_loss: 1.8190
+  Epoch [3/300]  loss: 1.6899  accuracy: 34.89%  val_loss: 1.6298
+  Epoch [4/300]  loss: 1.6519  accuracy: 35.65%  val_loss: 1.5604
+  Epoch [5/300]  loss: 1.5822  accuracy: 39.88%  val_loss: 1.4530
+  Epoch [6/300]  loss: 1.6061  accuracy: 37.93%  val_loss: 1.3768
+  Epoch [7/300]  loss: 1.5764  accuracy: 38.61%  val_loss: 1.5510
+  Epoch [8/300]  loss: 1.5279  accuracy: 40.39%  val_loss: 1.3659
+  Epoch [9/300]  loss: 1.5247  accuracy: 40.05%  val_loss: 1.8376
+  Epoch [10/300]  loss: 1.4850  accuracy: 40.39%  val_loss: 1.4101
+  Epoch [11/300]  loss: 1.4606  accuracy: 40.56%  val_loss: 1.2861
+  Epoch [12/300]  loss: 1.4306  accuracy: 42.85%  val_loss: 1.3944
+  Epoch [13/300]  loss: 1.3894  accuracy: 43.44%  val_loss: 1.2692
+  Epoch [14/300]  loss: 1.4328  accuracy: 43.10%  val_loss: 1.2142
+  Epoch [15/300]  loss: 1.4018  accuracy: 43.95%  val_loss: 1.6675
+  Epoch [16/300]  loss: 1.3826  accuracy: 44.28%  val_loss: 1.3628
+  Epoch [17/300]  loss: 1.3535  accuracy: 44.20%  val_loss: 1.3631
+  Epoch [18/300]  loss: 1.3549  accuracy: 43.35%  val_loss: 2.0335
+  Epoch [19/300]  loss: 1.3195  accuracy: 47.84%  val_loss: 1.1732
+  Epoch [20/300]  loss: 1.3483  accuracy: 45.05%  val_loss: 1.4000
+  Epoch [21/300]  loss: 1.3013  accuracy: 47.33%  val_loss: 1.3988
+  Epoch [22/300]  loss: 1.2984  accuracy: 44.88%  val_loss: 1.7766
+  Epoch [23/300]  loss: 1.3437  accuracy: 42.59%  val_loss: 1.4247
+  Epoch [24/300]  loss: 1.2963  accuracy: 45.05%  val_loss: 1.5053
+  Epoch [25/300]  loss: 1.2285  accuracy: 48.77%  val_loss: 1.3602
+  Epoch [26/300]  loss: 1.2771  accuracy: 46.40%  val_loss: 1.3873
+  Epoch [27/300]  loss: 1.2768  accuracy: 45.30%  val_loss: 3.5291
+  Epoch [28/300]  loss: 1.2497  accuracy: 46.32%  val_loss: 3.3707
+  Epoch [29/300]  loss: 1.2410  accuracy: 48.01%  val_loss: 2.2248
+  Epoch [30/300]  loss: 1.2245  accuracy: 47.42%  val_loss: 2.1532
+  Epoch [31/300]  loss: 1.2228  accuracy: 48.77%  val_loss: 3.1688
+  Epoch [32/300]  loss: 1.2311  accuracy: 48.01%  val_loss: 1.6287
+  Epoch [33/300]  loss: 1.1760  accuracy: 50.38%  val_loss: 2.1063
+  Epoch [34/300]  loss: 1.2091  accuracy: 49.62%  val_loss: 1.3397
+  Epoch [35/300]  loss: 1.2037  accuracy: 51.14%  val_loss: 1.3201
+  Epoch [36/300]  loss: 1.1772  accuracy: 50.55%  val_loss: 1.1640
+  Epoch [37/300]  loss: 1.1839  accuracy: 50.64%  val_loss: 2.7356
+  Epoch [38/300]  loss: 1.1916  accuracy: 49.70%  val_loss: 1.4152
+  Epoch [39/300]  loss: 1.1827  accuracy: 49.28%  val_loss: 2.3846
+  Epoch [40/300]  loss: 1.1602  accuracy: 51.23%  val_loss: 3.5348
+  Epoch [41/300]  loss: 1.1527  accuracy: 50.97%  val_loss: 1.3184
+  Epoch [42/300]  loss: 1.1810  accuracy: 50.64%  val_loss: 1.9048
+  Epoch [43/300]  loss: 1.1333  accuracy: 50.13%  val_loss: 1.8519
+  Epoch [44/300]  loss: 1.1429  accuracy: 50.72%  val_loss: 3.1256
+  Epoch [45/300]  loss: 1.1618  accuracy: 50.30%  val_loss: 1.8774
+  Epoch [46/300]  loss: 1.1258  accuracy: 53.09%  val_loss: 3.1663
+  Epoch [47/300]  loss: 1.1585  accuracy: 51.57%  val_loss: 2.3442
+  Epoch [48/300]  loss: 1.1327  accuracy: 52.16%  val_loss: 2.0826
+  Epoch [49/300]  loss: 1.1218  accuracy: 53.68%  val_loss: 2.7725
+  Epoch [50/300]  loss: 1.1280  accuracy: 52.58%  val_loss: 1.1608
+  Epoch [51/300]  loss: 1.1282  accuracy: 52.33%  val_loss: 1.5258
+  Epoch [52/300]  loss: 1.1047  accuracy: 52.24%  val_loss: 2.0024
+  Epoch [53/300]  loss: 1.1291  accuracy: 51.99%  val_loss: 1.7846
+  Epoch [54/300]  loss: 1.1233  accuracy: 53.09%  val_loss: 1.4287
+  Epoch [55/300]  loss: 1.0815  accuracy: 52.84%  val_loss: 1.7235
+  Epoch [56/300]  loss: 1.0844  accuracy: 53.77%  val_loss: 1.8085
+  Epoch [57/300]  loss: 1.0872  accuracy: 53.94%  val_loss: 1.4027
+  Epoch [58/300]  loss: 1.0684  accuracy: 53.94%  val_loss: 1.6323
+  Epoch [59/300]  loss: 1.0935  accuracy: 54.02%  val_loss: 1.1359
+  Epoch [60/300]  loss: 1.0500  accuracy: 53.51%  val_loss: 1.4032
+  Epoch [61/300]  loss: 1.0775  accuracy: 53.09%  val_loss: 1.0741
+  Epoch [62/300]  loss: 1.0778  accuracy: 55.04%  val_loss: 1.4015
+  Epoch [63/300]  loss: 1.0510  accuracy: 53.51%  val_loss: 1.5338
+  Epoch [64/300]  loss: 1.0595  accuracy: 55.63%  val_loss: 1.2904
+  Epoch [65/300]  loss: 1.0842  accuracy: 54.19%  val_loss: 1.3645
+  Epoch [66/300]  loss: 1.0492  accuracy: 53.85%  val_loss: 2.8651
+  Epoch [67/300]  loss: 1.0066  accuracy: 56.39%  val_loss: 1.6241
+  Epoch [68/300]  loss: 1.0112  accuracy: 56.65%  val_loss: 1.8251
+  Epoch [69/300]  loss: 1.0114  accuracy: 56.65%  val_loss: 1.5186
+  Epoch [70/300]  loss: 1.0360  accuracy: 55.46%  val_loss: 1.9155
+  Epoch [71/300]  loss: 1.0486  accuracy: 55.38%  val_loss: 1.6092
+  Epoch [72/300]  loss: 1.0793  accuracy: 53.34%  val_loss: 2.4078
+  Epoch [73/300]  loss: 0.9892  accuracy: 57.41%  val_loss: 1.4921
+  Epoch [74/300]  loss: 1.0134  accuracy: 56.90%  val_loss: 1.6408
+  Epoch [75/300]  loss: 0.9797  accuracy: 58.00%  val_loss: 2.5917
+  Epoch [76/300]  loss: 1.0181  accuracy: 56.05%  val_loss: 1.1746
+  Epoch [77/300]  loss: 1.0202  accuracy: 56.05%  val_loss: 1.4399
+  Epoch [78/300]  loss: 1.0334  accuracy: 54.61%  val_loss: 1.3244
+  Epoch [79/300]  loss: 1.0096  accuracy: 56.82%  val_loss: 1.5053
+  Epoch [80/300]  loss: 1.0005  accuracy: 56.73%  val_loss: 1.6349
+  Epoch [81/300]  loss: 1.0154  accuracy: 57.32%  val_loss: 2.6425
+  Epoch [82/300]  loss: 0.9573  accuracy: 57.58%  val_loss: 1.5826
+  Epoch [83/300]  loss: 0.9784  accuracy: 57.92%  val_loss: 1.7935
+  Epoch [84/300]  loss: 0.9592  accuracy: 58.00%  val_loss: 1.3773
+  Epoch [85/300]  loss: 1.0079  accuracy: 56.82%  val_loss: 1.5606
+  Epoch [86/300]  loss: 0.9860  accuracy: 57.83%  val_loss: 1.4355
+  Epoch [87/300]  loss: 0.9837  accuracy: 58.51%  val_loss: 2.0039
+  Epoch [88/300]  loss: 0.9792  accuracy: 58.51%  val_loss: 2.7048
+  Epoch [89/300]  loss: 0.9736  accuracy: 59.86%  val_loss: 3.2549
+  Epoch [90/300]  loss: 0.9713  accuracy: 58.26%  val_loss: 2.0256
+  Epoch [91/300]  loss: 0.9442  accuracy: 60.03%  val_loss: 1.4821
+  Epoch [92/300]  loss: 0.9782  accuracy: 60.20%  val_loss: 1.8485
+  Epoch [93/300]  loss: 0.9152  accuracy: 58.51%  val_loss: 2.3172
+  Epoch [94/300]  loss: 0.9473  accuracy: 58.26%  val_loss: 1.6255
+  Epoch [95/300]  loss: 0.9299  accuracy: 60.12%  val_loss: 2.3112
+  Epoch [96/300]  loss: 0.9554  accuracy: 56.90%  val_loss: 2.0863
+  Epoch [97/300]  loss: 0.9655  accuracy: 58.34%  val_loss: 2.0890
+  Epoch [98/300]  loss: 0.9143  accuracy: 60.88%  val_loss: 3.3216
+  Epoch [99/300]  loss: 0.9719  accuracy: 59.44%  val_loss: 2.7008
+  Epoch [100/300]  loss: 0.9278  accuracy: 60.37%  val_loss: 1.7333
+  Epoch [101/300]  loss: 0.9593  accuracy: 60.88%  val_loss: 1.5578
+  Epoch [102/300]  loss: 0.9292  accuracy: 59.10%  val_loss: 2.4557
+  Epoch [103/300]  loss: 0.9281  accuracy: 59.61%  val_loss: 1.5264
+  Epoch [104/300]  loss: 0.9105  accuracy: 62.32%  val_loss: 2.1563
+  Epoch [105/300]  loss: 0.9142  accuracy: 61.13%  val_loss: 2.0794
+  Epoch [106/300]  loss: 0.9091  accuracy: 60.20%  val_loss: 2.1477
+  Epoch [107/300]  loss: 0.9100  accuracy: 60.03%  val_loss: 1.8245
+  Epoch [108/300]  loss: 0.9694  accuracy: 56.99%  val_loss: 1.6863
+  Epoch [109/300]  loss: 0.9365  accuracy: 60.20%  val_loss: 1.1882
+  Epoch [110/300]  loss: 0.9389  accuracy: 60.37%  val_loss: 1.4335
+  Epoch [111/300]  loss: 0.8861  accuracy: 61.39%  val_loss: 1.8852
+  Early stopping triggered after 111 epochs (no improvement for 50 epochs).
+
+======================================================================
+Validation
+======================================================================
+  Validation loss:     1.0741
+  Validation accuracy: 54.37%
+
+======================================================================
+Testing
+======================================================================
+  Test accuracy: 54.02%
+
+  Class                      Samples  Precision   Recall       F1
+  ---------------------------------------------------------------
+  Cabernet Sauvignon             29     0.3279   0.6897   0.4444
+  Chardonnay                     32     0.4762   0.6250   0.5405
+  Malbec                         24     0.0000   0.0000   0.0000
+  Pinot Noir                     23     0.4737   0.3913   0.4286
+  Sauvignon blanc                31     0.3846   0.3226   0.3509
+  orange wine                    33     0.5429   0.5758   0.5588
+  rose wine                      89     0.8077   0.7079   0.7545
+======================================================================
+
+  Checkpoint saved to results/v6/checkpoint.pth
+  Results saved to results/v6/results.json
+

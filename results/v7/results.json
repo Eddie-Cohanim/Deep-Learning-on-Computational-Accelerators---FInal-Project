@@ -1,0 +1,1526 @@
+{
+    "timestamp": "2026-04-08T22:18:13.291076",
+    "mode": "cross_validation",
+    "hyperparameters": {
+        "model": {
+            "in_size": [
+                3,
+                224,
+                224
+            ],
+            "class_names": [
+                "orange wine",
+                "rose wine",
+                "Sauvignon blanc",
+                "Chardonnay",
+                "Cabernet Sauvignon",
+                "Pinot Noir",
+                "Malbec"
+            ],
+            "channels": [
+                32,
+                32,
+                64,
+                64,
+                128,
+                128
+            ],
+            "pool_every": 2,
+            "hidden_dims": [
+                512,
+                256
+            ],
+            "activation": "relu",
+            "use_batchnorm": true,
+            "dropout_probability": 0.5,
+            "conv_kernel_size": 3,
+            "pooling_type": "max",
+            "pool_kernel_size": 2,
+            "image_normalization_mean": [
+                0.485,
+                0.456,
+                0.406
+            ],
+            "image_normalization_std": [
+                0.229,
+                0.224,
+                0.225
+            ]
+        },
+        "training": {
+            "num_epochs": 300,
+            "batch_size": 16,
+            "learning_rate": 0.0002,
+            "num_dataloader_workers": 2,
+            "optimizer": "AdamW",
+            "weight_decay": 0.0005,
+            "loss_function": "CrossEntropyLoss",
+            "use_class_weights": true,
+            "early_stopping_patience": 50
+        },
+        "cross_validation": {
+            "enabled": true,
+            "num_folds": 5
+        }
+    },
+    "augmentations": {
+        "enabled": true,
+        "horizontal_flip": {
+            "enabled": true,
+            "p": 0.5
+        },
+        "rotation": {
+            "enabled": true,
+            "max_degrees": 30.0,
+            "p": 1.0
+        },
+        "color_jitter": {
+            "enabled": true,
+            "brightness": 0.4,
+            "contrast": 0.4,
+            "saturation": 0.4,
+            "p": 1.0
+        },
+        "gaussian_blur": {
+            "enabled": true,
+            "sigma_min": 0.1,
+            "sigma_max": 1.5,
+            "p": 0.5
+        },
+        "perspective": {
+            "enabled": true,
+            "distortion_scale": 0.3,
+            "p": 0.7
+        },
+        "gamma": {
+            "enabled": true,
+            "gamma_min": 0.6,
+            "gamma_max": 1.5,
+            "p": 0.7
+        }
+    },
+    "use_class_weights": true,
+    "cross_validation": {
+        "num_folds": 5,
+        "per_fold_results": [
+            {
+                "fold": 1,
+                "val_loss": 1.3715457212966207,
+                "val_accuracy": 0.47750865051903113
+            },
+            {
+                "fold": 2,
+                "val_loss": 1.4623209246359636,
+                "val_accuracy": 0.4529616724738676
+            },
+            {
+                "fold": 3,
+                "val_loss": 1.3091363733446142,
+                "val_accuracy": 0.5017421602787456
+            },
+            {
+                "fold": 4,
+                "val_loss": 1.3654242320494219,
+                "val_accuracy": 0.4825174825174825
+            },
+            {
+                "fold": 5,
+                "val_loss": 1.1066761923507906,
+                "val_accuracy": 0.5563380281690141
+            }
+        ],
+        "mean_val_loss": 1.3230206887354823,
+        "std_val_loss": 0.13281096558867553,
+        "mean_val_accuracy": 0.4942135987916282,
+        "std_val_accuracy": 0.03883844687016188
+    },
+    "results": {
+        "test_accuracy": 0.44061302681992337,
+        "per_class_results": {
+            "Cabernet Sauvignon": {
+                "total_samples_tested": 29,
+                "true_positives": 2,
+                "false_positives": 3,
+                "false_negatives": 27,
+                "true_negatives": 229,
+                "mean_confidence": 0.4867,
+                "precision": 0.4,
+                "recall": 0.069,
+                "f1": 0.1176
+            },
+            "Chardonnay": {
+                "total_samples_tested": 32,
+                "true_positives": 3,
+                "false_positives": 4,
+                "false_negatives": 29,
+                "true_negatives": 225,
+                "mean_confidence": 0.4953,
+                "precision": 0.4286,
+                "recall": 0.0938,
+                "f1": 0.1538
+            },
+            "Malbec": {
+                "total_samples_tested": 24,
+                "true_positives": 2,
+                "false_positives": 3,
+                "false_negatives": 22,
+                "true_negatives": 234,
+                "mean_confidence": 0.5838,
+                "precision": 0.4,
+                "recall": 0.0833,
+                "f1": 0.1379
+            },
+            "Pinot Noir": {
+                "total_samples_tested": 23,
+                "true_positives": 3,
+                "false_positives": 2,
+                "false_negatives": 20,
+                "true_negatives": 236,
+                "mean_confidence": 0.6709,
+                "precision": 0.6,
+                "recall": 0.1304,
+                "f1": 0.2143
+            },
+            "Sauvignon blanc": {
+                "total_samples_tested": 31,
+                "true_positives": 26,
+                "false_positives": 61,
+                "false_negatives": 5,
+                "true_negatives": 169,
+                "mean_confidence": 0.6803,
+                "precision": 0.2989,
+                "recall": 0.8387,
+                "f1": 0.4407
+            },
+            "orange wine": {
+                "total_samples_tested": 33,
+                "true_positives": 9,
+                "false_positives": 30,
+                "false_negatives": 24,
+                "true_negatives": 198,
+                "mean_confidence": 0.6995,
+                "precision": 0.2308,
+                "recall": 0.2727,
+                "f1": 0.25
+            },
+            "rose wine": {
+                "total_samples_tested": 89,
+                "true_positives": 70,
+                "false_positives": 43,
+                "false_negatives": 19,
+                "true_negatives": 129,
+                "mean_confidence": 0.8981,
+                "precision": 0.6195,
+                "recall": 0.7865,
+                "f1": 0.6931
+            }
+        },
+        "raw_predictions": [
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Malbec",
+                "confidence": 0.8586
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9918
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.6401
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.951
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.2332
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "orange wine",
+                "confidence": 0.6329
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.3099
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5557
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9635
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9181
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Pinot Noir",
+                "confidence": 0.4145
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.8729
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9931
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "orange wine",
+                "confidence": 0.4877
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9482
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "orange wine",
+                "confidence": 0.6885
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Malbec",
+                "confidence": 0.5183
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Pinot Noir",
+                "confidence": 0.6956
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "orange wine",
+                "confidence": 0.7352
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "orange wine",
+                "confidence": 0.961
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9587
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Cabernet Sauvignon",
+                "confidence": 0.3513
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "orange wine",
+                "confidence": 0.3671
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9828
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.3877
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Cabernet Sauvignon",
+                "confidence": 0.7057
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8606
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "Malbec",
+                "confidence": 0.5485
+            },
+            {
+                "ground_truth": "Cabernet Sauvignon",
+                "predicted": "rose wine",
+                "confidence": 0.9916
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6557
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.9147
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.56
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.4819
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7768
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5984
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7214
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6582
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8363
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7755
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6274
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.9578
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.667
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8716
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.716
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6026
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "orange wine",
+                "confidence": 0.4258
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6359
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8611
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8884
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8861
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.9384
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6098
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7696
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8696
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Chardonnay",
+                "confidence": 0.4884
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Chardonnay",
+                "confidence": 0.3925
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Chardonnay",
+                "confidence": 0.6574
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7544
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6712
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.752
+            },
+            {
+                "ground_truth": "Chardonnay",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7629
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Malbec",
+                "confidence": 0.3843
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5304
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Cabernet Sauvignon",
+                "confidence": 0.3101
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "orange wine",
+                "confidence": 0.7959
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.9176
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.9062
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.4913
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.994
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Malbec",
+                "confidence": 0.6095
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.969
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.6852
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "orange wine",
+                "confidence": 0.841
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.3956
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Cabernet Sauvignon",
+                "confidence": 0.6467
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "orange wine",
+                "confidence": 0.4568
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.7191
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "orange wine",
+                "confidence": 0.3369
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "orange wine",
+                "confidence": 0.4254
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.3445
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6424
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "orange wine",
+                "confidence": 0.9155
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "Cabernet Sauvignon",
+                "confidence": 0.4196
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.9005
+            },
+            {
+                "ground_truth": "Malbec",
+                "predicted": "rose wine",
+                "confidence": 0.8386
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.963
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "Pinot Noir",
+                "confidence": 0.9256
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.5579
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.3462
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.7959
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.8608
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.6372
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.5267
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "Pinot Noir",
+                "confidence": 0.4303
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5005
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.8801
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.9935
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.9921
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.8291
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.9997
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.8857
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.7928
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.8583
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "orange wine",
+                "confidence": 0.6959
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7998
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.5281
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "rose wine",
+                "confidence": 0.5453
+            },
+            {
+                "ground_truth": "Pinot Noir",
+                "predicted": "Pinot Noir",
+                "confidence": 0.8883
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5795
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7182
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6964
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7253
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6635
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6927
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7367
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "orange wine",
+                "confidence": 0.7023
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8627
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6209
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "orange wine",
+                "confidence": 0.4322
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6416
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6003
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8298
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Chardonnay",
+                "confidence": 0.4604
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5752
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7675
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7066
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.9096
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6944
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.836
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8041
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.578
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7022
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.76
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7263
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6148
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5798
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8693
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "Chardonnay",
+                "confidence": 0.4958
+            },
+            {
+                "ground_truth": "Sauvignon blanc",
+                "predicted": "rose wine",
+                "confidence": 0.6236
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.8662
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.559
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.7106
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5615
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.3465
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.9387
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7275
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Chardonnay",
+                "confidence": 0.4691
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7331
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.8963
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.8245
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.3927
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.9286
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.3952
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6949
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6011
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6308
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Chardonnay",
+                "confidence": 0.5036
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.5367
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.7883
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.4964
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.4354
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5816
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.8543
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7414
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.9853
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.9061
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.4875
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.7269
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "rose wine",
+                "confidence": 0.839
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6659
+            },
+            {
+                "ground_truth": "orange wine",
+                "predicted": "orange wine",
+                "confidence": 0.9568
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9826
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9944
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.433
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.9911
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9783
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5578
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.8806
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5482
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.7439
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9999
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7024
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9999
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9916
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.6738
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.96
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.999
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5643
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.7991
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.8816
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9335
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.998
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.8961
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.5024
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9214
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.8617
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9994
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.483
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.7464
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.9411
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9995
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.8665
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9982
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9999
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.7597
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9005
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9946
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9997
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.598
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9961
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.5846
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9998
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9436
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.6746
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.894
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9998
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.8063
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.9362
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "orange wine",
+                "confidence": 0.991
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9995
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9928
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6532
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.6474
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.401
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 1.0
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "Sauvignon blanc",
+                "confidence": 0.5228
+            },
+            {
+                "ground_truth": "rose wine",
+                "predicted": "rose wine",
+                "confidence": 0.9982
+            }
+        ]
+    }
+}

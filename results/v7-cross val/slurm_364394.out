@@ -1,0 +1,51 @@
+
+Dataset Validation
+======================================================================
+
+  Split: train    STATUS: OK
+    orange wine                       147 images
+    rose wine                         412 images
+    Sauvignon blanc                   137 images
+    Chardonnay                        144 images
+    Cabernet Sauvignon                131 images
+    Pinot Noir                        102 images
+    Malbec                            108 images
+
+  Split: val    STATUS: OK
+    orange wine                       31 images
+    rose wine                         88 images
+    Sauvignon blanc                   29 images
+    Chardonnay                        31 images
+    Cabernet Sauvignon                28 images
+    Pinot Noir                        22 images
+    Malbec                            23 images
+
+  Split: test    STATUS: OK
+    orange wine                       33 images
+    rose wine                         89 images
+    Sauvignon blanc                   31 images
+    Chardonnay                        32 images
+    Cabernet Sauvignon                29 images
+    Pinot Noir                        23 images
+    Malbec                            24 images
+
+======================================================================
+VALIDATION RESULT: PASSED   (all splits and classes found)
+======================================================================
+
+  Class weights (inverse-frequency):
+    orange wine                      147 samples  weight: 0.9491
+    rose wine                        412 samples  weight: 0.3387
+    Sauvignon blanc                  137 samples  weight: 1.0184
+    Chardonnay                       144 samples  weight: 0.9689
+    Cabernet Sauvignon               131 samples  weight: 1.0651
+    Pinot Noir                       102 samples  weight: 1.3679
+    Malbec                           108 samples  weight: 1.2919
+======================================================================
+Cross-Validation  (5 folds)
+======================================================================
+
+Fold [1 / 5]
+----------------------------------------------------------------------
+  Epoch [1/300]  loss: 2.8494  accuracy: 27.01%  val_loss: 2.5913
+  Epoch [2/300]  loss: 1.7348  accuracy: 30.77%

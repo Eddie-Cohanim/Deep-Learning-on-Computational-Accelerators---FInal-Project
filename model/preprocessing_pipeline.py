@@ -80,7 +80,7 @@ class DatasetValidationReport:
         return string_buffer.getvalue()
 
 
-class DatasetValidator:
+class PreprocessingPipeline:
     """
     Orchestrates dataset validation for a structured image classification dataset.
 

@@ -420,7 +420,8 @@ class CNN(nn.Module):
             if early_stopping_enabled:
                 val_results = self.validate_on_data_loader(val_data_loader)
                 current_val_loss = val_results["val_loss"]
-                print(f"  val_loss: {current_val_loss:.4f}", end="", flush=True)
+                current_val_accuracy = val_results["val_accuracy"]
+                print(f"  val_loss: {current_val_loss:.4f}  val_accuracy: {current_val_accuracy * 100:.2f}%", end="", flush=True)
 
                 if current_val_loss < best_val_loss:
                     best_val_loss = current_val_loss

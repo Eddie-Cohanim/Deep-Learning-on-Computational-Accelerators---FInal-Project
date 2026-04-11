@@ -2,131 +2,62 @@ import collections
 import pathlib
 import random
 import statistics
-from typing import List, Sequence, Tuple
+from typing import Callable, List, Sequence, Tuple
 
 import torch
-import torch.nn as nn
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
-from model.augmented_dataset import AugmentedSampleListDataset, SampleListDataset
-from model.Augmentations.augmentations import (
-    HorizontalFlipAugmentation,
-    RotationAugmentation,
-    ColorJitterAugmentation,
-    GaussianBlurAugmentation,
-    PerspectiveAugmentation,
-    GammaAugmentation,
-)
-from model.cnn import CNN
+from model.augmented_dataset import SampleListDataset
 
 
 class CrossValidator:
     """
-    Orchestrates stratified K-fold cross-validation for the CNN classifier.
+    Orchestrates stratified K-fold cross-validation for any image classifier.
 
-    The combined train and validation splits are divided into K folds.
-    For each fold, a freshly initialised CNN is trained on the K-1 remaining
-    folds and evaluated on the held-out fold. After all folds are complete,
-    a final model is trained on the entire train+val pool and evaluated on
-    the held-out test set.
+    The model to train is supplied as a factory callable that takes no arguments
+    and returns a freshly initialised model. This decouples the cross-validator
+    from any specific architecture — it works with CNN, PretrainedModel, or any
+    future classifier that implements the same training interface.
 
-    Results include per-fold metrics and aggregate mean ± standard deviation
-    for both validation loss and validation accuracy.
+    The combined train and validation splits are divided into K folds. For each
+    fold, a fresh model is trained on the K-1 remaining folds and evaluated on
+    the held-out fold. After all folds are complete, a final model is trained on
+    the full train+val pool and evaluated on the held-out test set.
+
+    Results include per-fold metrics and aggregate mean ± standard deviation for
+    both validation loss and validation accuracy.
     """
 
     def __init__(
         self,
         num_folds: int,
         in_size: tuple,
-        class_names: list,
-        channels: Sequence[int],
-        pool_every: int,
-        hidden_dims: Sequence[int],
-        num_epochs: int,
-        optimizer_class: type,
-        loss_function: nn.Module,
-        conv_kernel_size: int,
-        pooling_type: str,
-        pool_kernel_size: int,
         image_normalization_mean: list,
         image_normalization_std: list,
-        num_dataloader_workers: int,
         batch_size: int,
-        activation: str,
-        use_batchnorm: bool,
-        dropout_probability: float,
-        learning_rate: float,
-        weight_decay: float,
-        early_stopping_patience: int,
-        number_of_augmented_copies_per_image: int,
-        run_augmentation: bool,
-        augmentation_rotation_max_degrees: float,
-        augmentation_brightness_jitter: float,
-        augmentation_contrast_jitter: float,
-        augmentation_saturation_jitter: float,
+        num_dataloader_workers: int,
+        model_factory: Callable,
     ) -> None:
         """
-        :param num_folds: Number of folds K. Must be at least 2 and no greater
-            than the number of samples in the smallest class.
-        :param in_size: Shape of a single input image as (channels, height, width).
-        :param class_names: Ordered list of class label strings.
-        :param channels: Output channel count for each convolutional layer.
-        :param pool_every: Number of conv layers between each pooling step.
-        :param hidden_dims: Output dimension for each fully-connected hidden layer.
-        :param num_epochs: Maximum number of training epochs per fold.
-        :param optimizer_class: The optimizer class to instantiate, e.g. torch.optim.AdamW.
-        :param loss_function: An instantiated loss function, e.g. nn.CrossEntropyLoss().
-        :param conv_kernel_size: Kernel size for all convolutional layers.
-        :param pooling_type: Either 'max' or 'avg'.
-        :param pool_kernel_size: Kernel size for pooling layers.
+        :param num_folds: Number of folds K. Must be at least 2 and no greater than
+            the number of samples in the smallest class.
+        :param in_size: Input image shape as (channels, height, width). Used to build
+            the image resize transform for cross-validation DataLoaders.
         :param image_normalization_mean: Per-channel mean for input normalisation.
         :param image_normalization_std: Per-channel std for input normalisation.
-        :param num_dataloader_workers: Number of worker processes for loading images.
-        :param batch_size: Number of images per batch.
-        :param activation: Activation function name, e.g. 'relu'.
-        :param use_batchnorm: Whether to apply batch normalisation after each conv layer.
-        :param dropout_probability: Dropout probability for fully-connected layers.
-        :param learning_rate: Learning rate for the optimizer.
-        :param weight_decay: L2 regularisation coefficient.
-        :param early_stopping_patience: Epochs without validation improvement before stopping.
-        :param number_of_augmented_copies_per_image: Online augmented copies per training image.
-        :param run_augmentation: Whether to apply online augmentation during training.
-            When False, training images are loaded as-is with no augmentation applied.
-        :param augmentation_rotation_max_degrees: Max rotation angle for online augmentation.
-        :param augmentation_brightness_jitter: Brightness jitter magnitude.
-        :param augmentation_contrast_jitter: Contrast jitter magnitude.
-        :param augmentation_saturation_jitter: Saturation jitter magnitude.
+        :param batch_size: Number of images per batch for cross-validation DataLoaders.
+        :param num_dataloader_workers: Number of DataLoader worker processes.
+        :param model_factory: Zero-argument callable that returns a freshly initialised
+            model ready for training. Called once per fold and once for the final model.
+            The returned model must implement train_on_data_loaders, validate_on_data_loader,
+            and test_on_dataset.
         """
         self._num_folds = num_folds
-        self._in_size = in_size
-        self._class_names = class_names
-        self._channels = channels
-        self._pool_every = pool_every
-        self._hidden_dims = hidden_dims
-        self._num_epochs = num_epochs
-        self._optimizer_class = optimizer_class
-        self._loss_function = loss_function
-        self._conv_kernel_size = conv_kernel_size
-        self._pooling_type = pooling_type
-        self._pool_kernel_size = pool_kernel_size
-        self._image_normalization_mean = image_normalization_mean
-        self._image_normalization_std = image_normalization_std
-        self._num_dataloader_workers = num_dataloader_workers
         self._batch_size = batch_size
-        self._activation = activation
-        self._use_batchnorm = use_batchnorm
-        self._dropout_probability = dropout_probability
-        self._learning_rate = learning_rate
-        self._weight_decay = weight_decay
-        self._early_stopping_patience = early_stopping_patience
-        self._number_of_augmented_copies_per_image = number_of_augmented_copies_per_image
-        self._run_augmentation = run_augmentation
-        self._augmentation_rotation_max_degrees = augmentation_rotation_max_degrees
-        self._augmentation_brightness_jitter = augmentation_brightness_jitter
-        self._augmentation_contrast_jitter = augmentation_contrast_jitter
-        self._augmentation_saturation_jitter = augmentation_saturation_jitter
+        self._num_dataloader_workers = num_dataloader_workers
+        self._model_factory = model_factory
 
         _, image_height, image_width = in_size
         self._image_transforms = transforms.Compose([
@@ -134,19 +65,6 @@ class CrossValidator:
             transforms.ToTensor(),
             transforms.Normalize(mean=image_normalization_mean, std=image_normalization_std),
         ])
-
-        self._online_augmentation_sequence = [
-            HorizontalFlipAugmentation(),
-            RotationAugmentation(max_rotation_degrees=augmentation_rotation_max_degrees),
-            ColorJitterAugmentation(
-                brightness_jitter=augmentation_brightness_jitter,
-                contrast_jitter=augmentation_contrast_jitter,
-                saturation_jitter=augmentation_saturation_jitter,
-            ),
-            GaussianBlurAugmentation(),
-            PerspectiveAugmentation(),
-            GammaAugmentation(),
-        ]
 
     def run(
         self,
@@ -157,9 +75,9 @@ class CrossValidator:
         """
         Runs the full K-fold cross-validation pipeline.
 
-        Combines the train and validation splits into a single pool, divides
-        it into K stratified folds, trains and evaluates K models, then trains
-        a final model on the full pool and tests it on the held-out test set.
+        Combines the train and validation splits into a single pool, divides it into
+        K stratified folds, trains and evaluates K models, then trains a final model
+        on the full pool and evaluates it on the held-out test set.
 
         :param train_dataset_path: Path to the training split folder.
         :param val_dataset_path: Path to the validation split folder.
@@ -199,9 +117,12 @@ class CrossValidator:
             fold_train_loader = self._build_training_data_loader(training_sample_list)
             fold_val_loader = self._build_validation_data_loader(validation_sample_list)
 
-            fold_model = self._build_fresh_cnn()
+            fold_model = self._model_factory()
             fold_model.train_on_data_loaders(fold_train_loader, fold_val_loader)
             fold_val_results = fold_model.validate_on_data_loader(fold_val_loader)
+
+            del fold_model
+            torch.cuda.empty_cache()
 
             per_fold_results.append({
                 "fold": fold_number + 1,
@@ -236,10 +157,11 @@ class CrossValidator:
         )
         print("=" * 70)
 
+        torch.cuda.empty_cache()
         print("\nTraining final model on the full train+val pool...")
         print("-" * 70)
         final_train_loader = self._build_training_data_loader(all_samples)
-        final_model = self._build_fresh_cnn()
+        final_model = self._model_factory()
         final_model.train_on_data_loaders(final_train_loader, val_data_loader=None)
 
         print("\n" + "=" * 70)
@@ -281,14 +203,12 @@ class CrossValidator:
         """
         Divides sample indices into K stratified fold groups.
 
-        Within each class, indices are shuffled and distributed round-robin
-        across the K folds so that each fold's validation set contains a
-        proportional representation of every class.
+        Within each class, indices are shuffled and distributed round-robin across
+        the K folds so that each fold's validation set has proportional class coverage.
 
         :param all_labels: List of integer class labels, one per sample.
         :param num_folds: Number of folds to create.
-        :return: List of K lists, where each inner list holds the sample indices
-            assigned to that fold as the held-out validation set.
+        :return: List of K lists, each holding the sample indices for one validation fold.
         :raises ValueError: If num_folds exceeds the number of samples in any class.
         """
         class_label_to_sample_indices: dict = collections.defaultdict(list)
@@ -316,27 +236,18 @@ class CrossValidator:
         sample_list: List[Tuple[str, int]],
     ) -> DataLoader:
         """
-        Builds a DataLoader for a training split.
+        Builds a shuffled DataLoader for a training split.
 
-        When run_augmentation is True, wraps the data in AugmentedSampleListDataset
-        to apply online augmentation in memory. When False, uses a plain
-        SampleListDataset with no augmentation.
+        GPU augmentation is applied inside the model's training loop, so no
+        augmentation wrapper is needed at the dataset level.
 
         :param sample_list: List of (file_path, label_index) tuples for this split.
         :return: A shuffled DataLoader over the training samples.
         """
-        if self._run_augmentation:
-            training_dataset = AugmentedSampleListDataset(
-                sample_list=sample_list,
-                base_transform=self._image_transforms,
-                augmentation_sequence=self._online_augmentation_sequence,
-                number_of_augmented_copies=self._number_of_augmented_copies_per_image,
-            )
-        else:
-            training_dataset = SampleListDataset(
-                sample_list=sample_list,
-                transform=self._image_transforms,
-            )
+        training_dataset = SampleListDataset(
+            sample_list=sample_list,
+            transform=self._image_transforms,
+        )
         return DataLoader(
             training_dataset,
             batch_size=self._batch_size,
@@ -350,7 +261,7 @@ class CrossValidator:
         sample_list: List[Tuple[str, int]],
     ) -> DataLoader:
         """
-        Builds a DataLoader for a validation split, without augmentation.
+        Builds an unshuffled DataLoader for a validation split.
 
         :param sample_list: List of (file_path, label_index) tuples for this split.
         :return: An unshuffled DataLoader wrapping a SampleListDataset.
@@ -367,45 +278,6 @@ class CrossValidator:
             pin_memory=torch.device("cuda" if torch.cuda.is_available() else "cpu").type == "cuda",
         )
 
-    def _build_fresh_cnn(self) -> CNN:
-        """
-        Constructs a new CNN instance with freshly initialised weights.
-
-        Each call creates an entirely new model and optimizer, ensuring that
-        folds are trained independently with no shared state.
-
-        :return: A newly initialised CNN ready for training.
-        """
-        return CNN(
-            in_size=self._in_size,
-            class_names=self._class_names,
-            channels=self._channels,
-            pool_every=self._pool_every,
-            hidden_dims=self._hidden_dims,
-            num_epochs=self._num_epochs,
-            optimizer_class=self._optimizer_class,
-            loss_function=self._loss_function,
-            conv_kernel_size=self._conv_kernel_size,
-            pooling_type=self._pooling_type,
-            pool_kernel_size=self._pool_kernel_size,
-            image_normalization_mean=self._image_normalization_mean,
-            image_normalization_std=self._image_normalization_std,
-            num_dataloader_workers=self._num_dataloader_workers,
-            batch_size=self._batch_size,
-            activation=self._activation,
-            use_batchnorm=self._use_batchnorm,
-            dropout_probability=self._dropout_probability,
-            learning_rate=self._learning_rate,
-            weight_decay=self._weight_decay,
-            early_stopping_patience=self._early_stopping_patience,
-            number_of_augmented_copies_per_image=self._number_of_augmented_copies_per_image,
-            run_augmentation=self._run_augmentation,
-            augmentation_rotation_max_degrees=self._augmentation_rotation_max_degrees,
-            augmentation_brightness_jitter=self._augmentation_brightness_jitter,
-            augmentation_contrast_jitter=self._augmentation_contrast_jitter,
-            augmentation_saturation_jitter=self._augmentation_saturation_jitter,
-        )
-
     def _compute_aggregate_metrics(
         self,
         per_fold_results: List[dict],
@@ -413,9 +285,9 @@ class CrossValidator:
         """
         Computes mean and standard deviation of validation metrics across all folds.
 
-        :param per_fold_results: List of per-fold result dicts, each containing
-            'val_loss' and 'val_accuracy' keys.
-        :return: Dictionary with mean and std for both val_loss and val_accuracy.
+        :param per_fold_results: List of per-fold result dicts with 'val_loss' and
+            'val_accuracy' keys.
+        :return: Dict with mean and std for both val_loss and val_accuracy.
         """
         all_val_losses = [fold_result["val_loss"] for fold_result in per_fold_results]
         all_val_accuracies = [fold_result["val_accuracy"] for fold_result in per_fold_results]

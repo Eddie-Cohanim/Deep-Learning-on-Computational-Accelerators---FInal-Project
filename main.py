@@ -204,6 +204,7 @@ def _run_cross_validation(
     dataset_root_path: pathlib.Path,
     model_factory: callable,
     model_label: str,
+    raw_config: dict,
 ) -> None:
     """
     Runs K-fold cross-validation and saves the results to a versioned folder.
@@ -215,7 +216,14 @@ def _run_cross_validation(
     :param dataset_root_path: Root path containing train/, val/, and test/ splits.
     :param model_factory: Zero-argument callable that returns a fresh model instance.
     :param model_label: Human-readable label for the model type, included in results.json.
+    :param raw_config: The full config dict as loaded from config.json, saved as a snapshot.
     """
+    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
+    config_snapshot_path = experiment_folder_path / "config_snapshot.json"
+    with config_snapshot_path.open("w", encoding="utf-8") as config_snapshot_file:
+        json.dump(raw_config, config_snapshot_file, indent=4)
+    print(f"  Config snapshot saved to {config_snapshot_path}")
+
     print("=" * 70)
     print(f"Cross-Validation  ({cross_validation_config['num_folds']} folds)")
     print("=" * 70)
@@ -237,8 +245,6 @@ def _run_cross_validation(
         test_dataset_path=dataset_root_path / "test",
     )
     training_duration_seconds = (datetime.datetime.now() - training_start_time).total_seconds()
-
-    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
 
     final_model = cv_output["final_model"]
     checkpoint_file_path = experiment_folder_path / "checkpoint.pth"
@@ -354,15 +360,23 @@ def main() -> None:
             dataset_root_path=dataset_root_path,
             model_factory=model_factory,
             model_label=model_label,
+            raw_config=loaded_config,
         )
         return
 
     # --- Standard training path ---
 
-    # --- 5. Build model ---
+    # --- 5. Create versioned experiment folder and save config snapshot before training ---
+    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
+    config_snapshot_path = experiment_folder_path / "config_snapshot.json"
+    with config_snapshot_path.open("w", encoding="utf-8") as config_snapshot_file:
+        json.dump(loaded_config, config_snapshot_file, indent=4)
+    print(f"  Config snapshot saved to {config_snapshot_path}")
+
+    # --- 6. Build model ---
     my_model = model_factory()
 
-    # --- 6. Train ---
+    # --- 7. Train ---
     print("=" * 70)
     print("Training")
     print("=" * 70)
@@ -374,7 +388,7 @@ def main() -> None:
     )
     training_duration_seconds = (datetime.datetime.now() - training_start_time).total_seconds()
 
-    # --- 7. Validate ---
+    # --- 8. Validate ---
     print("\n" + "=" * 70)
     print("Validation")
     print("=" * 70)
@@ -386,7 +400,7 @@ def main() -> None:
     print(f"  Validation loss:     {validation_results['val_loss']:.4f}")
     print(f"  Validation accuracy: {validation_results['val_accuracy'] * 100:.2f}%")
 
-    # --- 8. Test ---
+    # --- 9. Test ---
     print("\n" + "=" * 70)
     print("Testing")
     print("=" * 70)
@@ -408,9 +422,6 @@ def main() -> None:
             f"  {class_metrics['f1']:>7.4f}"
         )
     print("=" * 70)
-
-    # --- 9. Create versioned experiment folder ---
-    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
 
     # --- 10. Save checkpoint ---
     checkpoint_file_path = experiment_folder_path / "checkpoint.pth"

@@ -8,16 +8,11 @@ import pathlib
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
+import kornia.augmentation as K
 from torch import Tensor
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 from typing import Sequence
-
-from model.Augmentations.horizontal_flip_augmentation import HorizontalFlipAugmentation
-from model.Augmentations.rotation_augmentation import RotationAugmentation
-from model.Augmentations.color_jitter_augmentation import ColorJitterAugmentation
-from model.Augmentations.gaussian_blur_augmentation import GaussianBlurAugmentation
-from model.augmented_dataset import AugmentedTrainingDataset
 
 
 _SUPPORTED_POOLING_TYPES = {
@@ -75,11 +70,7 @@ class CNN(nn.Module):
         learning_rate: float,
         weight_decay: float,
         early_stopping_patience: int,
-        number_of_augmented_copies_per_image: int,
-        augmentation_rotation_max_degrees: float,
-        augmentation_brightness_jitter: float,
-        augmentation_contrast_jitter: float,
-        augmentation_saturation_jitter: float,
+        augmentations_config: dict,
     ):
         """
         :param in_size: Shape of a single input image as (channels, height, width).
@@ -117,18 +108,10 @@ class CNN(nn.Module):
             Effective with AdamW; has no effect when using plain Adam.
         :param early_stopping_patience: Number of epochs without improvement in validation
             loss before training is stopped early. Set to 0 to disable early stopping.
-        :param number_of_augmented_copies_per_image: Number of additional augmented versions
-            to generate for each training image on the fly. The effective training set size
-            is multiplied by (1 + number_of_augmented_copies_per_image). Set to 0 to disable.
-        :param augmentation_rotation_max_degrees: Maximum rotation magnitude in degrees for
-            online augmentation. The angle is sampled uniformly from
-            [-max, +max] for each augmented copy.
-        :param augmentation_brightness_jitter: Maximum fractional change in brightness for
-            online augmentation.
-        :param augmentation_contrast_jitter: Maximum fractional change in contrast for
-            online augmentation.
-        :param augmentation_saturation_jitter: Maximum fractional change in saturation for
-            online augmentation.
+        :param augmentations_config: The full "augmentations" block from config.json.
+            Controls which transforms are applied, their parameters, and their probabilities.
+            Set "enabled" to false at the top level to disable all augmentation, or set
+            "enabled" to false on any individual transform to skip just that one.
         """
         super().__init__()
 
@@ -163,18 +146,7 @@ class CNN(nn.Module):
         self._optimizer_class = optimizer_class
         self._num_dataloader_workers = num_dataloader_workers
         self._early_stopping_patience = early_stopping_patience
-        self._number_of_augmented_copies_per_image = number_of_augmented_copies_per_image
-
-        self._online_augmentation_sequence = [
-            HorizontalFlipAugmentation(),
-            RotationAugmentation(max_rotation_degrees=augmentation_rotation_max_degrees),
-            ColorJitterAugmentation(
-                brightness_jitter=augmentation_brightness_jitter,
-                contrast_jitter=augmentation_contrast_jitter,
-                saturation_jitter=augmentation_saturation_jitter,
-            ),
-            GaussianBlurAugmentation(),
-        ]
+        self._augmentations_config = augmentations_config
 
         _, image_height, image_width = in_size
         self._image_transforms = transforms.Compose([
@@ -189,7 +161,103 @@ class CNN(nn.Module):
         self._classifier_head = self._build_classifier_head()
         self.to(self._device)
         self._optimizer = optimizer_class(self.parameters(), lr=learning_rate, weight_decay=weight_decay)
-        self._loss_function = loss_function
+        self._loss_function = loss_function.to(self._device)
+
+        self._gpu_augmentation_pipeline = self._build_augmentation_pipeline()
+
+        self._gradient_scaler = torch.cuda.amp.GradScaler(enabled=self._device.type == "cuda")
+
+    def _build_augmentation_pipeline(self):
+        """
+        Constructs the Kornia GPU augmentation pipeline from the augmentations config.
+
+        Reads the "augmentations" block from config.json. If the top-level "enabled"
+        flag is False, or if no transforms are individually enabled, returns None.
+        Each transform is included only when its own "enabled" flag is True.
+
+        :return: A K.AugmentationSequential on the model's device, or None.
+        """
+        if not self._augmentations_config.get("enabled", True):
+            return None
+
+        active_transforms = []
+
+        horizontal_flip_config = self._augmentations_config.get("horizontal_flip", {})
+        if horizontal_flip_config.get("enabled", True):
+            active_transforms.append(
+                K.RandomHorizontalFlip(p=horizontal_flip_config["p"])
+            )
+
+        vertical_flip_config = self._augmentations_config.get("vertical_flip", {})
+        if vertical_flip_config.get("enabled", False):
+            active_transforms.append(
+                K.RandomVerticalFlip(p=vertical_flip_config["p"])
+            )
+
+        rotation_config = self._augmentations_config.get("rotation", {})
+        if rotation_config.get("enabled", True):
+            active_transforms.append(
+                K.RandomRotation(degrees=rotation_config["max_degrees"], p=rotation_config["p"])
+            )
+
+        color_jitter_config = self._augmentations_config.get("color_jitter", {})
+        if color_jitter_config.get("enabled", True):
+            active_transforms.append(
+                K.ColorJitter(
+                    brightness=color_jitter_config["brightness"],
+                    contrast=color_jitter_config["contrast"],
+                    saturation=color_jitter_config["saturation"],
+                    p=color_jitter_config["p"],
+                )
+            )
+
+        gaussian_blur_config = self._augmentations_config.get("gaussian_blur", {})
+        if gaussian_blur_config.get("enabled", True):
+            active_transforms.append(
+                K.RandomGaussianBlur(
+                    kernel_size=(3, 3),
+                    sigma=(gaussian_blur_config["sigma_min"], gaussian_blur_config["sigma_max"]),
+                    p=gaussian_blur_config["p"],
+                )
+            )
+
+        perspective_config = self._augmentations_config.get("perspective", {})
+        if perspective_config.get("enabled", True):
+            active_transforms.append(
+                K.RandomPerspective(
+                    distortion_scale=perspective_config["distortion_scale"],
+                    p=perspective_config["p"],
+                )
+            )
+
+        gamma_config = self._augmentations_config.get("gamma", {})
+        if gamma_config.get("enabled", True):
+            active_transforms.append(
+                K.RandomGamma(
+                    gamma=(gamma_config["gamma_min"], gamma_config["gamma_max"]),
+                    gain=(1.0, 1.0),
+                    p=gamma_config["p"],
+                )
+            )
+
+        if not active_transforms:
+            return None
+
+        return K.AugmentationSequential(*active_transforms, data_keys=["input"]).to(self._device)
+
+    def augmentation_description(self) -> dict:
+        """
+        Returns the augmentation configuration as stored in config.json.
+
+        This is written directly into the results.json of each experiment so
+        that the exact transforms, parameters, and probabilities used in that
+        run are always on record.
+
+        :return: The augmentations config dict, or {"enabled": False} if disabled.
+        """
+        if self._gpu_augmentation_pipeline is None:
+            return {"enabled": False}
+        return self._augmentations_config
 
     def _load_dataset(self, dataset_path: pathlib.Path, shuffle: bool) -> DataLoader:
         """
@@ -205,35 +273,6 @@ class CNN(nn.Module):
             dataset,
             batch_size=self._batch_size,
             shuffle=shuffle,
-            num_workers=self._num_dataloader_workers,
-            pin_memory=self._device.type == "cuda",
-        )
-
-    def _load_augmented_training_dataset(self, dataset_path: pathlib.Path) -> DataLoader:
-        """
-        Loads the training set as an augmented dataset that exposes
-        (1 + number_of_augmented_copies_per_image) versions of each image.
-
-        The original copy receives only the base transform (resize + normalize).
-        Each augmented copy is passed through the full online augmentation
-        sequence — horizontal flip, rotation, color jitter, gaussian blur —
-        before the base transform is applied. The augmentations are applied in
-        memory; nothing is written to disk.
-
-        :param dataset_path: Root folder containing one subfolder per class.
-        :return: A DataLoader over the expanded augmented training dataset.
-        """
-        base_dataset = ImageFolder(root=str(dataset_path), transform=None)
-        augmented_training_dataset = AugmentedTrainingDataset(
-            base_dataset=base_dataset,
-            base_transform=self._image_transforms,
-            augmentation_sequence=self._online_augmentation_sequence,
-            number_of_augmented_copies=self._number_of_augmented_copies_per_image,
-        )
-        return DataLoader(
-            augmented_training_dataset,
-            batch_size=self._batch_size,
-            shuffle=True,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
         )
@@ -339,12 +378,39 @@ class CNN(nn.Module):
         :return: Dictionary with keys 'train_loss' and 'train_accuracy',
             each a list of floats with one value per epoch.
         """
-        train_loader = self._load_augmented_training_dataset(dataset_path)
-        self.train()
+        train_loader = self._load_dataset(dataset_path, shuffle=True)
+        val_loader = self._load_dataset(val_dataset_path, shuffle=False) if val_dataset_path is not None else None
+        return self.train_on_data_loaders(train_loader, val_loader)
+
+    def train_on_data_loaders(
+        self,
+        train_data_loader: DataLoader,
+        val_data_loader: DataLoader = None,
+    ) -> dict:
+        """
+        Trains the model using pre-built DataLoaders.
+
+        This is the core training implementation. train_on_dataset delegates to
+        this method after constructing its DataLoaders from disk paths.
+
+        GPU augmentation (via kornia) and mixed-precision training (via autocast
+        and GradScaler) are applied here when the device is CUDA and augmentation
+        is enabled.
+
+        If val_data_loader is provided and early_stopping_patience > 0, training
+        stops early when validation loss has not improved for that many epochs.
+        The best weights (lowest validation loss) are restored at the end.
+
+        :param train_data_loader: DataLoader over the training set.
+        :param val_data_loader: Optional DataLoader over the validation set, used
+            for early stopping. Required when early_stopping_patience > 0.
+        :return: Dictionary with keys 'train_loss' and 'train_accuracy',
+            each a list of floats with one value per epoch.
+        """
         epoch_losses = []
         epoch_accuracies = []
 
-        early_stopping_enabled = self._early_stopping_patience > 0 and val_dataset_path is not None
+        early_stopping_enabled = self._early_stopping_patience > 0 and val_data_loader is not None
         epochs_without_improvement = 0
         best_val_loss = float("inf")
         best_weights = None
@@ -355,14 +421,22 @@ class CNN(nn.Module):
             total_samples = 0
 
             self.train()
-            for images, labels in train_loader:
+            for images, labels in train_data_loader:
                 images = images.to(self._device)
                 labels = labels.to(self._device)
+
+                if self._gpu_augmentation_pipeline is not None:
+                    images = self._gpu_augmentation_pipeline(images)
+
                 self._optimizer.zero_grad()
-                class_scores = self.forward(images)
-                batch_loss = self._loss_function(class_scores, labels)
-                batch_loss.backward()
-                self._optimizer.step()
+
+                with torch.autocast(device_type=self._device.type, enabled=self._device.type == "cuda"):
+                    class_scores = self.forward(images)
+                    batch_loss = self._loss_function(class_scores, labels)
+
+                self._gradient_scaler.scale(batch_loss).backward()
+                self._gradient_scaler.step(self._optimizer)
+                self._gradient_scaler.update()
 
                 cumulative_loss += batch_loss.item() * images.shape[0]
                 predicted_labels = class_scores.argmax(dim=1)
@@ -374,12 +448,13 @@ class CNN(nn.Module):
             epoch_losses.append(epoch_average_loss)
             epoch_accuracies.append(epoch_accuracy)
 
-            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="")
+            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="", flush=True)
 
             if early_stopping_enabled:
-                val_results = self.validate_on_dataset(val_dataset_path)
+                val_results = self.validate_on_data_loader(val_data_loader)
                 current_val_loss = val_results["val_loss"]
-                print(f"  val_loss: {current_val_loss:.4f}", end="")
+                current_val_accuracy = val_results["val_accuracy"]
+                print(f"  val_loss: {current_val_loss:.4f}  val_accuracy: {current_val_accuracy * 100:.2f}%", end="", flush=True)
 
                 if current_val_loss < best_val_loss:
                     best_val_loss = current_val_loss
@@ -407,13 +482,25 @@ class CNN(nn.Module):
         :return: Dictionary with keys 'val_loss' and 'val_accuracy' as floats.
         """
         val_loader = self._load_dataset(dataset_path, shuffle=False)
+        return self.validate_on_data_loader(val_loader)
+
+    def validate_on_data_loader(self, val_data_loader: DataLoader) -> dict:
+        """
+        Evaluates the model using a pre-built DataLoader, without updating weights.
+
+        This is the core validation implementation. validate_on_dataset delegates
+        to this method after constructing its DataLoader from a disk path.
+
+        :param val_data_loader: DataLoader over the validation set.
+        :return: Dictionary with keys 'val_loss' and 'val_accuracy' as floats.
+        """
         self.eval()
         cumulative_loss = 0.0
         total_correct_predictions = 0
         total_samples = 0
 
         with torch.no_grad():
-            for images, labels in val_loader:
+            for images, labels in val_data_loader:
                 images = images.to(self._device)
                 labels = labels.to(self._device)
                 class_scores = self.forward(images)

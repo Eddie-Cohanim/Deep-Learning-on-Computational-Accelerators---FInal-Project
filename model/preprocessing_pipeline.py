@@ -1,11 +1,7 @@
 import json
 import pathlib
-from typing import Optional
 
-from model.Augmentations.augmentation import _SUPPORTED_IMAGE_EXTENSIONS
-from model.Augmentations.horizontal_flip_augmentation import HorizontalFlipAugmentation
-from model.Augmentations.rotation_augmentation import RotationAugmentation
-from model.Augmentations.color_jitter_augmentation import ColorJitterAugmentation
+from model.Augmentations.augmentations import _SUPPORTED_IMAGE_EXTENSIONS
 
 
 class DatasetValidationReport:
@@ -86,8 +82,7 @@ class DatasetValidationReport:
 
 class PreprocessingPipeline:
     """
-    Orchestrates dataset validation and offline augmentation for a structured
-    image classification dataset.
+    Orchestrates dataset validation for a structured image classification dataset.
 
     The dataset must follow this layout:
         <dataset_root>/train/<class_name>/<image_file>
@@ -95,6 +90,7 @@ class PreprocessingPipeline:
         <dataset_root>/test/<class_name>/<image_file>
 
     All configuration is read from config.json at construction time.
+    Augmentation is handled online during training and is not performed here.
     """
 
     def __init__(
@@ -106,7 +102,7 @@ class PreprocessingPipeline:
         :param dataset_root_path: Root folder containing the train/, val/, and
             test/ splits as immediate subdirectories.
         :param config_file_path: Path to config.json. Must contain a "model" key
-            with "class_names" and a "preprocessing" key with augmentation settings.
+            with "class_names".
         :raises FileNotFoundError: If config_file_path does not exist.
         :raises KeyError: If expected keys are missing from config.json.
         """
@@ -114,30 +110,12 @@ class PreprocessingPipeline:
             loaded_config = json.load(config_file)
 
         model_config = loaded_config["model"]
-        preprocessing_config = loaded_config["preprocessing"]
 
         self._training_split_path = dataset_root_path / "train"
         self._validation_split_path = dataset_root_path / "val"
         self._test_split_path = dataset_root_path / "test"
 
         self._class_names: list = model_config["class_names"]
-        self._run_augmentation: bool = preprocessing_config["run_augmentation"]
-
-        augmentation_fraction = preprocessing_config["augmentation_fraction"]
-
-        self._horizontal_flip_augmentation = HorizontalFlipAugmentation(
-            augmentation_fraction=augmentation_fraction,
-        )
-        self._rotation_augmentation = RotationAugmentation(
-            max_rotation_degrees=preprocessing_config["augmentation_rotation_max_degrees"],
-            augmentation_fraction=augmentation_fraction,
-        )
-        self._color_jitter_augmentation = ColorJitterAugmentation(
-            brightness_jitter=preprocessing_config["augmentation_brightness_jitter"],
-            contrast_jitter=preprocessing_config["augmentation_contrast_jitter"],
-            saturation_jitter=preprocessing_config["augmentation_saturation_jitter"],
-            augmentation_fraction=augmentation_fraction,
-        )
 
     def validate_dataset(self) -> DatasetValidationReport:
         """
@@ -195,59 +173,12 @@ class PreprocessingPipeline:
             missing_class_directories=missing_class_directories,
         )
 
-    def run_augmentation(self) -> Optional[list]:
-        """
-        Runs all three offline augmentations over the training split, ensuring
-        no image is augmented more than once across the three passes.
-
-        A single shared list of already-augmented file paths is initialised here
-        and passed through each augmentation call in order: horizontal flip,
-        rotation, color jitter.
-
-        Only the training split is augmented. The validation and test splits
-        are never touched.
-
-        If run_augmentation is False in config, prints an informational message
-        and returns None without modifying any files.
-
-        :return: The list of all augmented file path strings created, or None if
-            augmentation was disabled in config.
-        """
-        if not self._run_augmentation:
-            print("Augmentation is disabled in config (preprocessing.run_augmentation = false). Skipping.")
-            return None
-
-        print("Running offline augmentation on training split...")
-
-        shared_augmented_file_paths: list = []
-
-        shared_augmented_file_paths = self._horizontal_flip_augmentation.augment(
-            self._training_split_path,
-            shared_augmented_file_paths,
-        )
-        shared_augmented_file_paths = self._rotation_augmentation.augment(
-            self._training_split_path,
-            shared_augmented_file_paths,
-        )
-        shared_augmented_file_paths = self._color_jitter_augmentation.augment(
-            self._training_split_path,
-            shared_augmented_file_paths,
-        )
-
-        print(f"Augmentation complete. {len(shared_augmented_file_paths)} new images created.")
-        return shared_augmented_file_paths
-
     def run_full_pipeline(self) -> DatasetValidationReport:
         """
-        Executes the complete preprocessing pipeline in sequence:
-            1. Validates the dataset structure and prints the report.
-            2. Runs offline augmentation on the training split (if enabled).
+        Validates the dataset structure and prints the report.
 
         :return: The DatasetValidationReport from the validation step.
         """
         dataset_validation_report = self.validate_dataset()
         dataset_validation_report.print_summary()
-
-        self.run_augmentation()
-
         return dataset_validation_report

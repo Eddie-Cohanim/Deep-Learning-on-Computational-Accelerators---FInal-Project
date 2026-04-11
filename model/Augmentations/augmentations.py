@@ -1,10 +1,9 @@
 import abc
-import math
 import pathlib
 import random
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 
 # NOTE: A global list of augmented files still needs to be implemented in the main pipeline.
@@ -144,36 +143,7 @@ class RotationAugmentation(Augmentation):
 
     def _apply_to_image(self, image: Image.Image) -> Image.Image:
         angle_degrees = random.uniform(-self._max_rotation_degrees, self._max_rotation_degrees)
-        angle_radians = math.radians(angle_degrees)
-
-        pixels = np.array(image)
-        height, width = pixels.shape[:2]
-        output = np.zeros_like(pixels)
-
-        cos_a = math.cos(angle_radians)
-        sin_a = math.sin(angle_radians)
-        centre_x = width / 2.0
-        centre_y = height / 2.0
-
-        col_indices, row_indices = np.meshgrid(np.arange(width), np.arange(height))
-
-        col_centred = col_indices - centre_x
-        row_centred = row_indices - centre_y
-        source_col = cos_a * col_centred + sin_a * row_centred + centre_x
-        source_row = -sin_a * col_centred + cos_a * row_centred + centre_y
-
-        source_col = np.round(source_col).astype(int)
-        source_row = np.round(source_row).astype(int)
-
-        valid_mask = (
-            (source_col >= 0) & (source_col < width) &
-            (source_row >= 0) & (source_row < height)
-        )
-        output[row_indices[valid_mask], col_indices[valid_mask]] = (
-            pixels[source_row[valid_mask], source_col[valid_mask]]
-        )
-
-        return Image.fromarray(output.astype(np.uint8))
+        return image.rotate(angle_degrees, resample=Image.Resampling.BILINEAR, expand=False, fillcolor=0)
 
     def _augmentation_name(self) -> str:
         return "rotation"
@@ -217,22 +187,16 @@ class PerspectiveAugmentation(Augmentation):
         return H / H[2, 2]
 
     def _apply_to_image(self, image: Image.Image) -> Image.Image:
-        pixels = np.array(image)
-        height, width = pixels.shape[:2]
-        output = np.zeros_like(pixels)
-
+        width, height = image.size
         max_displacement = self._distortion_scale * min(width, height) / 2.0
 
         def rand_offset() -> float:
             return random.uniform(-max_displacement, max_displacement)
 
-        src_corners = np.array([
-            [0,         0],
-            [width - 1, 0],
-            [width - 1, height - 1],
-            [0,         height - 1],
-        ], dtype=np.float64)
-
+        src_corners = np.array(
+            [[0, 0], [width - 1, 0], [width - 1, height - 1], [0, height - 1]],
+            dtype=np.float64,
+        )
         dst_corners = src_corners + np.array([
             [rand_offset(), rand_offset()],
             [rand_offset(), rand_offset()],
@@ -240,27 +204,19 @@ class PerspectiveAugmentation(Augmentation):
             [rand_offset(), rand_offset()],
         ])
 
-        H = self._compute_homography(dst_corners, src_corners)
-
-        col_indices, row_indices = np.meshgrid(np.arange(width), np.arange(height))
-        ones = np.ones_like(col_indices)
-        dst_coords = np.stack([col_indices, row_indices, ones], axis=-1).reshape(-1, 3).T
-
-        src_coords = H @ dst_coords.astype(np.float64)
-        src_coords /= src_coords[2:3, :]
-
-        source_col = np.round(src_coords[0]).astype(int).reshape(height, width)
-        source_row = np.round(src_coords[1]).astype(int).reshape(height, width)
-
-        valid_mask = (
-            (source_col >= 0) & (source_col < width) &
-            (source_row >= 0) & (source_row < height)
+        homography_matrix = self._compute_homography(dst_corners, src_corners)
+        homography_matrix = homography_matrix / homography_matrix[2, 2]
+        pil_coefficients = [
+            homography_matrix[0, 0], homography_matrix[0, 1], homography_matrix[0, 2],
+            homography_matrix[1, 0], homography_matrix[1, 1], homography_matrix[1, 2],
+            homography_matrix[2, 0], homography_matrix[2, 1],
+        ]
+        return image.transform(
+            (width, height),
+            Image.PERSPECTIVE,
+            pil_coefficients,
+            resample=Image.Resampling.BILINEAR,
         )
-        output[row_indices[valid_mask], col_indices[valid_mask]] = (
-            pixels[source_row[valid_mask], source_col[valid_mask]]
-        )
-
-        return Image.fromarray(output.astype(np.uint8))
 
     def _augmentation_name(self) -> str:
         return "perspective"
@@ -380,44 +336,9 @@ class GaussianBlurAugmentation(Augmentation):
         """
         self._max_sigma = max_sigma
 
-    @staticmethod
-    def _gaussian_kernel_1d(sigma: float) -> np.ndarray:
-        """Returns a normalised 1D Gaussian kernel for the given sigma."""
-        radius = int(math.ceil(3 * sigma))
-        x = np.arange(-radius, radius + 1, dtype=np.float32)
-        kernel = np.exp(-0.5 * (x / sigma) ** 2)
-        return kernel / kernel.sum()
-
-    @staticmethod
-    def _convolve_1d(channel: np.ndarray, kernel: np.ndarray, axis: int) -> np.ndarray:
-        """Applies a 1D convolution along the given axis with reflect padding."""
-        pad = len(kernel) // 2
-        if axis == 0:
-            padded = np.pad(channel, ((pad, pad), (0, 0)), mode="reflect")
-            result = np.zeros_like(channel, dtype=np.float32)
-            for i, k in enumerate(kernel):
-                result += k * padded[i: i + channel.shape[0], :]
-        else:
-            padded = np.pad(channel, ((0, 0), (pad, pad)), mode="reflect")
-            result = np.zeros_like(channel, dtype=np.float32)
-            for i, k in enumerate(kernel):
-                result += k * padded[:, i: i + channel.shape[1]]
-        return result
-
     def _apply_to_image(self, image: Image.Image) -> Image.Image:
         sigma = random.uniform(0.3, self._max_sigma)
-        kernel = self._gaussian_kernel_1d(sigma)
-
-        pixels = np.array(image, dtype=np.float32)
-        blurred = np.zeros_like(pixels)
-
-        for channel_index in range(3):
-            channel = pixels[:, :, channel_index]
-            channel = self._convolve_1d(channel, kernel, axis=1)
-            channel = self._convolve_1d(channel, kernel, axis=0)
-            blurred[:, :, channel_index] = channel
-
-        return Image.fromarray(np.clip(blurred, 0, 255).astype(np.uint8))
+        return image.filter(ImageFilter.GaussianBlur(radius=sigma))
 
     def _augmentation_name(self) -> str:
         return "gblur"

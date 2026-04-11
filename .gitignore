@@ -4,4 +4,6 @@ __pycache__/
 .env
 .claude/
 *.pt
+*.pth
 dataset/
+

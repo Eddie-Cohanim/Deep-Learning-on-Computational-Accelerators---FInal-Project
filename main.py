@@ -30,28 +30,28 @@ def _build_loss_function(
     training_dataset_path: pathlib.Path,
     use_class_weights: bool,
     label_smoothing: float = 0.0,
-    use_focal_loss: bool = False,
     focal_loss_gamma: float = 2.0,
 ) -> nn.Module:
     """
-    Builds the loss function, optionally with inverse-frequency class weights,
-    label smoothing, and focal loss.
+    Builds the loss function, optionally with inverse-frequency class weights
+    and label smoothing. Supported loss_function_name values: 'CrossEntropyLoss',
+    'FocalLoss', 'NLLLoss'.
 
     When use_class_weights is True, counts images per class in the training
     folder and computes weights as (1 / class_count), normalized so they sum
     to the number of classes. This causes the loss to penalize errors on
     minority classes proportionally more than majority ones.
 
-    When use_focal_loss is True, uses FocalLoss instead of CrossEntropyLoss.
-    Focal loss down-weights easy examples and focuses training on hard ones,
-    which helps when certain classes are consistently ignored by the model.
+    When loss_function_name is 'FocalLoss', uses FocalLoss instead of
+    CrossEntropyLoss. Focal loss down-weights easy examples and focuses
+    training on hard ones, which helps when certain classes are consistently
+    ignored by the model.
 
-    :param loss_function_name: Either 'CrossEntropyLoss' or 'NLLLoss'.
+    :param loss_function_name: One of 'CrossEntropyLoss', 'FocalLoss', or 'NLLLoss'.
     :param class_names: Ordered list of class label strings matching config order.
     :param training_dataset_path: Path to the training split folder.
     :param use_class_weights: Whether to apply inverse-frequency class weights.
     :param label_smoothing: Label smoothing factor in [0.0, 1.0). Defaults to 0.0.
-    :param use_focal_loss: Whether to use FocalLoss instead of CrossEntropyLoss.
     :param focal_loss_gamma: Focusing exponent for focal loss. Defaults to 2.0.
     :return: An instantiated loss function module.
     """
@@ -80,7 +80,7 @@ def _build_loss_function(
         for class_name, weight, count in zip(class_names, normalized_weights, class_sample_counts):
             print(f"    {class_name:<30}  {count:>4} samples  weight: {weight:.4f}")
 
-    if use_focal_loss:
+    if loss_function_name == "FocalLoss":
         print(f"  Loss function: FocalLoss  (gamma={focal_loss_gamma})")
         return FocalLoss(
             gamma=focal_loss_gamma,
@@ -266,8 +266,7 @@ def _run_cross_validation(
         },
         "augmentations": final_model.augmentation_description(),
         "use_class_weights": training_config.get("use_class_weights", False),
-        "use_focal_loss": training_config.get("use_focal_loss", False),
-        "focal_loss_gamma": training_config.get("focal_loss_gamma", 2.0) if training_config.get("use_focal_loss", False) else None,
+        "focal_loss_gamma": training_config.get("focal_loss_gamma", 2.0) if training_config["loss_function"] == "FocalLoss" else None,
         "cross_validation": {
             "num_folds": cv_metrics["num_folds"],
             "per_fold_results": cv_metrics["per_fold_results"],
@@ -323,7 +322,6 @@ def main() -> None:
         training_dataset_path=dataset_root_path / "train",
         use_class_weights=training_config.get("use_class_weights", False),
         label_smoothing=training_config.get("label_smoothing", 0.0),
-        use_focal_loss=training_config.get("use_focal_loss", False),
         focal_loss_gamma=training_config.get("focal_loss_gamma", 2.0),
     )
 
@@ -440,8 +438,7 @@ def main() -> None:
         },
         "augmentations": my_model.augmentation_description(),
         "use_class_weights": training_config.get("use_class_weights", False),
-        "use_focal_loss": training_config.get("use_focal_loss", False),
-        "focal_loss_gamma": training_config.get("focal_loss_gamma", 2.0) if training_config.get("use_focal_loss", False) else None,
+        "focal_loss_gamma": training_config.get("focal_loss_gamma", 2.0) if training_config["loss_function"] == "FocalLoss" else None,
         "results": {
             "val_loss": validation_results["val_loss"],
             "val_accuracy": validation_results["val_accuracy"],

@@ -54,6 +54,9 @@ model_cfg          = hyperparams.get("model", {})
 training_cfg       = hyperparams.get("training", {})
 cross_val_summary  = data.get("cross_validation", {})
 results        = data["results"]
+if "per_class_results" not in results:
+    print(f"[SKIPPED] {json_path} — missing 'per_class_results' (unsupported format)")
+    sys.exit(0)
 per_class_raw  = results["per_class_results"]
 raw_preds      = results.get("raw_predictions", data.get("raw_predictions", None))   # optional
 
@@ -193,7 +196,7 @@ def print_table():
     widths = {"Class":22,"Samples":8,"TP":5,"FN":5,"FP":5,"TN":6,
               "Precision":10,"Recall":8,"F1":8,"IoU":8,"AUC":8}
     header = "  ".join(f"{c:>{widths[c]}}" for c in cols)
-    sep    = "─" * len(header)
+    sep    = "-" * len(header)
     print(header); print(sep)
 
     for cls in CLASSES:

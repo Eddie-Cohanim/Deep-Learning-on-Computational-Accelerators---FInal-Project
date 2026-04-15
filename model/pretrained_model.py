@@ -128,21 +128,9 @@ class PretrainedModel(nn.Module):
     """
     A transfer-learning wrapper around any supported torchvision pretrained backbone.
 
-    The pretrained feature extractor is loaded with ImageNet weights. Its classification
-    head is replaced with a new head sized for the target classes. The backbone can
-    optionally be frozen during early training and unfrozen later with a smaller learning
-    rate (discriminative fine-tuning).
-
     Architecture:
         torchvision backbone (pretrained, optionally frozen)
         → replaced head: [Linear → ReLU → Dropout] * len(hidden_dims) → Linear(num_classes)
-
-    Supported backbones: resnet18/34/50/101/152, wide_resnet50_2/101_2,
-        efficientnet_b0–b7, mobilenet_v2/v3_small/v3_large,
-        densenet121/161/169/201, vgg11/13/16/19 (with/without bn).
-
-    The training, validation, and test interface is identical to CNN so that either
-    model can be passed to CrossValidator without changes.
     """
 
     def __init__(
@@ -276,7 +264,7 @@ class PretrainedModel(nn.Module):
         """
         Constructs the Kornia GPU augmentation pipeline from the augmentations config.
 
-        Returns None if augmentation is disabled globally or no transforms are enabled.
+        :return: A K.AugmentationSequential on the model's device, or None.
         """
         if not self._augmentations_config.get("enabled", True):
             return None
@@ -430,9 +418,6 @@ class PretrainedModel(nn.Module):
     ) -> dict:
         """
         Trains the model using pre-built DataLoaders.
-
-        When freeze_backbone is True and unfreeze_after_epoch > 0, the backbone is
-        automatically unfrozen at the specified epoch with discriminative learning rates.
 
         :param train_data_loader: DataLoader over the training set.
         :param val_data_loader: Optional DataLoader over the validation set.

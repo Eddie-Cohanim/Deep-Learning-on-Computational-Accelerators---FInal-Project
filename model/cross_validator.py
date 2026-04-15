@@ -13,22 +13,7 @@ from model.augmented_dataset import SampleListDataset
 
 
 class CrossValidator:
-    """
-    Orchestrates stratified K-fold cross-validation for any image classifier.
-
-    The model to train is supplied as a factory callable that takes no arguments
-    and returns a freshly initialised model. This decouples the cross-validator
-    from any specific architecture — it works with CNN, PretrainedModel, or any
-    future classifier that implements the same training interface.
-
-    The combined train and validation splits are divided into K folds. For each
-    fold, a fresh model is trained on the K-1 remaining folds and evaluated on
-    the held-out fold. After all folds are complete, a final model is trained on
-    the full train+val pool and evaluated on the held-out test set.
-
-    Results include per-fold metrics and aggregate mean ± standard deviation for
-    both validation loss and validation accuracy.
-    """
+    """Orchestrates stratified K-fold cross-validation for any image classifier."""
 
     def __init__(
         self,
@@ -75,15 +60,10 @@ class CrossValidator:
         """
         Runs the full K-fold cross-validation pipeline.
 
-        Combines the train and validation splits into a single pool, divides it into
-        K stratified folds, trains and evaluates K models, then trains a final model
-        on the full pool and evaluates it on the held-out test set.
-
         :param train_dataset_path: Path to the training split folder.
         :param val_dataset_path: Path to the validation split folder.
         :param test_dataset_path: Path to the test split folder.
-        :return: Dictionary containing per-fold results, aggregate statistics,
-            and final test metrics.
+        :return: Dictionary containing per-fold results, aggregate statistics, and final test metrics.
         """
         train_image_folder = ImageFolder(root=str(train_dataset_path), transform=None)
         val_image_folder = ImageFolder(root=str(val_dataset_path), transform=None)
@@ -203,9 +183,6 @@ class CrossValidator:
         """
         Divides sample indices into K stratified fold groups.
 
-        Within each class, indices are shuffled and distributed round-robin across
-        the K folds so that each fold's validation set has proportional class coverage.
-
         :param all_labels: List of integer class labels, one per sample.
         :param num_folds: Number of folds to create.
         :return: List of K lists, each holding the sample indices for one validation fold.
@@ -237,9 +214,6 @@ class CrossValidator:
     ) -> DataLoader:
         """
         Builds a shuffled DataLoader for a training split.
-
-        GPU augmentation is applied inside the model's training loop, so no
-        augmentation wrapper is needed at the dataset level.
 
         :param sample_list: List of (file_path, label_index) tuples for this split.
         :return: A shuffled DataLoader over the training samples.

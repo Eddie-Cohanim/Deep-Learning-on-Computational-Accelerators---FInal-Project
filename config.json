@@ -7,7 +7,7 @@
         "hidden_dims": [512, 256],
         "activation": "relu",
         "use_batchnorm": true,
-        "dropout_probability": 0.5,
+        "dropout_probability": 0.6,
         "conv_kernel_size": 3,
         "pooling_type": "max",
         "pool_kernel_size": 2,
@@ -17,16 +17,16 @@
 
     "training": {
         "num_epochs": 500,
-        "batch_size": 8,
+        "batch_size": 16,
         "learning_rate": 0.00005,
         "num_dataloader_workers": 2,
         "optimizer": "AdamW",
         "weight_decay": 5e-4,
         "loss_function": "CrossEntropyLoss",
+        "focal_loss_gamma": 2.0,
         "use_class_weights": true,
         "label_smoothing": 0.1,
-        "focal_loss_gamma": 2.0,
-        "early_stopping_patience": 20
+        "early_stopping_patience": 30
     },
 
     "preprocessing": {
@@ -36,7 +36,7 @@
     "augmentations": {
         "enabled": true,
         "horizontal_flip":  { "enabled": true,  "p": 0.5 },
-        "vertical_flip":    { "enabled": true,  "p": 0.5 },
+        "vertical_flip":    { "enabled": false,  "p": 0.5 },
         "rotation":         { "enabled": true,  "max_degrees": 30.0, "p": 1.0 },
         "color_jitter":     { "enabled": false,  "brightness": 0.4, "contrast": 0.4, "saturation": 0.4, "p": 1.0 },
         "gaussian_blur":    { "enabled": true,  "sigma_min": 0.1, "sigma_max": 1.5, "p": 0.5 },

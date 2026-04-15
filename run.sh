@@ -6,7 +6,7 @@
 #SBATCH --mem=16G
 #SBATCH --cpus-per-task=2
 
-cd "/home/eddiecohanim/FinalProject/Kornia"
+cd "/home/eddiecohanim/FinalProject/Final Project"
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate cs236781-hw
 python -u main.py
@@ -17,4 +17,5 @@ if [ -n "$LATEST_VERSION" ]; then
     mv "results/slurm_${SLURM_JOB_ID}.out" "$LATEST_VERSION" 2>/dev/null
     mv "results/slurm_${SLURM_JOB_ID}.err" "$LATEST_VERSION" 2>/dev/null
     python -u plot_results.py "$LATEST_VERSION"
+    (cd "$LATEST_VERSION" && python -u "../../confusion matrix generator.py" results.json)
 fi

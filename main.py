@@ -33,21 +33,10 @@ def _build_loss_function(
     focal_loss_gamma: float = 2.0,
 ) -> nn.Module:
     """
-    Builds the loss function, optionally with inverse-frequency class weights
-    and label smoothing. Supported loss_function_name values: 'CrossEntropyLoss',
-    'FocalLoss', 'NLLLoss'.
+    Builds the loss function, optionally with inverse-frequency class weights,
+    label smoothing, and focal loss.
 
-    When use_class_weights is True, counts images per class in the training
-    folder and computes weights as (1 / class_count), normalized so they sum
-    to the number of classes. This causes the loss to penalize errors on
-    minority classes proportionally more than majority ones.
-
-    When loss_function_name is 'FocalLoss', uses FocalLoss instead of
-    CrossEntropyLoss. Focal loss down-weights easy examples and focuses
-    training on hard ones, which helps when certain classes are consistently
-    ignored by the model.
-
-    :param loss_function_name: One of 'CrossEntropyLoss', 'FocalLoss', or 'NLLLoss'.
+    :param loss_function_name: One of 'CrossEntropyLoss', 'NLLLoss', or 'FocalLoss'.
     :param class_names: Ordered list of class label strings matching config order.
     :param training_dataset_path: Path to the training split folder.
     :param use_class_weights: Whether to apply inverse-frequency class weights.
@@ -123,8 +112,6 @@ def _build_cnn_factory(
     """
     Returns a zero-argument factory that constructs a fresh CNN each time it is called.
 
-    Used by CrossValidator so each fold starts with independently initialised weights.
-
     :return: Callable with no arguments that returns a new CNN instance.
     """
     def factory():
@@ -165,9 +152,6 @@ def _build_pretrained_factory(
 ) -> callable:
     """
     Returns a zero-argument factory that constructs a fresh PretrainedModel each time.
-
-    Used by CrossValidator so each fold starts with independently initialised weights.
-    The pretrained backbone is re-downloaded (or loaded from cache) on each call.
 
     :return: Callable with no arguments that returns a new PretrainedModel instance.
     """
@@ -266,7 +250,6 @@ def _run_cross_validation(
         },
         "augmentations": final_model.augmentation_description(),
         "use_class_weights": training_config.get("use_class_weights", False),
-        "focal_loss_gamma": training_config.get("focal_loss_gamma", 2.0) if training_config["loss_function"] == "FocalLoss" else None,
         "cross_validation": {
             "num_folds": cv_metrics["num_folds"],
             "per_fold_results": cv_metrics["per_fold_results"],
@@ -438,7 +421,6 @@ def main() -> None:
         },
         "augmentations": my_model.augmentation_description(),
         "use_class_weights": training_config.get("use_class_weights", False),
-        "focal_loss_gamma": training_config.get("focal_loss_gamma", 2.0) if training_config["loss_function"] == "FocalLoss" else None,
         "results": {
             "val_loss": validation_results["val_loss"],
             "val_accuracy": validation_results["val_accuracy"],

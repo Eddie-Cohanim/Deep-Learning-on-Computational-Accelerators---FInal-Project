@@ -171,10 +171,6 @@ class CNN(nn.Module):
         """
         Constructs the Kornia GPU augmentation pipeline from the augmentations config.
 
-        Reads the "augmentations" block from config.json. If the top-level "enabled"
-        flag is False, or if no transforms are individually enabled, returns None.
-        Each transform is included only when its own "enabled" flag is True.
-
         :return: A K.AugmentationSequential on the model's device, or None.
         """
         if not self._augmentations_config.get("enabled", True):
@@ -249,10 +245,6 @@ class CNN(nn.Module):
         """
         Returns the augmentation configuration as stored in config.json.
 
-        This is written directly into the results.json of each experiment so
-        that the exact transforms, parameters, and probabilities used in that
-        run are always on record.
-
         :return: The augmentations config dict, or {"enabled": False} if disabled.
         """
         if self._gpu_augmentation_pipeline is None:
@@ -312,9 +304,6 @@ class CNN(nn.Module):
         """
         Determines the flattened size of the feature extractor output by running
         a single dummy tensor through it.
-
-        The random number generator state is saved and restored so that this
-        probe does not affect any random operations elsewhere in the program.
         """
         rng_state = torch.get_rng_state()
         try:
@@ -366,17 +355,9 @@ class CNN(nn.Module):
         """
         Trains the model on images loaded from the given folder.
 
-        Expects the folder structure: dataset_path/<class_name>/<image_file>
-
-        If val_dataset_path is provided and early_stopping_patience > 0, training
-        stops early when validation loss has not improved for that many epochs.
-        The best weights (lowest validation loss) are restored at the end.
-
         :param dataset_path: Path to the folder containing class subfolders.
-        :param val_dataset_path: Optional path to the validation split, used for
-            early stopping. Required when early_stopping_patience > 0.
-        :return: Dictionary with keys 'train_loss' and 'train_accuracy',
-            each a list of floats with one value per epoch.
+        :param val_dataset_path: Optional path to the validation split, used for early stopping.
+        :return: Dictionary with keys 'train_loss' and 'train_accuracy', each a list per epoch.
         """
         train_loader = self._load_dataset(dataset_path, shuffle=True)
         val_loader = self._load_dataset(val_dataset_path, shuffle=False) if val_dataset_path is not None else None
@@ -390,22 +371,9 @@ class CNN(nn.Module):
         """
         Trains the model using pre-built DataLoaders.
 
-        This is the core training implementation. train_on_dataset delegates to
-        this method after constructing its DataLoaders from disk paths.
-
-        GPU augmentation (via kornia) and mixed-precision training (via autocast
-        and GradScaler) are applied here when the device is CUDA and augmentation
-        is enabled.
-
-        If val_data_loader is provided and early_stopping_patience > 0, training
-        stops early when validation loss has not improved for that many epochs.
-        The best weights (lowest validation loss) are restored at the end.
-
         :param train_data_loader: DataLoader over the training set.
-        :param val_data_loader: Optional DataLoader over the validation set, used
-            for early stopping. Required when early_stopping_patience > 0.
-        :return: Dictionary with keys 'train_loss' and 'train_accuracy',
-            each a list of floats with one value per epoch.
+        :param val_data_loader: Optional DataLoader over the validation set, used for early stopping.
+        :return: Dictionary with keys 'train_loss' and 'train_accuracy', each a list per epoch.
         """
         epoch_losses = []
         epoch_accuracies = []
@@ -488,9 +456,6 @@ class CNN(nn.Module):
         """
         Evaluates the model using a pre-built DataLoader, without updating weights.
 
-        This is the core validation implementation. validate_on_dataset delegates
-        to this method after constructing its DataLoader from a disk path.
-
         :param val_data_loader: DataLoader over the validation set.
         :return: Dictionary with keys 'val_loss' and 'val_accuracy' as floats.
         """
@@ -517,16 +482,10 @@ class CNN(nn.Module):
 
     def test_on_dataset(self, dataset_path: pathlib.Path) -> dict:
         """
-        Evaluates the model on images loaded from the given folder and returns predictions
-        along with per-class precision, recall, F1, and sample counts.
-
-        Expects the folder structure: dataset_path/<class_name>/<image_file>
+        Evaluates the model on images loaded from the given folder and returns per-class metrics.
 
         :param dataset_path: Path to the folder containing class subfolders.
-        :return: Dictionary with keys:
-            - 'test_accuracy': overall accuracy as a float
-            - 'predictions': 1D Tensor of predicted class indices
-            - 'per_class_results': dict mapping each class name to its metrics
+        :return: Dictionary with keys 'test_accuracy', 'per_class_results', and 'raw_predictions'.
         """
         dataset = ImageFolder(root=str(dataset_path), transform=self._image_transforms)
         test_loader = DataLoader(

@@ -7,19 +7,7 @@ class FocalLoss(nn.Module):
     """
     Focal Loss for multi-class classification.
 
-    Focal loss down-weights the contribution of easy, well-classified examples
-    and concentrates training on hard, misclassified ones. This is especially
-    useful when certain classes are consistently predicted with high confidence
-    (e.g. rose wine) while others are ignored (e.g. Chardonnay).
-
-    The loss is defined as:
-        FL(p_t) = -alpha_t * (1 - p_t)^gamma * log(p_t)
-
-    where p_t is the model's estimated probability for the true class,
-    alpha_t is the optional per-class weight, and gamma is the focusing parameter.
-
-    :param gamma: Focusing exponent. 0 reduces to standard cross-entropy.
-                  Typical values are 1.0 to 3.0; 2.0 is the original paper default.
+    :param gamma: Focusing exponent. 0 reduces to standard cross-entropy. Defaults to 2.0.
     :param class_weights: Optional 1-D tensor of per-class weights (alpha).
     :param label_smoothing: Label smoothing factor in [0.0, 1.0).
     """

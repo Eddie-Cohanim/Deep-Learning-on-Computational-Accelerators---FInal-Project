@@ -1,0 +1,118 @@
+{
+    "model": {
+        "in_size": [
+            3,
+            224,
+            224
+        ],
+        "class_names": [
+            "orange wine",
+            "rose wine",
+            "Sauvignon blanc",
+            "Chardonnay",
+            "Cabernet Sauvignon",
+            "Pinot Noir",
+            "Malbec"
+        ],
+        "channels": [
+            32,
+            32,
+            64,
+            64,
+            128,
+            128
+        ],
+        "pool_every": 2,
+        "hidden_dims": [
+            512,
+            256
+        ],
+        "activation": "relu",
+        "use_batchnorm": true,
+        "dropout_probability": 0.5,
+        "conv_kernel_size": 3,
+        "pooling_type": "max",
+        "pool_kernel_size": 2,
+        "image_normalization_mean": [
+            0.485,
+            0.456,
+            0.406
+        ],
+        "image_normalization_std": [
+            0.229,
+            0.224,
+            0.225
+        ]
+    },
+    "training": {
+        "num_epochs": 1500,
+        "batch_size": 8,
+        "learning_rate": 5e-05,
+        "num_dataloader_workers": 2,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0005,
+        "loss_function": "FocalLoss",
+        "focal_loss_gamma": 2.0,
+        "use_class_weights": true,
+        "label_smoothing": 0.1,
+        "early_stopping_patience": 20
+    },
+    "preprocessing": {
+        "number_of_augmented_copies_per_image": 5
+    },
+    "augmentations": {
+        "enabled": true,
+        "horizontal_flip": {
+            "enabled": true,
+            "p": 0.5
+        },
+        "vertical_flip": {
+            "enabled": true,
+            "p": 0.5
+        },
+        "rotation": {
+            "enabled": true,
+            "max_degrees": 30.0,
+            "p": 1.0
+        },
+        "color_jitter": {
+            "enabled": false,
+            "brightness": 0.4,
+            "contrast": 0.4,
+            "saturation": 0.4,
+            "p": 1.0
+        },
+        "gaussian_blur": {
+            "enabled": true,
+            "sigma_min": 0.1,
+            "sigma_max": 1.5,
+            "p": 0.5
+        },
+        "perspective": {
+            "enabled": true,
+            "distortion_scale": 0.3,
+            "p": 0.7
+        },
+        "gamma": {
+            "enabled": false,
+            "gamma_min": 0.6,
+            "gamma_max": 1.5,
+            "p": 0.7
+        }
+    },
+    "cross_validation": {
+        "enabled": true,
+        "num_folds": 5
+    },
+    "pretrained_model": {
+        "enabled": false,
+        "backbone": "resnet50",
+        "freeze_backbone": true,
+        "unfreeze_after_epoch": 10,
+        "backbone_learning_rate": 5e-06,
+        "hidden_dims": [
+            256
+        ],
+        "dropout_probability": 0.5
+    }
+}

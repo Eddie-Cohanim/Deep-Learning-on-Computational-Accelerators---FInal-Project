@@ -1,0 +1,1274 @@
+
+Dataset Validation
+======================================================================
+
+  Split: train    STATUS: OK
+    orange wine                       147 images
+    rose wine                         412 images
+    Sauvignon blanc                   137 images
+    Chardonnay                        144 images
+    Cabernet Sauvignon                131 images
+    Pinot Noir                        102 images
+    Malbec                            108 images
+
+  Split: val    STATUS: OK
+    orange wine                       31 images
+    rose wine                         88 images
+    Sauvignon blanc                   29 images
+    Chardonnay                        31 images
+    Cabernet Sauvignon                28 images
+    Pinot Noir                        22 images
+    Malbec                            23 images
+
+  Split: test    STATUS: OK
+    orange wine                       33 images
+    rose wine                         89 images
+    Sauvignon blanc                   31 images
+    Chardonnay                        32 images
+    Cabernet Sauvignon                29 images
+    Pinot Noir                        23 images
+    Malbec                            24 images
+
+======================================================================
+VALIDATION RESULT: PASSED   (all splits and classes found)
+======================================================================
+
+  Class weights (inverse-frequency):
+    orange wine                      147 samples  weight: 0.9491
+    rose wine                        412 samples  weight: 0.3387
+    Sauvignon blanc                  137 samples  weight: 1.0184
+    Chardonnay                       144 samples  weight: 0.9689
+    Cabernet Sauvignon               131 samples  weight: 1.0651
+    Pinot Noir                       102 samples  weight: 1.3679
+    Malbec                           108 samples  weight: 1.2919
+  Config snapshot saved to results/v18/config_snapshot.json
+======================================================================
+Cross-Validation  (5 folds)
+======================================================================
+
+Fold [1 / 5]
+----------------------------------------------------------------------
+  Epoch [1/500]  loss: 2.0160  accuracy: 25.17%  val_loss: 1.6943  val_accuracy: 35.29%
+  Epoch [2/500]  loss: 1.6247  accuracy: 35.14%  val_loss: 1.5226  val_accuracy: 47.75%
+  Epoch [3/500]  loss: 1.5511  accuracy: 38.46%  val_loss: 1.4886  val_accuracy: 43.25%
+  Epoch [4/500]  loss: 1.5090  accuracy: 42.22%  val_loss: 1.4499  val_accuracy: 49.48%
+  Epoch [5/500]  loss: 1.4286  accuracy: 42.92%  val_loss: 1.3857  val_accuracy: 50.17%
+  Epoch [6/500]  loss: 1.3949  accuracy: 44.93%  val_loss: 1.3928  val_accuracy: 55.02%
+  Epoch [7/500]  loss: 1.3728  accuracy: 47.29%  val_loss: 1.3446  val_accuracy: 54.67%
+  Epoch [8/500]  loss: 1.3773  accuracy: 48.34%  val_loss: 1.3151  val_accuracy: 56.40%
+  Epoch [9/500]  loss: 1.3586  accuracy: 47.29%  val_loss: 1.2997  val_accuracy: 55.02%
+  Epoch [10/500]  loss: 1.3196  accuracy: 49.65%  val_loss: 1.2847  val_accuracy: 56.40%
+  Epoch [11/500]  loss: 1.3104  accuracy: 50.87%  val_loss: 1.2811  val_accuracy: 57.09%
+  Epoch [12/500]  loss: 1.2675  accuracy: 51.49%  val_loss: 1.2954  val_accuracy: 55.71%
+  Epoch [13/500]  loss: 1.2519  accuracy: 51.66%  val_loss: 1.2521  val_accuracy: 58.13%
+  Epoch [14/500]  loss: 1.2767  accuracy: 52.71%  val_loss: 1.2311  val_accuracy: 57.09%
+  Epoch [15/500]  loss: 1.2663  accuracy: 52.71%  val_loss: 1.2715  val_accuracy: 55.71%
+  Epoch [16/500]  loss: 1.2477  accuracy: 51.57%  val_loss: 1.2262  val_accuracy: 59.86%
+  Epoch [17/500]  loss: 1.2388  accuracy: 54.37%  val_loss: 1.2599  val_accuracy: 58.13%
+  Epoch [18/500]  loss: 1.2228  accuracy: 54.46%  val_loss: 1.2380  val_accuracy: 59.17%
+  Epoch [19/500]  loss: 1.2368  accuracy: 53.76%  val_loss: 1.2070  val_accuracy: 58.48%
+  Epoch [20/500]  loss: 1.2112  accuracy: 53.93%  val_loss: 1.1951  val_accuracy: 60.55%
+  Epoch [21/500]  loss: 1.1894  accuracy: 55.59%  val_loss: 1.1759  val_accuracy: 61.94%
+  Epoch [22/500]  loss: 1.2175  accuracy: 54.02%  val_loss: 1.2264  val_accuracy: 59.86%
+  Epoch [23/500]  loss: 1.1962  accuracy: 56.21%  val_loss: 1.2067  val_accuracy: 62.28%
+  Epoch [24/500]  loss: 1.1819  accuracy: 54.02%  val_loss: 1.2224  val_accuracy: 59.86%
+  Epoch [25/500]  loss: 1.1763  accuracy: 56.82%  val_loss: 1.1909  val_accuracy: 59.17%
+  Epoch [26/500]  loss: 1.2075  accuracy: 55.24%  val_loss: 1.1925  val_accuracy: 61.94%
+  Epoch [27/500]  loss: 1.1444  accuracy: 56.56%  val_loss: 1.2051  val_accuracy: 61.94%
+  Epoch [28/500]  loss: 1.1416  accuracy: 58.04%  val_loss: 1.1744  val_accuracy: 61.59%
+  Epoch [29/500]  loss: 1.1405  accuracy: 57.17%  val_loss: 1.1693  val_accuracy: 62.98%
+  Epoch [30/500]  loss: 1.1435  accuracy: 56.91%  val_loss: 1.1777  val_accuracy: 58.82%
+  Epoch [31/500]  loss: 1.1293  accuracy: 58.04%  val_loss: 1.1701  val_accuracy: 61.59%
+  Epoch [32/500]  loss: 1.1081  accuracy: 58.83%  val_loss: 1.1836  val_accuracy: 60.55%
+  Epoch [33/500]  loss: 1.1274  accuracy: 57.69%  val_loss: 1.1391  val_accuracy: 64.71%
+  Epoch [34/500]  loss: 1.0979  accuracy: 57.69%  val_loss: 1.1269  val_accuracy: 64.01%
+  Epoch [35/500]  loss: 1.1131  accuracy: 59.35%  val_loss: 1.1595  val_accuracy: 61.25%
+  Epoch [36/500]  loss: 1.0903  accuracy: 59.09%  val_loss: 1.1463  val_accuracy: 62.63%
+  Epoch [37/500]  loss: 1.0709  accuracy: 59.97%  val_loss: 1.1507  val_accuracy: 62.63%
+  Epoch [38/500]  loss: 1.1015  accuracy: 58.57%  val_loss: 1.1637  val_accuracy: 62.28%
+  Epoch [39/500]  loss: 1.0935  accuracy: 60.58%  val_loss: 1.1414  val_accuracy: 64.36%
+  Epoch [40/500]  loss: 1.0840  accuracy: 59.53%  val_loss: 1.1374  val_accuracy: 63.67%
+  Epoch [41/500]  loss: 1.0850  accuracy: 59.62%  val_loss: 1.1679  val_accuracy: 61.59%
+  Epoch [42/500]  loss: 1.0849  accuracy: 60.58%  val_loss: 1.2036  val_accuracy: 61.59%
+  Epoch [43/500]  loss: 1.0787  accuracy: 60.66%  val_loss: 1.1389  val_accuracy: 64.36%
+  Epoch [44/500]  loss: 1.0790  accuracy: 60.31%  val_loss: 1.1443  val_accuracy: 61.94%
+  Epoch [45/500]  loss: 1.0523  accuracy: 61.54%  val_loss: 1.1439  val_accuracy: 64.36%
+  Epoch [46/500]  loss: 1.0870  accuracy: 59.09%  val_loss: 1.1238  val_accuracy: 64.36%
+  Epoch [47/500]  loss: 1.0546  accuracy: 61.71%  val_loss: 1.1524  val_accuracy: 65.05%
+  Epoch [48/500]  loss: 1.0435  accuracy: 61.63%  val_loss: 1.1321  val_accuracy: 60.90%
+  Epoch [49/500]  loss: 1.0599  accuracy: 60.31%  val_loss: 1.1672  val_accuracy: 61.94%
+  Epoch [50/500]  loss: 1.0356  accuracy: 61.54%  val_loss: 1.1565  val_accuracy: 63.32%
+  Epoch [51/500]  loss: 1.0485  accuracy: 60.84%  val_loss: 1.0969  val_accuracy: 64.01%
+  Epoch [52/500]  loss: 1.0354  accuracy: 62.85%  val_loss: 1.1151  val_accuracy: 62.28%
+  Epoch [53/500]  loss: 1.0471  accuracy: 60.84%  val_loss: 1.1537  val_accuracy: 64.36%
+  Epoch [54/500]  loss: 1.0132  accuracy: 63.90%  val_loss: 1.1273  val_accuracy: 63.67%
+  Epoch [55/500]  loss: 1.0220  accuracy: 61.80%  val_loss: 1.0953  val_accuracy: 63.32%
+  Epoch [56/500]  loss: 1.0184  accuracy: 62.06%  val_loss: 1.1007  val_accuracy: 64.71%
+  Epoch [57/500]  loss: 1.0284  accuracy: 63.11%  val_loss: 1.1068  val_accuracy: 64.36%
+  Epoch [58/500]  loss: 1.0257  accuracy: 62.67%  val_loss: 1.1311  val_accuracy: 65.05%
+  Epoch [59/500]  loss: 1.0078  accuracy: 63.55%  val_loss: 1.1065  val_accuracy: 63.67%
+  Epoch [60/500]  loss: 1.0416  accuracy: 62.15%  val_loss: 1.1781  val_accuracy: 62.28%
+  Epoch [61/500]  loss: 1.0216  accuracy: 62.67%  val_loss: 1.1167  val_accuracy: 62.98%
+  Epoch [62/500]  loss: 1.0337  accuracy: 62.50%  val_loss: 1.1346  val_accuracy: 62.63%
+  Epoch [63/500]  loss: 1.0130  accuracy: 63.02%  val_loss: 1.1208  val_accuracy: 64.36%
+  Epoch [64/500]  loss: 1.0051  accuracy: 63.37%  val_loss: 1.1230  val_accuracy: 62.28%
+  Epoch [65/500]  loss: 1.0053  accuracy: 63.11%  val_loss: 1.1237  val_accuracy: 64.36%
+  Epoch [66/500]  loss: 0.9983  accuracy: 63.02%  val_loss: 1.1116  val_accuracy: 62.98%
+  Epoch [67/500]  loss: 0.9953  accuracy: 65.38%  val_loss: 1.1066  val_accuracy: 64.36%
+  Epoch [68/500]  loss: 0.9873  accuracy: 64.16%  val_loss: 1.1214  val_accuracy: 62.98%
+  Epoch [69/500]  loss: 0.9890  accuracy: 65.38%  val_loss: 1.1094  val_accuracy: 64.71%
+  Epoch [70/500]  loss: 1.0016  accuracy: 62.67%  val_loss: 1.1258  val_accuracy: 64.36%
+  Epoch [71/500]  loss: 1.0306  accuracy: 62.50%  val_loss: 1.1289  val_accuracy: 63.32%
+  Epoch [72/500]  loss: 1.0027  accuracy: 63.72%  val_loss: 1.1014  val_accuracy: 64.01%
+  Epoch [73/500]  loss: 0.9842  accuracy: 64.51%  val_loss: 1.0990  val_accuracy: 62.63%
+  Epoch [74/500]  loss: 0.9983  accuracy: 63.37%  val_loss: 1.0961  val_accuracy: 64.71%
+  Epoch [75/500]  loss: 0.9827  accuracy: 64.34%  val_loss: 1.1135  val_accuracy: 65.40%
+  Epoch [76/500]  loss: 0.9620  accuracy: 65.65%  val_loss: 1.1003  val_accuracy: 67.13%
+  Epoch [77/500]  loss: 0.9561  accuracy: 65.12%  val_loss: 1.0945  val_accuracy: 65.05%
+  Epoch [78/500]  loss: 0.9810  accuracy: 64.16%  val_loss: 1.1135  val_accuracy: 65.40%
+  Epoch [79/500]  loss: 0.9668  accuracy: 64.86%  val_loss: 1.1335  val_accuracy: 63.67%
+  Epoch [80/500]  loss: 0.9630  accuracy: 66.17%  val_loss: 1.1309  val_accuracy: 64.01%
+  Epoch [81/500]  loss: 0.9508  accuracy: 66.43%  val_loss: 1.0860  val_accuracy: 64.01%
+  Epoch [82/500]  loss: 0.9452  accuracy: 67.13%  val_loss: 1.1047  val_accuracy: 64.71%
+  Epoch [83/500]  loss: 0.9696  accuracy: 65.38%  val_loss: 1.1154  val_accuracy: 64.71%
+  Epoch [84/500]  loss: 0.9422  accuracy: 65.82%  val_loss: 1.0813  val_accuracy: 65.40%
+  Epoch [85/500]  loss: 0.9660  accuracy: 65.38%  val_loss: 1.1108  val_accuracy: 64.01%
+  Epoch [86/500]  loss: 0.9770  accuracy: 64.25%  val_loss: 1.1067  val_accuracy: 65.74%
+  Epoch [87/500]  loss: 0.9273  accuracy: 66.43%  val_loss: 1.0792  val_accuracy: 66.09%
+  Epoch [88/500]  loss: 0.9525  accuracy: 67.13%  val_loss: 1.1595  val_accuracy: 62.98%
+  Epoch [89/500]  loss: 0.9378  accuracy: 67.40%  val_loss: 1.0959  val_accuracy: 67.13%
+  Epoch [90/500]  loss: 0.9478  accuracy: 66.35%  val_loss: 1.0919  val_accuracy: 65.40%
+  Epoch [91/500]  loss: 0.9536  accuracy: 65.21%  val_loss: 1.0807  val_accuracy: 64.01%
+  Epoch [92/500]  loss: 0.9482  accuracy: 67.22%  val_loss: 1.1175  val_accuracy: 62.28%
+  Epoch [93/500]  loss: 0.8983  accuracy: 66.70%  val_loss: 1.0918  val_accuracy: 66.09%
+  Epoch [94/500]  loss: 0.9483  accuracy: 66.00%  val_loss: 1.1077  val_accuracy: 67.13%
+  Epoch [95/500]  loss: 0.9217  accuracy: 67.83%  val_loss: 1.1126  val_accuracy: 63.67%
+  Epoch [96/500]  loss: 0.9263  accuracy: 67.31%  val_loss: 1.1189  val_accuracy: 64.01%
+  Epoch [97/500]  loss: 0.9383  accuracy: 66.61%  val_loss: 1.1255  val_accuracy: 63.67%
+  Epoch [98/500]  loss: 0.9426  accuracy: 67.57%  val_loss: 1.0897  val_accuracy: 67.47%
+  Epoch [99/500]  loss: 0.9264  accuracy: 66.52%  val_loss: 1.0892  val_accuracy: 64.01%
+  Epoch [100/500]  loss: 0.9372  accuracy: 65.91%  val_loss: 1.0769  val_accuracy: 65.40%
+  Epoch [101/500]  loss: 0.9302  accuracy: 66.61%  val_loss: 1.1333  val_accuracy: 65.05%
+  Epoch [102/500]  loss: 0.9100  accuracy: 67.92%  val_loss: 1.1002  val_accuracy: 65.40%
+  Epoch [103/500]  loss: 0.9212  accuracy: 67.22%  val_loss: 1.1315  val_accuracy: 65.40%
+  Epoch [104/500]  loss: 0.9328  accuracy: 67.66%  val_loss: 1.1154  val_accuracy: 65.40%
+  Epoch [105/500]  loss: 0.9289  accuracy: 66.35%  val_loss: 1.0971  val_accuracy: 64.01%
+  Epoch [106/500]  loss: 0.9298  accuracy: 67.66%  val_loss: 1.1248  val_accuracy: 67.47%
+  Epoch [107/500]  loss: 0.9064  accuracy: 68.79%  val_loss: 1.0885  val_accuracy: 67.13%
+  Epoch [108/500]  loss: 0.9377  accuracy: 67.13%  val_loss: 1.0964  val_accuracy: 65.74%
+  Epoch [109/500]  loss: 0.9032  accuracy: 69.32%  val_loss: 1.0914  val_accuracy: 67.82%
+  Epoch [110/500]  loss: 0.8973  accuracy: 67.57%  val_loss: 1.1007  val_accuracy: 64.01%
+  Epoch [111/500]  loss: 0.9272  accuracy: 68.44%  val_loss: 1.0641  val_accuracy: 67.82%
+  Epoch [112/500]  loss: 0.9209  accuracy: 68.88%  val_loss: 1.1159  val_accuracy: 65.05%
+  Epoch [113/500]  loss: 0.9064  accuracy: 67.74%  val_loss: 1.0980  val_accuracy: 63.67%
+  Epoch [114/500]  loss: 0.8926  accuracy: 68.97%  val_loss: 1.0567  val_accuracy: 68.51%
+  Epoch [115/500]  loss: 0.9131  accuracy: 69.06%  val_loss: 1.0681  val_accuracy: 67.82%
+  Epoch [116/500]  loss: 0.8813  accuracy: 69.58%  val_loss: 1.0636  val_accuracy: 66.44%
+  Epoch [117/500]  loss: 0.8917  accuracy: 69.32%  val_loss: 1.0774  val_accuracy: 68.86%
+  Epoch [118/500]  loss: 0.8801  accuracy: 70.19%  val_loss: 1.0892  val_accuracy: 65.40%
+  Epoch [119/500]  loss: 0.9200  accuracy: 66.26%  val_loss: 1.1206  val_accuracy: 67.13%
+  Epoch [120/500]  loss: 0.8955  accuracy: 69.06%  val_loss: 1.0804  val_accuracy: 65.74%
+  Epoch [121/500]  loss: 0.9044  accuracy: 67.83%  val_loss: 1.0912  val_accuracy: 66.09%
+  Epoch [122/500]  loss: 0.8905  accuracy: 68.88%  val_loss: 1.1450  val_accuracy: 65.74%
+  Epoch [123/500]  loss: 0.9045  accuracy: 67.74%  val_loss: 1.1026  val_accuracy: 65.40%
+  Epoch [124/500]  loss: 0.8916  accuracy: 68.79%  val_loss: 1.1182  val_accuracy: 66.44%
+  Epoch [125/500]  loss: 0.8734  accuracy: 71.50%  val_loss: 1.1251  val_accuracy: 66.44%
+  Epoch [126/500]  loss: 0.8755  accuracy: 69.14%  val_loss: 1.1276  val_accuracy: 65.74%
+  Epoch [127/500]  loss: 0.8782  accuracy: 70.54%  val_loss: 1.0845  val_accuracy: 67.82%
+  Epoch [128/500]  loss: 0.8825  accuracy: 69.14%  val_loss: 1.1142  val_accuracy: 66.44%
+  Epoch [129/500]  loss: 0.8764  accuracy: 69.06%  val_loss: 1.1273  val_accuracy: 66.78%
+  Epoch [130/500]  loss: 0.9021  accuracy: 69.06%  val_loss: 1.1138  val_accuracy: 68.86%
+  Epoch [131/500]  loss: 0.8825  accuracy: 70.28%  val_loss: 1.1542  val_accuracy: 62.98%
+  Epoch [132/500]  loss: 0.8796  accuracy: 70.02%  val_loss: 1.1226  val_accuracy: 67.47%
+  Epoch [133/500]  loss: 0.8901  accuracy: 69.06%  val_loss: 1.1094  val_accuracy: 65.40%
+  Epoch [134/500]  loss: 0.8618  accuracy: 70.37%  val_loss: 1.1034  val_accuracy: 66.09%
+  Epoch [135/500]  loss: 0.8841  accuracy: 69.14%  val_loss: 1.1181  val_accuracy: 66.78%
+  Epoch [136/500]  loss: 0.8591  accuracy: 70.19%  val_loss: 1.1146  val_accuracy: 65.40%
+  Epoch [137/500]  loss: 0.8682  accuracy: 70.02%  val_loss: 1.1100  val_accuracy: 65.74%
+  Epoch [138/500]  loss: 0.8547  accuracy: 70.98%  val_loss: 1.0944  val_accuracy: 68.51%
+  Epoch [139/500]  loss: 0.8643  accuracy: 69.49%  val_loss: 1.1125  val_accuracy: 68.51%
+  Epoch [140/500]  loss: 0.8769  accuracy: 70.54%  val_loss: 1.1053  val_accuracy: 67.82%
+  Epoch [141/500]  loss: 0.8670  accuracy: 68.88%  val_loss: 1.1343  val_accuracy: 66.44%
+  Epoch [142/500]  loss: 0.8623  accuracy: 71.07%  val_loss: 1.0863  val_accuracy: 65.74%
+  Epoch [143/500]  loss: 0.8537  accuracy: 70.19%  val_loss: 1.1038  val_accuracy: 66.09%
+  Epoch [144/500]  loss: 0.8658  accuracy: 70.63%  val_loss: 1.1119  val_accuracy: 67.47%
+  Early stopping triggered after 144 epochs (no improvement for 30 epochs).
+
+  Fold 1 result: val_loss: 1.0567  val_accuracy: 68.51%
+
+Fold [2 / 5]
+----------------------------------------------------------------------
+  Epoch [1/500]  loss: 2.0846  accuracy: 26.18%  val_loss: 1.7039  val_accuracy: 37.28%
+  Epoch [2/500]  loss: 1.6235  accuracy: 34.73%  val_loss: 1.5452  val_accuracy: 45.64%
+  Epoch [3/500]  loss: 1.5156  accuracy: 38.05%  val_loss: 1.4621  val_accuracy: 53.66%
+  Epoch [4/500]  loss: 1.4725  accuracy: 41.71%  val_loss: 1.4515  val_accuracy: 54.01%
+  Epoch [5/500]  loss: 1.4098  accuracy: 44.59%  val_loss: 1.4088  val_accuracy: 55.40%
+  Epoch [6/500]  loss: 1.3779  accuracy: 46.42%  val_loss: 1.3931  val_accuracy: 55.40%
+  Epoch [7/500]  loss: 1.3756  accuracy: 47.21%  val_loss: 1.3444  val_accuracy: 56.79%
+  Epoch [8/500]  loss: 1.3183  accuracy: 49.56%  val_loss: 1.3590  val_accuracy: 57.49%
+  Epoch [9/500]  loss: 1.3225  accuracy: 51.48%  val_loss: 1.2998  val_accuracy: 58.89%
+  Epoch [10/500]  loss: 1.3153  accuracy: 52.53%  val_loss: 1.3108  val_accuracy: 60.28%
+  Epoch [11/500]  loss: 1.2966  accuracy: 52.79%  val_loss: 1.2931  val_accuracy: 60.63%
+  Epoch [12/500]  loss: 1.2612  accuracy: 52.79%  val_loss: 1.2769  val_accuracy: 59.93%
+  Epoch [13/500]  loss: 1.2816  accuracy: 51.13%  val_loss: 1.2330  val_accuracy: 61.67%
+  Epoch [14/500]  loss: 1.2546  accuracy: 50.79%  val_loss: 1.2344  val_accuracy: 58.19%
+  Epoch [15/500]  loss: 1.2421  accuracy: 53.05%  val_loss: 1.2200  val_accuracy: 59.93%
+  Epoch [16/500]  loss: 1.2139  accuracy: 54.01%  val_loss: 1.2354  val_accuracy: 60.63%
+  Epoch [17/500]  loss: 1.2157  accuracy: 53.93%  val_loss: 1.2706  val_accuracy: 61.67%
+  Epoch [18/500]  loss: 1.1873  accuracy: 56.72%  val_loss: 1.2023  val_accuracy: 60.28%
+  Epoch [19/500]  loss: 1.2142  accuracy: 54.71%  val_loss: 1.2536  val_accuracy: 62.37%
+  Epoch [20/500]  loss: 1.1811  accuracy: 55.58%  val_loss: 1.2286  val_accuracy: 60.63%
+  Epoch [21/500]  loss: 1.1892  accuracy: 55.32%  val_loss: 1.2438  val_accuracy: 61.67%
+  Epoch [22/500]  loss: 1.1651  accuracy: 55.58%  val_loss: 1.2185  val_accuracy: 62.02%
+  Epoch [23/500]  loss: 1.1411  accuracy: 58.20%  val_loss: 1.2577  val_accuracy: 60.98%
+  Epoch [24/500]  loss: 1.1573  accuracy: 54.97%  val_loss: 1.2331  val_accuracy: 61.67%
+  Epoch [25/500]  loss: 1.1652  accuracy: 56.72%  val_loss: 1.2492  val_accuracy: 62.37%
+  Epoch [26/500]  loss: 1.1608  accuracy: 56.46%  val_loss: 1.1727  val_accuracy: 62.02%
+  Epoch [27/500]  loss: 1.1556  accuracy: 55.85%  val_loss: 1.2445  val_accuracy: 59.93%
+  Epoch [28/500]  loss: 1.1462  accuracy: 56.02%  val_loss: 1.2017  val_accuracy: 60.63%
+  Epoch [29/500]  loss: 1.1434  accuracy: 56.63%  val_loss: 1.2074  val_accuracy: 62.02%
+  Epoch [30/500]  loss: 1.1245  accuracy: 57.24%  val_loss: 1.2059  val_accuracy: 61.32%
+  Epoch [31/500]  loss: 1.1274  accuracy: 58.99%  val_loss: 1.1859  val_accuracy: 62.02%
+  Epoch [32/500]  loss: 1.0915  accuracy: 60.47%  val_loss: 1.1848  val_accuracy: 63.41%
+  Epoch [33/500]  loss: 1.0887  accuracy: 58.90%  val_loss: 1.1799  val_accuracy: 64.46%
+  Epoch [34/500]  loss: 1.0803  accuracy: 61.43%  val_loss: 1.1758  val_accuracy: 62.37%
+  Epoch [35/500]  loss: 1.0798  accuracy: 58.46%  val_loss: 1.2045  val_accuracy: 63.41%
+  Epoch [36/500]  loss: 1.0715  accuracy: 60.30%  val_loss: 1.1885  val_accuracy: 61.67%
+  Epoch [37/500]  loss: 1.0867  accuracy: 59.77%  val_loss: 1.1580  val_accuracy: 63.07%
+  Epoch [38/500]  loss: 1.0757  accuracy: 60.47%  val_loss: 1.1818  val_accuracy: 61.67%
+  Epoch [39/500]  loss: 1.0645  accuracy: 58.81%  val_loss: 1.2222  val_accuracy: 62.37%
+  Epoch [40/500]  loss: 1.0682  accuracy: 60.65%  val_loss: 1.1527  val_accuracy: 64.11%
+  Epoch [41/500]  loss: 1.0704  accuracy: 59.16%  val_loss: 1.2344  val_accuracy: 63.07%
+  Epoch [42/500]  loss: 1.0750  accuracy: 60.38%  val_loss: 1.2212  val_accuracy: 61.67%
+  Epoch [43/500]  loss: 1.0832  accuracy: 59.60%  val_loss: 1.2146  val_accuracy: 62.72%
+  Epoch [44/500]  loss: 1.0592  accuracy: 61.52%  val_loss: 1.2104  val_accuracy: 64.11%
+  Epoch [45/500]  loss: 1.0288  accuracy: 62.39%  val_loss: 1.2067  val_accuracy: 63.76%
+  Epoch [46/500]  loss: 1.0529  accuracy: 59.95%  val_loss: 1.1907  val_accuracy: 62.02%
+  Epoch [47/500]  loss: 1.0156  accuracy: 62.65%  val_loss: 1.1972  val_accuracy: 61.32%
+  Epoch [48/500]  loss: 1.0263  accuracy: 61.43%  val_loss: 1.2032  val_accuracy: 62.37%
+  Epoch [49/500]  loss: 1.0334  accuracy: 61.17%  val_loss: 1.1955  val_accuracy: 60.63%
+  Epoch [50/500]  loss: 1.0185  accuracy: 61.08%  val_loss: 1.1705  val_accuracy: 60.28%
+  Epoch [51/500]  loss: 1.0216  accuracy: 61.26%  val_loss: 1.2946  val_accuracy: 61.32%
+  Epoch [52/500]  loss: 1.0266  accuracy: 62.39%  val_loss: 1.2103  val_accuracy: 63.07%
+  Epoch [53/500]  loss: 1.0131  accuracy: 62.48%  val_loss: 1.2080  val_accuracy: 61.67%
+  Epoch [54/500]  loss: 1.0310  accuracy: 60.47%  val_loss: 1.2084  val_accuracy: 60.98%
+  Epoch [55/500]  loss: 1.0224  accuracy: 61.69%  val_loss: 1.1853  val_accuracy: 60.63%
+  Epoch [56/500]  loss: 1.0059  accuracy: 62.83%  val_loss: 1.1662  val_accuracy: 63.76%
+  Epoch [57/500]  loss: 1.0171  accuracy: 61.26%  val_loss: 1.1760  val_accuracy: 64.11%
+  Epoch [58/500]  loss: 0.9960  accuracy: 63.87%  val_loss: 1.1535  val_accuracy: 65.16%
+  Epoch [59/500]  loss: 1.0153  accuracy: 62.65%  val_loss: 1.1874  val_accuracy: 63.76%
+  Epoch [60/500]  loss: 0.9990  accuracy: 63.18%  val_loss: 1.1768  val_accuracy: 59.58%
+  Epoch [61/500]  loss: 0.9867  accuracy: 64.40%  val_loss: 1.1843  val_accuracy: 60.98%
+  Epoch [62/500]  loss: 0.9987  accuracy: 64.05%  val_loss: 1.1507  val_accuracy: 62.72%
+  Epoch [63/500]  loss: 1.0077  accuracy: 63.87%  val_loss: 1.1779  val_accuracy: 60.63%
+  Epoch [64/500]  loss: 0.9901  accuracy: 62.22%  val_loss: 1.1437  val_accuracy: 63.76%
+  Epoch [65/500]  loss: 0.9802  accuracy: 63.35%  val_loss: 1.1736  val_accuracy: 60.63%
+  Epoch [66/500]  loss: 0.9844  accuracy: 63.70%  val_loss: 1.1653  val_accuracy: 64.11%
+  Epoch [67/500]  loss: 0.9586  accuracy: 65.45%  val_loss: 1.1596  val_accuracy: 62.37%
+  Epoch [68/500]  loss: 0.9465  accuracy: 64.57%  val_loss: 1.1555  val_accuracy: 62.02%
+  Epoch [69/500]  loss: 0.9640  accuracy: 64.40%  val_loss: 1.1543  val_accuracy: 63.76%
+  Epoch [70/500]  loss: 0.9823  accuracy: 64.83%  val_loss: 1.1702  val_accuracy: 61.67%
+  Epoch [71/500]  loss: 0.9536  accuracy: 64.75%  val_loss: 1.1562  val_accuracy: 63.76%
+  Epoch [72/500]  loss: 0.9759  accuracy: 64.40%  val_loss: 1.1612  val_accuracy: 64.46%
+  Epoch [73/500]  loss: 0.9856  accuracy: 63.70%  val_loss: 1.1649  val_accuracy: 61.67%
+  Epoch [74/500]  loss: 0.9838  accuracy: 64.83%  val_loss: 1.1602  val_accuracy: 63.76%
+  Epoch [75/500]  loss: 0.9366  accuracy: 66.14%  val_loss: 1.1483  val_accuracy: 62.72%
+  Epoch [76/500]  loss: 0.9817  accuracy: 64.22%  val_loss: 1.1763  val_accuracy: 63.76%
+  Epoch [77/500]  loss: 0.9540  accuracy: 65.01%  val_loss: 1.1666  val_accuracy: 62.72%
+  Epoch [78/500]  loss: 0.9470  accuracy: 64.31%  val_loss: 1.1346  val_accuracy: 60.98%
+  Epoch [79/500]  loss: 0.9663  accuracy: 65.01%  val_loss: 1.1465  val_accuracy: 62.72%
+  Epoch [80/500]  loss: 0.9512  accuracy: 66.14%  val_loss: 1.1619  val_accuracy: 62.72%
+  Epoch [81/500]  loss: 0.9300  accuracy: 65.01%  val_loss: 1.1387  val_accuracy: 63.07%
+  Epoch [82/500]  loss: 0.9521  accuracy: 65.45%  val_loss: 1.1391  val_accuracy: 63.76%
+  Epoch [83/500]  loss: 0.9493  accuracy: 64.40%  val_loss: 1.1849  val_accuracy: 62.37%
+  Epoch [84/500]  loss: 0.9334  accuracy: 65.97%  val_loss: 1.1527  val_accuracy: 61.32%
+  Epoch [85/500]  loss: 0.9470  accuracy: 65.18%  val_loss: 1.1496  val_accuracy: 60.98%
+  Epoch [86/500]  loss: 0.9308  accuracy: 66.23%  val_loss: 1.1173  val_accuracy: 64.81%
+  Epoch [87/500]  loss: 0.9312  accuracy: 65.27%  val_loss: 1.1373  val_accuracy: 63.07%
+  Epoch [88/500]  loss: 0.9111  accuracy: 67.28%  val_loss: 1.1421  val_accuracy: 63.41%
+  Epoch [89/500]  loss: 0.9115  accuracy: 66.58%  val_loss: 1.1575  val_accuracy: 62.37%
+  Epoch [90/500]  loss: 0.9219  accuracy: 67.63%  val_loss: 1.1487  val_accuracy: 62.02%
+  Epoch [91/500]  loss: 0.9230  accuracy: 67.98%  val_loss: 1.1733  val_accuracy: 65.51%
+  Epoch [92/500]  loss: 0.9140  accuracy: 66.84%  val_loss: 1.1537  val_accuracy: 62.72%
+  Epoch [93/500]  loss: 0.9434  accuracy: 66.93%  val_loss: 1.1516  val_accuracy: 63.76%
+  Epoch [94/500]  loss: 0.9232  accuracy: 67.54%  val_loss: 1.1314  val_accuracy: 61.32%
+  Epoch [95/500]  loss: 0.9388  accuracy: 67.28%  val_loss: 1.1292  val_accuracy: 63.07%
+  Epoch [96/500]  loss: 0.9069  accuracy: 68.41%  val_loss: 1.1759  val_accuracy: 63.76%
+  Epoch [97/500]  loss: 0.9096  accuracy: 67.19%  val_loss: 1.1894  val_accuracy: 62.72%
+  Epoch [98/500]  loss: 0.9254  accuracy: 66.75%  val_loss: 1.2221  val_accuracy: 63.41%
+  Epoch [99/500]  loss: 0.9137  accuracy: 67.89%  val_loss: 1.1374  val_accuracy: 64.46%
+  Epoch [100/500]  loss: 0.9068  accuracy: 67.80%  val_loss: 1.1204  val_accuracy: 66.20%
+  Epoch [101/500]  loss: 0.9027  accuracy: 67.54%  val_loss: 1.1158  val_accuracy: 64.11%
+  Epoch [102/500]  loss: 0.9020  accuracy: 68.85%  val_loss: 1.1315  val_accuracy: 65.16%
+  Epoch [103/500]  loss: 0.8939  accuracy: 68.32%  val_loss: 1.1574  val_accuracy: 61.32%
+  Epoch [104/500]  loss: 0.9064  accuracy: 67.63%  val_loss: 1.1269  val_accuracy: 63.76%
+  Epoch [105/500]  loss: 0.8782  accuracy: 69.72%  val_loss: 1.1481  val_accuracy: 63.41%
+  Epoch [106/500]  loss: 0.8721  accuracy: 69.28%  val_loss: 1.1256  val_accuracy: 64.11%
+  Epoch [107/500]  loss: 0.8855  accuracy: 67.80%  val_loss: 1.1360  val_accuracy: 63.76%
+  Epoch [108/500]  loss: 0.8829  accuracy: 69.11%  val_loss: 1.1201  val_accuracy: 64.81%
+  Epoch [109/500]  loss: 0.8742  accuracy: 67.98%  val_loss: 1.1178  val_accuracy: 63.41%
+  Epoch [110/500]  loss: 0.8851  accuracy: 67.71%  val_loss: 1.1467  val_accuracy: 63.41%
+  Epoch [111/500]  loss: 0.8923  accuracy: 68.15%  val_loss: 1.1530  val_accuracy: 65.51%
+  Epoch [112/500]  loss: 0.9100  accuracy: 67.80%  val_loss: 1.1212  val_accuracy: 62.02%
+  Epoch [113/500]  loss: 0.8934  accuracy: 68.76%  val_loss: 1.1680  val_accuracy: 64.46%
+  Epoch [114/500]  loss: 0.8742  accuracy: 69.46%  val_loss: 1.1689  val_accuracy: 64.81%
+  Epoch [115/500]  loss: 0.9000  accuracy: 69.11%  val_loss: 1.1393  val_accuracy: 61.32%
+  Epoch [116/500]  loss: 0.8855  accuracy: 67.98%  val_loss: 1.1388  val_accuracy: 62.72%
+  Epoch [117/500]  loss: 0.8746  accuracy: 68.59%  val_loss: 1.1264  val_accuracy: 63.07%
+  Epoch [118/500]  loss: 0.8885  accuracy: 69.46%  val_loss: 1.1211  val_accuracy: 63.41%
+  Epoch [119/500]  loss: 0.8925  accuracy: 69.72%  val_loss: 1.1378  val_accuracy: 62.37%
+  Epoch [120/500]  loss: 0.8644  accuracy: 69.72%  val_loss: 1.1329  val_accuracy: 63.76%
+  Epoch [121/500]  loss: 0.8810  accuracy: 69.46%  val_loss: 1.1604  val_accuracy: 63.76%
+  Epoch [122/500]  loss: 0.8579  accuracy: 71.29%  val_loss: 1.1457  val_accuracy: 64.81%
+  Epoch [123/500]  loss: 0.8562  accuracy: 70.07%  val_loss: 1.1435  val_accuracy: 66.55%
+  Epoch [124/500]  loss: 0.8695  accuracy: 69.28%  val_loss: 1.1428  val_accuracy: 63.76%
+  Epoch [125/500]  loss: 0.8761  accuracy: 70.94%  val_loss: 1.1637  val_accuracy: 67.25%
+  Epoch [126/500]  loss: 0.8819  accuracy: 69.11%  val_loss: 1.1556  val_accuracy: 63.07%
+  Epoch [127/500]  loss: 0.8642  accuracy: 71.64%  val_loss: 1.1513  val_accuracy: 62.02%
+  Epoch [128/500]  loss: 0.8707  accuracy: 69.02%  val_loss: 1.1210  val_accuracy: 67.94%
+  Epoch [129/500]  loss: 0.8823  accuracy: 68.50%  val_loss: 1.1149  val_accuracy: 67.25%
+  Epoch [130/500]  loss: 0.8646  accuracy: 68.94%  val_loss: 1.1824  val_accuracy: 65.16%
+  Epoch [131/500]  loss: 0.8562  accuracy: 70.42%  val_loss: 1.1398  val_accuracy: 64.81%
+  Epoch [132/500]  loss: 0.8603  accuracy: 70.24%  val_loss: 1.1654  val_accuracy: 63.41%
+  Epoch [133/500]  loss: 0.8348  accuracy: 71.90%  val_loss: 1.1679  val_accuracy: 64.11%
+  Epoch [134/500]  loss: 0.8299  accuracy: 72.60%  val_loss: 1.1213  val_accuracy: 67.60%
+  Epoch [135/500]  loss: 0.8550  accuracy: 70.16%  val_loss: 1.1341  val_accuracy: 65.51%
+  Epoch [136/500]  loss: 0.8506  accuracy: 72.43%  val_loss: 1.1699  val_accuracy: 66.55%
+  Epoch [137/500]  loss: 0.8278  accuracy: 72.16%  val_loss: 1.1597  val_accuracy: 64.46%
+  Epoch [138/500]  loss: 0.8475  accuracy: 73.12%  val_loss: 1.1609  val_accuracy: 63.41%
+  Epoch [139/500]  loss: 0.8287  accuracy: 71.82%  val_loss: 1.1618  val_accuracy: 65.16%
+  Epoch [140/500]  loss: 0.8481  accuracy: 72.43%  val_loss: 1.1916  val_accuracy: 65.16%
+  Epoch [141/500]  loss: 0.8458  accuracy: 70.59%  val_loss: 1.1631  val_accuracy: 65.51%
+  Epoch [142/500]  loss: 0.8378  accuracy: 72.86%  val_loss: 1.1822  val_accuracy: 65.85%
+  Epoch [143/500]  loss: 0.8442  accuracy: 71.55%  val_loss: 1.1569  val_accuracy: 65.51%
+  Epoch [144/500]  loss: 0.8242  accuracy: 72.25%  val_loss: 1.1434  val_accuracy: 65.16%
+  Epoch [145/500]  loss: 0.8387  accuracy: 71.82%  val_loss: 1.1886  val_accuracy: 65.85%
+  Epoch [146/500]  loss: 0.8309  accuracy: 72.25%  val_loss: 1.1583  val_accuracy: 66.20%
+  Epoch [147/500]  loss: 0.8418  accuracy: 71.90%  val_loss: 1.1753  val_accuracy: 64.81%
+  Epoch [148/500]  loss: 0.8367  accuracy: 72.16%  val_loss: 1.1606  val_accuracy: 64.46%
+  Epoch [149/500]  loss: 0.8407  accuracy: 72.08%  val_loss: 1.1534  val_accuracy: 64.81%
+  Epoch [150/500]  loss: 0.8270  accuracy: 72.51%  val_loss: 1.1477  val_accuracy: 66.20%
+  Epoch [151/500]  loss: 0.8327  accuracy: 72.95%  val_loss: 1.1438  val_accuracy: 67.25%
+  Epoch [152/500]  loss: 0.8263  accuracy: 73.65%  val_loss: 1.1504  val_accuracy: 67.94%
+  Epoch [153/500]  loss: 0.8312  accuracy: 72.43%  val_loss: 1.1565  val_accuracy: 66.55%
+  Epoch [154/500]  loss: 0.8306  accuracy: 72.16%  val_loss: 1.1736  val_accuracy: 65.85%
+  Epoch [155/500]  loss: 0.8367  accuracy: 72.16%  val_loss: 1.1675  val_accuracy: 67.25%
+  Epoch [156/500]  loss: 0.8180  accuracy: 74.78%  val_loss: 1.1557  val_accuracy: 65.85%
+  Epoch [157/500]  loss: 0.8369  accuracy: 73.12%  val_loss: 1.1299  val_accuracy: 67.60%
+  Epoch [158/500]  loss: 0.8049  accuracy: 73.12%  val_loss: 1.1344  val_accuracy: 66.55%
+  Epoch [159/500]  loss: 0.8067  accuracy: 73.82%  val_loss: 1.1359  val_accuracy: 66.90%
+  Early stopping triggered after 159 epochs (no improvement for 30 epochs).
+
+  Fold 2 result: val_loss: 1.1149  val_accuracy: 67.25%
+
+Fold [3 / 5]
+----------------------------------------------------------------------
+  Epoch [1/500]  loss: 1.9962  accuracy: 28.88%  val_loss: 1.6304  val_accuracy: 38.33%
+  Epoch [2/500]  loss: 1.5756  accuracy: 35.95%  val_loss: 1.5454  val_accuracy: 39.02%
+  Epoch [3/500]  loss: 1.4966  accuracy: 43.28%  val_loss: 1.4699  val_accuracy: 52.61%
+  Epoch [4/500]  loss: 1.4545  accuracy: 42.50%  val_loss: 1.4363  val_accuracy: 55.40%
+  Epoch [5/500]  loss: 1.4245  accuracy: 45.20%  val_loss: 1.3835  val_accuracy: 58.19%
+  Epoch [6/500]  loss: 1.3633  accuracy: 48.17%  val_loss: 1.3804  val_accuracy: 56.10%
+  Epoch [7/500]  loss: 1.3508  accuracy: 48.69%  val_loss: 1.3324  val_accuracy: 57.49%
+  Epoch [8/500]  loss: 1.2945  accuracy: 48.25%  val_loss: 1.3252  val_accuracy: 59.58%
+  Epoch [9/500]  loss: 1.3256  accuracy: 50.26%  val_loss: 1.3157  val_accuracy: 60.63%
+  Epoch [10/500]  loss: 1.2842  accuracy: 50.52%  val_loss: 1.2968  val_accuracy: 59.93%
+  Epoch [11/500]  loss: 1.3104  accuracy: 52.44%  val_loss: 1.3014  val_accuracy: 60.63%
+  Epoch [12/500]  loss: 1.2458  accuracy: 52.53%  val_loss: 1.2668  val_accuracy: 60.98%
+  Epoch [13/500]  loss: 1.2658  accuracy: 51.75%  val_loss: 1.2413  val_accuracy: 63.76%
+  Epoch [14/500]  loss: 1.2389  accuracy: 52.53%  val_loss: 1.2522  val_accuracy: 62.02%
+  Epoch [15/500]  loss: 1.2129  accuracy: 54.01%  val_loss: 1.2299  val_accuracy: 64.81%
+  Epoch [16/500]  loss: 1.2137  accuracy: 53.75%  val_loss: 1.2245  val_accuracy: 62.72%
+  Epoch [17/500]  loss: 1.2100  accuracy: 54.10%  val_loss: 1.2123  val_accuracy: 59.93%
+  Epoch [18/500]  loss: 1.1895  accuracy: 54.62%  val_loss: 1.1829  val_accuracy: 60.98%
+  Epoch [19/500]  loss: 1.1868  accuracy: 55.67%  val_loss: 1.2156  val_accuracy: 59.58%
+  Epoch [20/500]  loss: 1.1971  accuracy: 54.19%  val_loss: 1.1821  val_accuracy: 60.28%
+  Epoch [21/500]  loss: 1.1617  accuracy: 57.42%  val_loss: 1.1638  val_accuracy: 63.41%
+  Epoch [22/500]  loss: 1.1946  accuracy: 54.36%  val_loss: 1.1918  val_accuracy: 62.37%
+  Epoch [23/500]  loss: 1.1416  accuracy: 57.50%  val_loss: 1.1696  val_accuracy: 63.07%
+  Epoch [24/500]  loss: 1.1699  accuracy: 55.93%  val_loss: 1.1919  val_accuracy: 63.41%
+  Epoch [25/500]  loss: 1.1503  accuracy: 56.54%  val_loss: 1.1737  val_accuracy: 62.02%
+  Epoch [26/500]  loss: 1.1150  accuracy: 58.90%  val_loss: 1.1468  val_accuracy: 64.81%
+  Epoch [27/500]  loss: 1.1338  accuracy: 58.03%  val_loss: 1.1710  val_accuracy: 63.07%
+  Epoch [28/500]  loss: 1.1449  accuracy: 55.50%  val_loss: 1.1851  val_accuracy: 64.46%
+  Epoch [29/500]  loss: 1.1103  accuracy: 57.85%  val_loss: 1.1458  val_accuracy: 64.46%
+  Epoch [30/500]  loss: 1.1185  accuracy: 56.81%  val_loss: 1.1700  val_accuracy: 63.76%
+  Epoch [31/500]  loss: 1.1184  accuracy: 58.03%  val_loss: 1.1331  val_accuracy: 65.51%
+  Epoch [32/500]  loss: 1.0890  accuracy: 60.30%  val_loss: 1.1438  val_accuracy: 65.16%
+  Epoch [33/500]  loss: 1.1386  accuracy: 58.20%  val_loss: 1.2058  val_accuracy: 61.67%
+  Epoch [34/500]  loss: 1.0930  accuracy: 59.69%  val_loss: 1.1266  val_accuracy: 64.81%
+  Epoch [35/500]  loss: 1.0812  accuracy: 59.95%  val_loss: 1.1568  val_accuracy: 64.46%
+  Epoch [36/500]  loss: 1.0799  accuracy: 57.42%  val_loss: 1.1581  val_accuracy: 64.11%
+  Epoch [37/500]  loss: 1.0891  accuracy: 58.20%  val_loss: 1.1422  val_accuracy: 65.16%
+  Epoch [38/500]  loss: 1.0748  accuracy: 59.69%  val_loss: 1.1731  val_accuracy: 63.41%
+  Epoch [39/500]  loss: 1.0778  accuracy: 61.95%  val_loss: 1.1388  val_accuracy: 64.81%
+  Epoch [40/500]  loss: 1.0688  accuracy: 62.04%  val_loss: 1.1594  val_accuracy: 62.72%
+  Epoch [41/500]  loss: 1.0341  accuracy: 60.38%  val_loss: 1.1487  val_accuracy: 64.11%
+  Epoch [42/500]  loss: 1.0571  accuracy: 60.30%  val_loss: 1.1631  val_accuracy: 65.85%
+  Epoch [43/500]  loss: 1.0399  accuracy: 62.30%  val_loss: 1.1665  val_accuracy: 63.76%
+  Epoch [44/500]  loss: 1.0512  accuracy: 60.99%  val_loss: 1.1925  val_accuracy: 62.72%
+  Epoch [45/500]  loss: 1.0553  accuracy: 60.56%  val_loss: 1.2096  val_accuracy: 61.67%
+  Epoch [46/500]  loss: 1.0329  accuracy: 62.83%  val_loss: 1.1631  val_accuracy: 63.41%
+  Epoch [47/500]  loss: 1.0236  accuracy: 61.61%  val_loss: 1.1621  val_accuracy: 65.16%
+  Epoch [48/500]  loss: 1.0227  accuracy: 62.22%  val_loss: 1.1167  val_accuracy: 65.16%
+  Epoch [49/500]  loss: 1.0372  accuracy: 61.52%  val_loss: 1.1222  val_accuracy: 66.20%
+  Epoch [50/500]  loss: 1.0272  accuracy: 62.13%  val_loss: 1.1292  val_accuracy: 67.25%
+  Epoch [51/500]  loss: 1.0176  accuracy: 61.95%  val_loss: 1.1432  val_accuracy: 62.37%
+  Epoch [52/500]  loss: 1.0087  accuracy: 62.13%  val_loss: 1.1411  val_accuracy: 64.11%
+  Epoch [53/500]  loss: 1.0156  accuracy: 62.83%  val_loss: 1.1578  val_accuracy: 65.51%
+  Epoch [54/500]  loss: 1.0264  accuracy: 63.09%  val_loss: 1.1160  val_accuracy: 63.76%
+  Epoch [55/500]  loss: 1.0187  accuracy: 62.83%  val_loss: 1.1878  val_accuracy: 64.46%
+  Epoch [56/500]  loss: 1.0291  accuracy: 60.21%  val_loss: 1.1198  val_accuracy: 64.81%
+  Epoch [57/500]  loss: 1.0224  accuracy: 61.34%  val_loss: 1.1426  val_accuracy: 65.85%
+  Epoch [58/500]  loss: 1.0346  accuracy: 62.30%  val_loss: 1.1321  val_accuracy: 65.51%
+  Epoch [59/500]  loss: 1.0007  accuracy: 62.13%  val_loss: 1.1207  val_accuracy: 65.85%
+  Epoch [60/500]  loss: 0.9940  accuracy: 63.35%  val_loss: 1.1235  val_accuracy: 64.81%
+  Epoch [61/500]  loss: 0.9967  accuracy: 63.70%  val_loss: 1.1237  val_accuracy: 65.85%
+  Epoch [62/500]  loss: 0.9757  accuracy: 63.35%  val_loss: 1.1153  val_accuracy: 65.85%
+  Epoch [63/500]  loss: 0.9894  accuracy: 63.79%  val_loss: 1.1560  val_accuracy: 64.11%
+  Epoch [64/500]  loss: 0.9821  accuracy: 63.87%  val_loss: 1.1238  val_accuracy: 65.85%
+  Epoch [65/500]  loss: 0.9849  accuracy: 62.91%  val_loss: 1.0897  val_accuracy: 66.20%
+  Epoch [66/500]  loss: 0.9924  accuracy: 63.09%  val_loss: 1.1292  val_accuracy: 64.11%
+  Epoch [67/500]  loss: 1.0039  accuracy: 62.13%  val_loss: 1.1217  val_accuracy: 66.20%
+  Epoch [68/500]  loss: 0.9856  accuracy: 66.14%  val_loss: 1.1036  val_accuracy: 65.85%
+  Epoch [69/500]  loss: 0.9595  accuracy: 63.61%  val_loss: 1.1092  val_accuracy: 65.51%
+  Epoch [70/500]  loss: 0.9450  accuracy: 65.45%  val_loss: 1.1120  val_accuracy: 65.16%
+  Epoch [71/500]  loss: 0.9862  accuracy: 65.01%  val_loss: 1.1030  val_accuracy: 66.90%
+  Epoch [72/500]  loss: 0.9823  accuracy: 63.00%  val_loss: 1.1608  val_accuracy: 63.76%
+  Epoch [73/500]  loss: 0.9786  accuracy: 63.79%  val_loss: 1.1095  val_accuracy: 67.25%
+  Epoch [74/500]  loss: 0.9600  accuracy: 63.44%  val_loss: 1.1361  val_accuracy: 66.90%
+  Epoch [75/500]  loss: 0.9532  accuracy: 64.40%  val_loss: 1.1166  val_accuracy: 66.55%
+  Epoch [76/500]  loss: 0.9493  accuracy: 65.62%  val_loss: 1.1374  val_accuracy: 66.90%
+  Epoch [77/500]  loss: 0.9817  accuracy: 63.26%  val_loss: 1.1177  val_accuracy: 66.20%
+  Epoch [78/500]  loss: 0.9645  accuracy: 63.53%  val_loss: 1.1202  val_accuracy: 67.94%
+  Epoch [79/500]  loss: 0.9789  accuracy: 63.18%  val_loss: 1.0990  val_accuracy: 66.20%
+  Epoch [80/500]  loss: 0.9350  accuracy: 66.40%  val_loss: 1.0929  val_accuracy: 66.90%
+  Epoch [81/500]  loss: 0.9540  accuracy: 65.01%  val_loss: 1.0854  val_accuracy: 65.51%
+  Epoch [82/500]  loss: 0.9551  accuracy: 66.49%  val_loss: 1.1032  val_accuracy: 65.85%
+  Epoch [83/500]  loss: 0.9365  accuracy: 65.53%  val_loss: 1.0842  val_accuracy: 65.51%
+  Epoch [84/500]  loss: 0.9533  accuracy: 65.10%  val_loss: 1.0728  val_accuracy: 68.99%
+  Epoch [85/500]  loss: 0.9373  accuracy: 66.32%  val_loss: 1.0851  val_accuracy: 67.60%
+  Epoch [86/500]  loss: 0.9526  accuracy: 64.92%  val_loss: 1.1586  val_accuracy: 65.85%
+  Epoch [87/500]  loss: 0.9423  accuracy: 67.28%  val_loss: 1.1311  val_accuracy: 65.16%
+  Epoch [88/500]  loss: 0.9306  accuracy: 65.79%  val_loss: 1.1045  val_accuracy: 65.85%
+  Epoch [89/500]  loss: 0.9269  accuracy: 64.75%  val_loss: 1.1063  val_accuracy: 63.41%
+  Epoch [90/500]  loss: 0.9419  accuracy: 65.01%  val_loss: 1.1071  val_accuracy: 64.46%
+  Epoch [91/500]  loss: 0.9445  accuracy: 65.53%  val_loss: 1.0970  val_accuracy: 66.55%
+  Epoch [92/500]  loss: 0.9257  accuracy: 65.71%  val_loss: 1.1204  val_accuracy: 65.51%
+  Epoch [93/500]  loss: 0.9326  accuracy: 65.45%  val_loss: 1.1202  val_accuracy: 64.11%
+  Epoch [94/500]  loss: 0.9236  accuracy: 67.02%  val_loss: 1.1218  val_accuracy: 66.55%
+  Epoch [95/500]  loss: 0.9265  accuracy: 67.28%  val_loss: 1.1182  val_accuracy: 64.11%
+  Epoch [96/500]  loss: 0.9117  accuracy: 66.49%  val_loss: 1.1062  val_accuracy: 65.51%
+  Epoch [97/500]  loss: 0.9398  accuracy: 65.53%  val_loss: 1.1447  val_accuracy: 63.76%
+  Epoch [98/500]  loss: 0.9285  accuracy: 66.06%  val_loss: 1.1292  val_accuracy: 65.51%
+  Epoch [99/500]  loss: 0.9257  accuracy: 66.49%  val_loss: 1.1339  val_accuracy: 63.41%
+  Epoch [100/500]  loss: 0.9243  accuracy: 65.62%  val_loss: 1.1295  val_accuracy: 66.20%
+  Epoch [101/500]  loss: 0.9011  accuracy: 67.63%  val_loss: 1.1064  val_accuracy: 65.51%
+  Epoch [102/500]  loss: 0.9100  accuracy: 66.49%  val_loss: 1.1356  val_accuracy: 64.81%
+  Epoch [103/500]  loss: 0.9098  accuracy: 66.23%  val_loss: 1.1154  val_accuracy: 66.20%
+  Epoch [104/500]  loss: 0.9221  accuracy: 66.23%  val_loss: 1.1393  val_accuracy: 67.25%
+  Epoch [105/500]  loss: 0.9157  accuracy: 66.58%  val_loss: 1.1422  val_accuracy: 64.81%
+  Epoch [106/500]  loss: 0.9223  accuracy: 67.10%  val_loss: 1.1721  val_accuracy: 65.16%
+  Epoch [107/500]  loss: 0.9047  accuracy: 67.63%  val_loss: 1.1378  val_accuracy: 66.55%
+  Epoch [108/500]  loss: 0.9055  accuracy: 67.54%  val_loss: 1.1580  val_accuracy: 66.20%
+  Epoch [109/500]  loss: 0.9078  accuracy: 66.06%  val_loss: 1.1418  val_accuracy: 64.81%
+  Epoch [110/500]  loss: 0.8965  accuracy: 66.58%  val_loss: 1.1255  val_accuracy: 66.20%
+  Epoch [111/500]  loss: 0.8979  accuracy: 67.02%  val_loss: 1.1109  val_accuracy: 67.25%
+  Epoch [112/500]  loss: 0.9109  accuracy: 65.27%  val_loss: 1.1364  val_accuracy: 64.81%
+  Epoch [113/500]  loss: 0.9115  accuracy: 66.49%  val_loss: 1.1197  val_accuracy: 66.55%
+  Epoch [114/500]  loss: 0.9134  accuracy: 66.84%  val_loss: 1.1230  val_accuracy: 66.20%
+  Early stopping triggered after 114 epochs (no improvement for 30 epochs).
+
+  Fold 3 result: val_loss: 1.0728  val_accuracy: 68.99%
+
+Fold [4 / 5]
+----------------------------------------------------------------------
+  Epoch [1/500]  loss: 2.0108  accuracy: 29.21%  val_loss: 1.6029  val_accuracy: 41.26%
+  Epoch [2/500]  loss: 1.5895  accuracy: 38.01%  val_loss: 1.5251  val_accuracy: 47.55%
+  Epoch [3/500]  loss: 1.5184  accuracy: 41.06%  val_loss: 1.4641  val_accuracy: 48.25%
+  Epoch [4/500]  loss: 1.4396  accuracy: 44.99%  val_loss: 1.3937  val_accuracy: 53.50%
+  Epoch [5/500]  loss: 1.4044  accuracy: 46.56%  val_loss: 1.3896  val_accuracy: 53.15%
+  Epoch [6/500]  loss: 1.3742  accuracy: 48.56%  val_loss: 1.3943  val_accuracy: 50.35%
+  Epoch [7/500]  loss: 1.3372  accuracy: 48.47%  val_loss: 1.3867  val_accuracy: 52.80%
+  Epoch [8/500]  loss: 1.3193  accuracy: 51.61%  val_loss: 1.3112  val_accuracy: 57.34%
+  Epoch [9/500]  loss: 1.2946  accuracy: 51.87%  val_loss: 1.3886  val_accuracy: 53.15%
+  Epoch [10/500]  loss: 1.2855  accuracy: 51.18%  val_loss: 1.3129  val_accuracy: 58.39%
+  Epoch [11/500]  loss: 1.2413  accuracy: 54.32%  val_loss: 1.4244  val_accuracy: 53.85%
+  Epoch [12/500]  loss: 1.2665  accuracy: 53.10%  val_loss: 1.2835  val_accuracy: 60.84%
+  Epoch [13/500]  loss: 1.2231  accuracy: 53.53%  val_loss: 1.2979  val_accuracy: 58.74%
+  Epoch [14/500]  loss: 1.2180  accuracy: 55.36%  val_loss: 1.2788  val_accuracy: 60.14%
+  Epoch [15/500]  loss: 1.2097  accuracy: 54.75%  val_loss: 1.2661  val_accuracy: 59.09%
+  Epoch [16/500]  loss: 1.2032  accuracy: 55.10%  val_loss: 1.2675  val_accuracy: 56.29%
+  Epoch [17/500]  loss: 1.1785  accuracy: 57.63%  val_loss: 1.2540  val_accuracy: 58.74%
+  Epoch [18/500]  loss: 1.1816  accuracy: 56.41%  val_loss: 1.2175  val_accuracy: 59.09%
+  Epoch [19/500]  loss: 1.1798  accuracy: 56.15%  val_loss: 1.2085  val_accuracy: 59.44%
+  Epoch [20/500]  loss: 1.1548  accuracy: 59.63%  val_loss: 1.3067  val_accuracy: 55.94%
+  Epoch [21/500]  loss: 1.1595  accuracy: 57.72%  val_loss: 1.2752  val_accuracy: 56.29%
+  Epoch [22/500]  loss: 1.1636  accuracy: 58.67%  val_loss: 1.2527  val_accuracy: 57.69%
+  Epoch [23/500]  loss: 1.1466  accuracy: 57.98%  val_loss: 1.2045  val_accuracy: 60.49%
+  Epoch [24/500]  loss: 1.1346  accuracy: 58.41%  val_loss: 1.2240  val_accuracy: 58.04%
+  Epoch [25/500]  loss: 1.1360  accuracy: 58.67%  val_loss: 1.2059  val_accuracy: 59.09%
+  Epoch [26/500]  loss: 1.1477  accuracy: 57.19%  val_loss: 1.2286  val_accuracy: 56.99%
+  Epoch [27/500]  loss: 1.1005  accuracy: 58.94%  val_loss: 1.1934  val_accuracy: 58.39%
+  Epoch [28/500]  loss: 1.1319  accuracy: 58.41%  val_loss: 1.1389  val_accuracy: 61.54%
+  Epoch [29/500]  loss: 1.0999  accuracy: 59.90%  val_loss: 1.1893  val_accuracy: 60.84%
+  Epoch [30/500]  loss: 1.1092  accuracy: 58.50%  val_loss: 1.1839  val_accuracy: 60.49%
+  Epoch [31/500]  loss: 1.1079  accuracy: 58.67%  val_loss: 1.2234  val_accuracy: 59.44%
+  Epoch [32/500]  loss: 1.0870  accuracy: 59.98%  val_loss: 1.1766  val_accuracy: 59.09%
+  Epoch [33/500]  loss: 1.0854  accuracy: 60.68%  val_loss: 1.1660  val_accuracy: 63.99%
+  Epoch [34/500]  loss: 1.0741  accuracy: 60.16%  val_loss: 1.1431  val_accuracy: 59.44%
+  Epoch [35/500]  loss: 1.1080  accuracy: 59.20%  val_loss: 1.1825  val_accuracy: 57.69%
+  Epoch [36/500]  loss: 1.0688  accuracy: 61.90%  val_loss: 1.1535  val_accuracy: 63.64%
+  Epoch [37/500]  loss: 1.0549  accuracy: 61.29%  val_loss: 1.1696  val_accuracy: 60.84%
+  Epoch [38/500]  loss: 1.0647  accuracy: 61.73%  val_loss: 1.2016  val_accuracy: 62.24%
+  Epoch [39/500]  loss: 1.0531  accuracy: 60.77%  val_loss: 1.1711  val_accuracy: 60.84%
+  Epoch [40/500]  loss: 1.0562  accuracy: 60.85%  val_loss: 1.1250  val_accuracy: 61.19%
+  Epoch [41/500]  loss: 1.0310  accuracy: 61.73%  val_loss: 1.1872  val_accuracy: 60.14%
+  Epoch [42/500]  loss: 1.0374  accuracy: 62.95%  val_loss: 1.1475  val_accuracy: 61.54%
+  Epoch [43/500]  loss: 1.0160  accuracy: 63.03%  val_loss: 1.1441  val_accuracy: 61.89%
+  Epoch [44/500]  loss: 1.0646  accuracy: 62.16%  val_loss: 1.1758  val_accuracy: 61.54%
+  Epoch [45/500]  loss: 1.0518  accuracy: 61.38%  val_loss: 1.1391  val_accuracy: 61.54%
+  Epoch [46/500]  loss: 1.0474  accuracy: 61.90%  val_loss: 1.1806  val_accuracy: 60.49%
+  Epoch [47/500]  loss: 1.0400  accuracy: 63.73%  val_loss: 1.1421  val_accuracy: 61.19%
+  Epoch [48/500]  loss: 1.0097  accuracy: 62.07%  val_loss: 1.1530  val_accuracy: 62.94%
+  Epoch [49/500]  loss: 1.0475  accuracy: 61.99%  val_loss: 1.1452  val_accuracy: 62.59%
+  Epoch [50/500]  loss: 1.0266  accuracy: 63.21%  val_loss: 1.0961  val_accuracy: 65.03%
+  Epoch [51/500]  loss: 1.0356  accuracy: 62.25%  val_loss: 1.1207  val_accuracy: 60.84%
+  Epoch [52/500]  loss: 1.0114  accuracy: 63.91%  val_loss: 1.1250  val_accuracy: 59.79%
+  Epoch [53/500]  loss: 1.0044  accuracy: 62.34%  val_loss: 1.1796  val_accuracy: 59.09%
+  Epoch [54/500]  loss: 1.0129  accuracy: 61.90%  val_loss: 1.1389  val_accuracy: 62.94%
+  Epoch [55/500]  loss: 1.0129  accuracy: 61.29%  val_loss: 1.1316  val_accuracy: 63.64%
+  Epoch [56/500]  loss: 1.0096  accuracy: 64.34%  val_loss: 1.1495  val_accuracy: 63.29%
+  Epoch [57/500]  loss: 0.9886  accuracy: 65.39%  val_loss: 1.1292  val_accuracy: 63.64%
+  Epoch [58/500]  loss: 0.9894  accuracy: 63.99%  val_loss: 1.1272  val_accuracy: 61.19%
+  Epoch [59/500]  loss: 1.0017  accuracy: 63.64%  val_loss: 1.1779  val_accuracy: 63.29%
+  Epoch [60/500]  loss: 1.0047  accuracy: 64.25%  val_loss: 1.1430  val_accuracy: 63.29%
+  Epoch [61/500]  loss: 0.9995  accuracy: 63.73%  val_loss: 1.1201  val_accuracy: 64.34%
+  Epoch [62/500]  loss: 0.9951  accuracy: 65.82%  val_loss: 1.1529  val_accuracy: 63.99%
+  Epoch [63/500]  loss: 0.9732  accuracy: 64.69%  val_loss: 1.1313  val_accuracy: 61.54%
+  Epoch [64/500]  loss: 0.9628  accuracy: 65.82%  val_loss: 1.1235  val_accuracy: 63.99%
+  Epoch [65/500]  loss: 0.9812  accuracy: 64.25%  val_loss: 1.1451  val_accuracy: 63.29%
+  Epoch [66/500]  loss: 0.9621  accuracy: 65.48%  val_loss: 1.1231  val_accuracy: 63.64%
+  Epoch [67/500]  loss: 0.9764  accuracy: 66.61%  val_loss: 1.1006  val_accuracy: 66.08%
+  Epoch [68/500]  loss: 0.9626  accuracy: 66.43%  val_loss: 1.1069  val_accuracy: 65.38%
+  Epoch [69/500]  loss: 0.9263  accuracy: 67.48%  val_loss: 1.0984  val_accuracy: 65.03%
+  Epoch [70/500]  loss: 0.9673  accuracy: 64.17%  val_loss: 1.1385  val_accuracy: 63.29%
+  Epoch [71/500]  loss: 0.9496  accuracy: 65.39%  val_loss: 1.1327  val_accuracy: 63.29%
+  Epoch [72/500]  loss: 0.9427  accuracy: 67.13%  val_loss: 1.1198  val_accuracy: 63.29%
+  Epoch [73/500]  loss: 0.9588  accuracy: 64.78%  val_loss: 1.1200  val_accuracy: 62.59%
+  Epoch [74/500]  loss: 0.9717  accuracy: 66.00%  val_loss: 1.1294  val_accuracy: 63.29%
+  Epoch [75/500]  loss: 0.9508  accuracy: 65.56%  val_loss: 1.1079  val_accuracy: 66.43%
+  Epoch [76/500]  loss: 0.9608  accuracy: 64.52%  val_loss: 1.1035  val_accuracy: 64.69%
+  Epoch [77/500]  loss: 0.9512  accuracy: 65.74%  val_loss: 1.1150  val_accuracy: 63.64%
+  Epoch [78/500]  loss: 0.9584  accuracy: 65.65%  val_loss: 1.1258  val_accuracy: 61.89%
+  Epoch [79/500]  loss: 0.9493  accuracy: 66.78%  val_loss: 1.0939  val_accuracy: 65.38%
+  Epoch [80/500]  loss: 0.9308  accuracy: 67.22%  val_loss: 1.1214  val_accuracy: 61.89%
+  Epoch [81/500]  loss: 0.9136  accuracy: 68.61%  val_loss: 1.1175  val_accuracy: 63.29%
+  Epoch [82/500]  loss: 0.9236  accuracy: 68.61%  val_loss: 1.1002  val_accuracy: 64.69%
+  Epoch [83/500]  loss: 0.9302  accuracy: 68.88%  val_loss: 1.0868  val_accuracy: 63.99%
+  Epoch [84/500]  loss: 0.9171  accuracy: 68.00%  val_loss: 1.1331  val_accuracy: 62.24%
+  Epoch [85/500]  loss: 0.9658  accuracy: 65.91%  val_loss: 1.0964  val_accuracy: 65.03%
+  Epoch [86/500]  loss: 0.9093  accuracy: 68.70%  val_loss: 1.1066  val_accuracy: 65.38%
+  Epoch [87/500]  loss: 0.9245  accuracy: 66.96%  val_loss: 1.1015  val_accuracy: 62.24%
+  Epoch [88/500]  loss: 0.9108  accuracy: 66.52%  val_loss: 1.0816  val_accuracy: 65.38%
+  Epoch [89/500]  loss: 0.9239  accuracy: 68.09%  val_loss: 1.0748  val_accuracy: 67.83%
+  Epoch [90/500]  loss: 0.9171  accuracy: 68.53%  val_loss: 1.0965  val_accuracy: 67.13%
+  Epoch [91/500]  loss: 0.8998  accuracy: 68.61%  val_loss: 1.1020  val_accuracy: 63.29%
+  Epoch [92/500]  loss: 0.8968  accuracy: 68.18%  val_loss: 1.1021  val_accuracy: 65.03%
+  Epoch [93/500]  loss: 0.8933  accuracy: 69.05%  val_loss: 1.0807  val_accuracy: 65.73%
+  Epoch [94/500]  loss: 0.9003  accuracy: 69.22%  val_loss: 1.1218  val_accuracy: 65.38%
+  Epoch [95/500]  loss: 0.9166  accuracy: 67.57%  val_loss: 1.1109  val_accuracy: 63.64%
+  Epoch [96/500]  loss: 0.9188  accuracy: 68.09%  val_loss: 1.0926  val_accuracy: 62.59%
+  Epoch [97/500]  loss: 0.8853  accuracy: 69.57%  val_loss: 1.1258  val_accuracy: 63.64%
+  Epoch [98/500]  loss: 0.8923  accuracy: 70.18%  val_loss: 1.0829  val_accuracy: 65.73%
+  Epoch [99/500]  loss: 0.9188  accuracy: 67.92%  val_loss: 1.1227  val_accuracy: 66.43%
+  Epoch [100/500]  loss: 0.8816  accuracy: 70.18%  val_loss: 1.1224  val_accuracy: 65.73%
+  Epoch [101/500]  loss: 0.9090  accuracy: 68.53%  val_loss: 1.1014  val_accuracy: 63.64%
+  Epoch [102/500]  loss: 0.9087  accuracy: 69.14%  val_loss: 1.1017  val_accuracy: 65.38%
+  Epoch [103/500]  loss: 0.8978  accuracy: 69.31%  val_loss: 1.1316  val_accuracy: 66.43%
+  Epoch [104/500]  loss: 0.9119  accuracy: 68.09%  val_loss: 1.1311  val_accuracy: 63.64%
+  Epoch [105/500]  loss: 0.9028  accuracy: 68.27%  val_loss: 1.1151  val_accuracy: 63.99%
+  Epoch [106/500]  loss: 0.8995  accuracy: 68.44%  val_loss: 1.1000  val_accuracy: 64.34%
+  Epoch [107/500]  loss: 0.8946  accuracy: 68.53%  val_loss: 1.1357  val_accuracy: 63.29%
+  Epoch [108/500]  loss: 0.8678  accuracy: 70.79%  val_loss: 1.1224  val_accuracy: 64.34%
+  Epoch [109/500]  loss: 0.8843  accuracy: 69.40%  val_loss: 1.1415  val_accuracy: 61.89%
+  Epoch [110/500]  loss: 0.8705  accuracy: 70.27%  val_loss: 1.1119  val_accuracy: 66.08%
+  Epoch [111/500]  loss: 0.8679  accuracy: 71.14%  val_loss: 1.1341  val_accuracy: 64.34%
+  Epoch [112/500]  loss: 0.8640  accuracy: 71.75%  val_loss: 1.1427  val_accuracy: 63.29%
+  Epoch [113/500]  loss: 0.8721  accuracy: 69.83%  val_loss: 1.1209  val_accuracy: 62.59%
+  Epoch [114/500]  loss: 0.8604  accuracy: 71.49%  val_loss: 1.1416  val_accuracy: 63.29%
+  Epoch [115/500]  loss: 0.8778  accuracy: 69.83%  val_loss: 1.1053  val_accuracy: 65.03%
+  Epoch [116/500]  loss: 0.8590  accuracy: 71.05%  val_loss: 1.1213  val_accuracy: 65.03%
+  Epoch [117/500]  loss: 0.8551  accuracy: 72.45%  val_loss: 1.1232  val_accuracy: 66.08%
+  Epoch [118/500]  loss: 0.8555  accuracy: 70.71%  val_loss: 1.1149  val_accuracy: 66.78%
+  Epoch [119/500]  loss: 0.8487  accuracy: 71.23%  val_loss: 1.1215  val_accuracy: 64.69%
+  Early stopping triggered after 119 epochs (no improvement for 30 epochs).
+
+  Fold 4 result: val_loss: 1.0748  val_accuracy: 67.83%
+
+Fold [5 / 5]
+----------------------------------------------------------------------
+  Epoch [1/500]  loss: 2.0037  accuracy: 27.85%  val_loss: 1.5872  val_accuracy: 36.27%
+  Epoch [2/500]  loss: 1.6139  accuracy: 35.07%  val_loss: 1.5107  val_accuracy: 46.48%
+  Epoch [3/500]  loss: 1.5155  accuracy: 38.21%  val_loss: 1.4480  val_accuracy: 51.76%
+  Epoch [4/500]  loss: 1.4342  accuracy: 43.52%  val_loss: 1.3895  val_accuracy: 50.70%
+  Epoch [5/500]  loss: 1.3845  accuracy: 47.69%  val_loss: 1.3734  val_accuracy: 54.93%
+  Epoch [6/500]  loss: 1.3507  accuracy: 49.26%  val_loss: 1.3365  val_accuracy: 58.45%
+  Epoch [7/500]  loss: 1.3339  accuracy: 49.35%  val_loss: 1.3282  val_accuracy: 55.99%
+  Epoch [8/500]  loss: 1.3294  accuracy: 50.13%  val_loss: 1.2766  val_accuracy: 57.75%
+  Epoch [9/500]  loss: 1.3028  accuracy: 52.48%  val_loss: 1.2514  val_accuracy: 57.39%
+  Epoch [10/500]  loss: 1.2985  accuracy: 50.48%  val_loss: 1.2853  val_accuracy: 54.58%
+  Epoch [11/500]  loss: 1.2863  accuracy: 52.13%  val_loss: 1.2804  val_accuracy: 56.69%
+  Epoch [12/500]  loss: 1.2124  accuracy: 54.40%  val_loss: 1.2678  val_accuracy: 57.04%
+  Epoch [13/500]  loss: 1.2329  accuracy: 53.61%  val_loss: 1.2821  val_accuracy: 58.45%
+  Epoch [14/500]  loss: 1.1926  accuracy: 55.87%  val_loss: 1.2748  val_accuracy: 54.93%
+  Epoch [15/500]  loss: 1.2236  accuracy: 54.74%  val_loss: 1.2593  val_accuracy: 56.69%
+  Epoch [16/500]  loss: 1.1823  accuracy: 56.40%  val_loss: 1.2388  val_accuracy: 58.45%
+  Epoch [17/500]  loss: 1.1938  accuracy: 56.14%  val_loss: 1.2286  val_accuracy: 58.10%
+  Epoch [18/500]  loss: 1.1633  accuracy: 58.49%  val_loss: 1.2140  val_accuracy: 58.45%
+  Epoch [19/500]  loss: 1.1823  accuracy: 57.18%  val_loss: 1.2525  val_accuracy: 58.80%
+  Epoch [20/500]  loss: 1.1775  accuracy: 57.70%  val_loss: 1.2441  val_accuracy: 58.80%
+  Epoch [21/500]  loss: 1.1605  accuracy: 57.18%  val_loss: 1.2203  val_accuracy: 58.45%
+  Epoch [22/500]  loss: 1.1720  accuracy: 54.92%  val_loss: 1.2408  val_accuracy: 58.10%
+  Epoch [23/500]  loss: 1.1621  accuracy: 57.62%  val_loss: 1.2018  val_accuracy: 60.92%
+  Epoch [24/500]  loss: 1.1681  accuracy: 57.44%  val_loss: 1.2106  val_accuracy: 60.56%
+  Epoch [25/500]  loss: 1.1333  accuracy: 58.14%  val_loss: 1.2696  val_accuracy: 58.45%
+  Epoch [26/500]  loss: 1.1072  accuracy: 59.27%  val_loss: 1.1832  val_accuracy: 60.21%
+  Epoch [27/500]  loss: 1.1379  accuracy: 58.40%  val_loss: 1.1752  val_accuracy: 61.97%
+  Epoch [28/500]  loss: 1.1323  accuracy: 58.92%  val_loss: 1.1977  val_accuracy: 58.80%
+  Epoch [29/500]  loss: 1.1041  accuracy: 61.36%  val_loss: 1.1738  val_accuracy: 64.44%
+  Epoch [30/500]  loss: 1.1077  accuracy: 59.18%  val_loss: 1.1839  val_accuracy: 61.62%
+  Epoch [31/500]  loss: 1.1125  accuracy: 59.70%  val_loss: 1.1752  val_accuracy: 60.21%
+  Epoch [32/500]  loss: 1.1396  accuracy: 57.88%  val_loss: 1.2078  val_accuracy: 60.21%
+  Epoch [33/500]  loss: 1.0978  accuracy: 59.36%  val_loss: 1.1892  val_accuracy: 60.92%
+  Epoch [34/500]  loss: 1.1166  accuracy: 58.49%  val_loss: 1.1696  val_accuracy: 62.32%
+  Epoch [35/500]  loss: 1.0794  accuracy: 59.62%  val_loss: 1.1781  val_accuracy: 61.27%
+  Epoch [36/500]  loss: 1.1142  accuracy: 59.44%  val_loss: 1.1751  val_accuracy: 61.97%
+  Epoch [37/500]  loss: 1.0772  accuracy: 60.66%  val_loss: 1.1665  val_accuracy: 62.32%
+  Epoch [38/500]  loss: 1.0991  accuracy: 59.18%  val_loss: 1.1683  val_accuracy: 62.68%
+  Epoch [39/500]  loss: 1.0665  accuracy: 61.44%  val_loss: 1.1647  val_accuracy: 61.27%
+  Epoch [40/500]  loss: 1.0731  accuracy: 60.31%  val_loss: 1.1580  val_accuracy: 61.62%
+  Epoch [41/500]  loss: 1.0871  accuracy: 59.70%  val_loss: 1.1773  val_accuracy: 61.62%
+  Epoch [42/500]  loss: 1.0967  accuracy: 59.53%  val_loss: 1.1986  val_accuracy: 61.97%
+  Epoch [43/500]  loss: 1.0735  accuracy: 60.49%  val_loss: 1.1832  val_accuracy: 60.56%
+  Epoch [44/500]  loss: 1.0920  accuracy: 59.88%  val_loss: 1.1929  val_accuracy: 61.27%
+  Epoch [45/500]  loss: 1.0587  accuracy: 62.92%  val_loss: 1.1567  val_accuracy: 63.73%
+  Epoch [46/500]  loss: 1.0656  accuracy: 62.23%  val_loss: 1.1493  val_accuracy: 63.38%
+  Epoch [47/500]  loss: 1.0641  accuracy: 61.53%  val_loss: 1.1731  val_accuracy: 60.92%
+  Epoch [48/500]  loss: 1.0402  accuracy: 61.88%  val_loss: 1.1667  val_accuracy: 63.38%
+  Epoch [49/500]  loss: 1.0450  accuracy: 63.53%  val_loss: 1.1544  val_accuracy: 63.73%
+  Epoch [50/500]  loss: 1.0508  accuracy: 62.66%  val_loss: 1.2132  val_accuracy: 60.92%
+  Epoch [51/500]  loss: 1.0320  accuracy: 62.75%  val_loss: 1.1517  val_accuracy: 62.32%
+  Epoch [52/500]  loss: 1.0405  accuracy: 62.58%  val_loss: 1.1532  val_accuracy: 62.68%
+  Epoch [53/500]  loss: 1.0347  accuracy: 63.45%  val_loss: 1.1413  val_accuracy: 64.79%
+  Epoch [54/500]  loss: 1.0052  accuracy: 63.79%  val_loss: 1.1704  val_accuracy: 61.97%
+  Epoch [55/500]  loss: 1.0042  accuracy: 64.06%  val_loss: 1.1660  val_accuracy: 64.08%
+  Epoch [56/500]  loss: 1.0109  accuracy: 64.66%  val_loss: 1.1370  val_accuracy: 63.73%
+  Epoch [57/500]  loss: 1.0192  accuracy: 63.45%  val_loss: 1.1463  val_accuracy: 65.49%
+  Epoch [58/500]  loss: 1.0284  accuracy: 62.05%  val_loss: 1.1446  val_accuracy: 64.44%
+  Epoch [59/500]  loss: 1.0212  accuracy: 63.79%  val_loss: 1.1371  val_accuracy: 63.03%
+  Epoch [60/500]  loss: 0.9978  accuracy: 64.14%  val_loss: 1.1465  val_accuracy: 63.03%
+  Epoch [61/500]  loss: 1.0093  accuracy: 64.84%  val_loss: 1.1906  val_accuracy: 62.32%
+  Epoch [62/500]  loss: 1.0008  accuracy: 62.49%  val_loss: 1.1616  val_accuracy: 61.62%
+  Epoch [63/500]  loss: 1.0003  accuracy: 64.40%  val_loss: 1.1648  val_accuracy: 62.68%
+  Epoch [64/500]  loss: 1.0022  accuracy: 62.66%  val_loss: 1.1747  val_accuracy: 65.49%
+  Epoch [65/500]  loss: 0.9891  accuracy: 64.75%  val_loss: 1.1351  val_accuracy: 64.44%
+  Epoch [66/500]  loss: 0.9839  accuracy: 64.23%  val_loss: 1.1511  val_accuracy: 63.38%
+  Epoch [67/500]  loss: 1.0004  accuracy: 63.88%  val_loss: 1.1710  val_accuracy: 63.38%
+  Epoch [68/500]  loss: 0.9581  accuracy: 65.97%  val_loss: 1.1312  val_accuracy: 66.90%
+  Epoch [69/500]  loss: 0.9755  accuracy: 65.01%  val_loss: 1.1787  val_accuracy: 62.68%
+  Epoch [70/500]  loss: 0.9897  accuracy: 63.45%  val_loss: 1.1702  val_accuracy: 63.03%
+  Epoch [71/500]  loss: 0.9820  accuracy: 64.58%  val_loss: 1.1705  val_accuracy: 64.79%
+  Epoch [72/500]  loss: 0.9739  accuracy: 64.32%  val_loss: 1.1587  val_accuracy: 66.20%
+  Epoch [73/500]  loss: 0.9803  accuracy: 64.75%  val_loss: 1.1682  val_accuracy: 63.38%
+  Epoch [74/500]  loss: 0.9810  accuracy: 64.93%  val_loss: 1.1494  val_accuracy: 64.08%
+  Epoch [75/500]  loss: 0.9584  accuracy: 66.84%  val_loss: 1.1809  val_accuracy: 63.73%
+  Epoch [76/500]  loss: 0.9904  accuracy: 64.49%  val_loss: 1.1473  val_accuracy: 65.49%
+  Epoch [77/500]  loss: 0.9415  accuracy: 65.88%  val_loss: 1.1377  val_accuracy: 64.79%
+  Epoch [78/500]  loss: 0.9671  accuracy: 64.93%  val_loss: 1.1368  val_accuracy: 64.79%
+  Epoch [79/500]  loss: 0.9565  accuracy: 64.40%  val_loss: 1.1572  val_accuracy: 64.79%
+  Epoch [80/500]  loss: 0.9653  accuracy: 64.93%  val_loss: 1.1401  val_accuracy: 62.68%
+  Epoch [81/500]  loss: 0.9633  accuracy: 66.58%  val_loss: 1.1228  val_accuracy: 65.14%
+  Epoch [82/500]  loss: 0.9443  accuracy: 66.93%  val_loss: 1.1387  val_accuracy: 65.85%
+  Epoch [83/500]  loss: 0.9352  accuracy: 66.58%  val_loss: 1.1546  val_accuracy: 63.03%
+  Epoch [84/500]  loss: 0.9438  accuracy: 65.62%  val_loss: 1.1487  val_accuracy: 64.44%
+  Epoch [85/500]  loss: 0.9516  accuracy: 65.88%  val_loss: 1.1480  val_accuracy: 61.62%
+  Epoch [86/500]  loss: 0.9429  accuracy: 66.41%  val_loss: 1.1356  val_accuracy: 66.55%
+  Epoch [87/500]  loss: 0.9472  accuracy: 66.41%  val_loss: 1.1309  val_accuracy: 64.79%
+  Epoch [88/500]  loss: 0.9459  accuracy: 64.66%  val_loss: 1.1333  val_accuracy: 64.08%
+  Epoch [89/500]  loss: 0.9231  accuracy: 67.01%  val_loss: 1.1095  val_accuracy: 64.79%
+  Epoch [90/500]  loss: 0.9193  accuracy: 68.32%  val_loss: 1.1739  val_accuracy: 64.08%
+  Epoch [91/500]  loss: 0.9413  accuracy: 67.28%  val_loss: 1.1241  val_accuracy: 64.44%
+  Epoch [92/500]  loss: 0.9173  accuracy: 67.28%  val_loss: 1.1667  val_accuracy: 59.15%
+  Epoch [93/500]  loss: 0.9269  accuracy: 68.15%  val_loss: 1.0863  val_accuracy: 62.68%
+  Epoch [94/500]  loss: 0.9323  accuracy: 67.45%  val_loss: 1.1176  val_accuracy: 66.20%
+  Epoch [95/500]  loss: 0.9424  accuracy: 66.75%  val_loss: 1.1303  val_accuracy: 64.44%
+  Epoch [96/500]  loss: 0.9204  accuracy: 67.62%  val_loss: 1.1142  val_accuracy: 65.85%
+  Epoch [97/500]  loss: 0.9313  accuracy: 67.54%  val_loss: 1.1144  val_accuracy: 64.79%
+  Epoch [98/500]  loss: 0.8955  accuracy: 68.58%  val_loss: 1.1458  val_accuracy: 65.85%
+  Epoch [99/500]  loss: 0.8928  accuracy: 69.80%  val_loss: 1.1641  val_accuracy: 60.56%
+  Epoch [100/500]  loss: 0.9065  accuracy: 67.36%  val_loss: 1.1109  val_accuracy: 61.97%
+  Epoch [101/500]  loss: 0.9131  accuracy: 67.62%  val_loss: 1.1226  val_accuracy: 61.62%
+  Epoch [102/500]  loss: 0.9081  accuracy: 68.58%  val_loss: 1.1393  val_accuracy: 64.44%
+  Epoch [103/500]  loss: 0.9323  accuracy: 66.93%  val_loss: 1.1257  val_accuracy: 64.44%
+  Epoch [104/500]  loss: 0.9138  accuracy: 68.67%  val_loss: 1.1226  val_accuracy: 65.14%
+  Epoch [105/500]  loss: 0.8738  accuracy: 69.80%  val_loss: 1.1171  val_accuracy: 64.08%
+  Epoch [106/500]  loss: 0.8842  accuracy: 68.23%  val_loss: 1.1815  val_accuracy: 64.08%
+  Epoch [107/500]  loss: 0.8965  accuracy: 67.28%  val_loss: 1.1589  val_accuracy: 61.97%
+  Epoch [108/500]  loss: 0.8929  accuracy: 68.23%  val_loss: 1.1208  val_accuracy: 64.08%
+  Epoch [109/500]  loss: 0.9062  accuracy: 68.15%  val_loss: 1.1604  val_accuracy: 62.32%
+  Epoch [110/500]  loss: 0.9061  accuracy: 68.15%  val_loss: 1.1210  val_accuracy: 64.08%
+  Epoch [111/500]  loss: 0.9047  accuracy: 68.93%  val_loss: 1.1225  val_accuracy: 64.79%
+  Epoch [112/500]  loss: 0.8982  accuracy: 67.45%  val_loss: 1.1304  val_accuracy: 63.73%
+  Epoch [113/500]  loss: 0.8937  accuracy: 68.06%  val_loss: 1.1275  val_accuracy: 63.38%
+  Epoch [114/500]  loss: 0.8869  accuracy: 69.19%  val_loss: 1.1035  val_accuracy: 66.20%
+  Epoch [115/500]  loss: 0.8945  accuracy: 68.41%  val_loss: 1.1275  val_accuracy: 61.27%
+  Epoch [116/500]  loss: 0.8720  accuracy: 69.80%  val_loss: 1.1269  val_accuracy: 65.14%
+  Epoch [117/500]  loss: 0.8610  accuracy: 69.71%  val_loss: 1.1565  val_accuracy: 64.44%
+  Epoch [118/500]  loss: 0.8811  accuracy: 71.45%  val_loss: 1.1450  val_accuracy: 64.44%
+  Epoch [119/500]  loss: 0.8867  accuracy: 69.19%  val_loss: 1.1201  val_accuracy: 64.44%
+  Epoch [120/500]  loss: 0.8750  accuracy: 70.06%  val_loss: 1.1139  val_accuracy: 64.08%
+  Epoch [121/500]  loss: 0.8802  accuracy: 69.63%  val_loss: 1.1767  val_accuracy: 61.62%
+  Epoch [122/500]  loss: 0.8640  accuracy: 71.63%  val_loss: 1.1046  val_accuracy: 66.55%
+  Epoch [123/500]  loss: 0.8742  accuracy: 69.97%  val_loss: 1.1528  val_accuracy: 64.08%
+  Early stopping triggered after 123 epochs (no improvement for 30 epochs).
+
+  Fold 5 result: val_loss: 1.0863  val_accuracy: 62.68%
+
+======================================================================
+Cross-Validation Summary
+======================================================================
+    Fold      Val Loss      Val Accuracy
+  ----------------------------------------
+       1        1.0567            68.51%
+       2        1.1149            67.25%
+       3        1.0728            68.99%
+       4        1.0748            67.83%
+       5        1.0863            62.68%
+  ----------------------------------------
+    Mean        1.0811 ± 0.0216        67.05% ± 2.53%
+======================================================================
+
+Training final model on the full train+val pool...
+----------------------------------------------------------------------
+  Epoch [1/500]  loss: 1.9232  accuracy: 29.73%
+  Epoch [2/500]  loss: 1.5401  accuracy: 38.31%
+  Epoch [3/500]  loss: 1.4687  accuracy: 42.99%
+  Epoch [4/500]  loss: 1.4479  accuracy: 44.03%
+  Epoch [5/500]  loss: 1.3891  accuracy: 46.41%
+  Epoch [6/500]  loss: 1.3901  accuracy: 46.27%
+  Epoch [7/500]  loss: 1.3632  accuracy: 48.64%
+  Epoch [8/500]  loss: 1.2967  accuracy: 51.64%
+  Epoch [9/500]  loss: 1.2784  accuracy: 52.97%
+  Epoch [10/500]  loss: 1.2639  accuracy: 52.83%
+  Epoch [11/500]  loss: 1.2481  accuracy: 52.41%
+  Epoch [12/500]  loss: 1.2546  accuracy: 53.31%
+  Epoch [13/500]  loss: 1.2225  accuracy: 53.94%
+  Epoch [14/500]  loss: 1.2412  accuracy: 54.85%
+  Epoch [15/500]  loss: 1.2177  accuracy: 56.11%
+  Epoch [16/500]  loss: 1.1866  accuracy: 56.18%
+  Epoch [17/500]  loss: 1.1414  accuracy: 58.06%
+  Epoch [18/500]  loss: 1.1687  accuracy: 57.22%
+  Epoch [19/500]  loss: 1.1543  accuracy: 58.20%
+  Epoch [20/500]  loss: 1.1763  accuracy: 57.08%
+  Epoch [21/500]  loss: 1.1470  accuracy: 57.22%
+  Epoch [22/500]  loss: 1.1192  accuracy: 59.11%
+  Epoch [23/500]  loss: 1.1496  accuracy: 58.20%
+  Epoch [24/500]  loss: 1.0981  accuracy: 60.22%
+  Epoch [25/500]  loss: 1.1424  accuracy: 59.04%
+  Epoch [26/500]  loss: 1.1091  accuracy: 58.41%
+  Epoch [27/500]  loss: 1.1078  accuracy: 59.04%
+  Epoch [28/500]  loss: 1.0891  accuracy: 58.06%
+  Epoch [29/500]  loss: 1.0947  accuracy: 60.43%
+  Epoch [30/500]  loss: 1.0847  accuracy: 59.32%
+  Epoch [31/500]  loss: 1.0748  accuracy: 60.22%
+  Epoch [32/500]  loss: 1.0678  accuracy: 60.71%
+  Epoch [33/500]  loss: 1.0789  accuracy: 61.06%
+  Epoch [34/500]  loss: 1.0816  accuracy: 59.67%
+  Epoch [35/500]  loss: 1.0698  accuracy: 61.20%
+  Epoch [36/500]  loss: 1.0699  accuracy: 61.13%
+  Epoch [37/500]  loss: 1.0639  accuracy: 61.62%
+  Epoch [38/500]  loss: 1.0604  accuracy: 60.99%
+  Epoch [39/500]  loss: 1.0458  accuracy: 61.27%
+  Epoch [40/500]  loss: 1.0621  accuracy: 60.78%
+  Epoch [41/500]  loss: 1.0402  accuracy: 61.20%
+  Epoch [42/500]  loss: 1.0149  accuracy: 64.06%
+  Epoch [43/500]  loss: 1.0405  accuracy: 61.55%
+  Epoch [44/500]  loss: 1.0365  accuracy: 60.64%
+  Epoch [45/500]  loss: 1.0330  accuracy: 61.41%
+  Epoch [46/500]  loss: 1.0174  accuracy: 62.25%
+  Epoch [47/500]  loss: 1.0159  accuracy: 63.08%
+  Epoch [48/500]  loss: 0.9869  accuracy: 65.39%
+  Epoch [49/500]  loss: 1.0106  accuracy: 64.06%
+  Epoch [50/500]  loss: 1.0103  accuracy: 63.50%
+  Epoch [51/500]  loss: 0.9977  accuracy: 63.64%
+  Epoch [52/500]  loss: 1.0044  accuracy: 62.46%
+  Epoch [53/500]  loss: 0.9917  accuracy: 65.81%
+  Epoch [54/500]  loss: 0.9848  accuracy: 64.20%
+  Epoch [55/500]  loss: 0.9893  accuracy: 66.22%
+  Epoch [56/500]  loss: 0.9940  accuracy: 64.13%
+  Epoch [57/500]  loss: 0.9696  accuracy: 65.25%
+  Epoch [58/500]  loss: 0.9691  accuracy: 64.90%
+  Epoch [59/500]  loss: 0.9681  accuracy: 64.76%
+  Epoch [60/500]  loss: 0.9663  accuracy: 65.18%
+  Epoch [61/500]  loss: 0.9674  accuracy: 64.20%
+  Epoch [62/500]  loss: 0.9560  accuracy: 65.18%
+  Epoch [63/500]  loss: 0.9596  accuracy: 65.25%
+  Epoch [64/500]  loss: 0.9626  accuracy: 65.11%
+  Epoch [65/500]  loss: 0.9925  accuracy: 64.69%
+  Epoch [66/500]  loss: 0.9686  accuracy: 64.55%
+  Epoch [67/500]  loss: 0.9778  accuracy: 64.20%
+  Epoch [68/500]  loss: 0.9529  accuracy: 64.62%
+  Epoch [69/500]  loss: 0.9620  accuracy: 64.90%
+  Epoch [70/500]  loss: 0.9577  accuracy: 65.25%
+  Epoch [71/500]  loss: 0.9499  accuracy: 66.36%
+  Epoch [72/500]  loss: 0.9435  accuracy: 66.71%
+  Epoch [73/500]  loss: 0.9701  accuracy: 65.18%
+  Epoch [74/500]  loss: 0.9319  accuracy: 67.97%
+  Epoch [75/500]  loss: 0.9399  accuracy: 67.20%
+  Epoch [76/500]  loss: 0.9368  accuracy: 66.92%
+  Epoch [77/500]  loss: 0.9347  accuracy: 65.25%
+  Epoch [78/500]  loss: 0.9388  accuracy: 66.29%
+  Epoch [79/500]  loss: 0.9322  accuracy: 67.55%
+  Epoch [80/500]  loss: 0.9093  accuracy: 67.83%
+  Epoch [81/500]  loss: 0.9143  accuracy: 69.64%
+  Epoch [82/500]  loss: 0.9285  accuracy: 65.95%
+  Epoch [83/500]  loss: 0.9247  accuracy: 67.62%
+  Epoch [84/500]  loss: 0.8983  accuracy: 68.04%
+  Epoch [85/500]  loss: 0.9118  accuracy: 68.67%
+  Epoch [86/500]  loss: 0.9200  accuracy: 67.55%
+  Epoch [87/500]  loss: 0.9110  accuracy: 66.99%
+  Epoch [88/500]  loss: 0.9163  accuracy: 67.20%
+  Epoch [89/500]  loss: 0.9126  accuracy: 68.11%
+  Epoch [90/500]  loss: 0.9032  accuracy: 68.67%
+  Epoch [91/500]  loss: 0.9063  accuracy: 68.53%
+  Epoch [92/500]  loss: 0.8936  accuracy: 69.30%
+  Epoch [93/500]  loss: 0.8982  accuracy: 67.69%
+  Epoch [94/500]  loss: 0.9004  accuracy: 68.11%
+  Epoch [95/500]  loss: 0.8896  accuracy: 69.16%
+  Epoch [96/500]  loss: 0.8933  accuracy: 68.39%
+  Epoch [97/500]  loss: 0.8876  accuracy: 69.23%
+  Epoch [98/500]  loss: 0.9004  accuracy: 66.99%
+  Epoch [99/500]  loss: 0.8991  accuracy: 68.74%
+  Epoch [100/500]  loss: 0.8980  accuracy: 68.18%
+  Epoch [101/500]  loss: 0.8825  accuracy: 69.16%
+  Epoch [102/500]  loss: 0.9020  accuracy: 67.83%
+  Epoch [103/500]  loss: 0.8635  accuracy: 70.13%
+  Epoch [104/500]  loss: 0.8646  accuracy: 69.78%
+  Epoch [105/500]  loss: 0.8788  accuracy: 68.74%
+  Epoch [106/500]  loss: 0.8825  accuracy: 70.13%
+  Epoch [107/500]  loss: 0.8825  accuracy: 69.43%
+  Epoch [108/500]  loss: 0.8640  accuracy: 70.90%
+  Epoch [109/500]  loss: 0.8611  accuracy: 70.20%
+  Epoch [110/500]  loss: 0.8790  accuracy: 69.16%
+  Epoch [111/500]  loss: 0.8776  accuracy: 70.34%
+  Epoch [112/500]  loss: 0.8546  accuracy: 71.18%
+  Epoch [113/500]  loss: 0.8468  accuracy: 71.53%
+  Epoch [114/500]  loss: 0.8562  accuracy: 71.53%
+  Epoch [115/500]  loss: 0.8643  accuracy: 70.06%
+  Epoch [116/500]  loss: 0.8526  accuracy: 71.25%
+  Epoch [117/500]  loss: 0.8810  accuracy: 69.09%
+  Epoch [118/500]  loss: 0.8790  accuracy: 69.50%
+  Epoch [119/500]  loss: 0.8529  accuracy: 71.32%
+  Epoch [120/500]  loss: 0.8566  accuracy: 73.13%
+  Epoch [121/500]  loss: 0.8413  accuracy: 71.95%
+  Epoch [122/500]  loss: 0.8455  accuracy: 71.60%
+  Epoch [123/500]  loss: 0.8466  accuracy: 72.16%
+  Epoch [124/500]  loss: 0.8403  accuracy: 71.88%
+  Epoch [125/500]  loss: 0.8569  accuracy: 71.32%
+  Epoch [126/500]  loss: 0.8347  accuracy: 74.18%
+  Epoch [127/500]  loss: 0.8422  accuracy: 70.76%
+  Epoch [128/500]  loss: 0.8595  accuracy: 69.99%
+  Epoch [129/500]  loss: 0.8396  accuracy: 71.74%
+  Epoch [130/500]  loss: 0.8302  accuracy: 73.90%
+  Epoch [131/500]  loss: 0.8246  accuracy: 71.74%
+  Epoch [132/500]  loss: 0.8463  accuracy: 71.39%
+  Epoch [133/500]  loss: 0.8276  accuracy: 72.85%
+  Epoch [134/500]  loss: 0.8334  accuracy: 72.99%
+  Epoch [135/500]  loss: 0.8463  accuracy: 70.83%
+  Epoch [136/500]  loss: 0.8315  accuracy: 72.92%
+  Epoch [137/500]  loss: 0.8119  accuracy: 73.97%
+  Epoch [138/500]  loss: 0.8288  accuracy: 71.81%
+  Epoch [139/500]  loss: 0.8287  accuracy: 72.16%
+  Epoch [140/500]  loss: 0.8289  accuracy: 73.48%
+  Epoch [141/500]  loss: 0.8272  accuracy: 73.97%
+  Epoch [142/500]  loss: 0.8165  accuracy: 72.92%
+  Epoch [143/500]  loss: 0.8221  accuracy: 73.55%
+  Epoch [144/500]  loss: 0.8069  accuracy: 74.32%
+  Epoch [145/500]  loss: 0.8090  accuracy: 75.37%
+  Epoch [146/500]  loss: 0.8274  accuracy: 72.51%
+  Epoch [147/500]  loss: 0.8228  accuracy: 73.27%
+  Epoch [148/500]  loss: 0.8257  accuracy: 73.69%
+  Epoch [149/500]  loss: 0.8206  accuracy: 72.85%
+  Epoch [150/500]  loss: 0.8136  accuracy: 75.02%
+  Epoch [151/500]  loss: 0.8140  accuracy: 73.48%
+  Epoch [152/500]  loss: 0.8118  accuracy: 74.04%
+  Epoch [153/500]  loss: 0.8116  accuracy: 74.39%
+  Epoch [154/500]  loss: 0.8247  accuracy: 74.46%
+  Epoch [155/500]  loss: 0.8217  accuracy: 74.46%
+  Epoch [156/500]  loss: 0.8073  accuracy: 74.95%
+  Epoch [157/500]  loss: 0.8033  accuracy: 75.02%
+  Epoch [158/500]  loss: 0.8090  accuracy: 75.58%
+  Epoch [159/500]  loss: 0.7963  accuracy: 75.09%
+  Epoch [160/500]  loss: 0.8033  accuracy: 75.65%
+  Epoch [161/500]  loss: 0.7914  accuracy: 74.46%
+  Epoch [162/500]  loss: 0.7836  accuracy: 75.79%
+  Epoch [163/500]  loss: 0.7956  accuracy: 75.23%
+  Epoch [164/500]  loss: 0.7914  accuracy: 75.30%
+  Epoch [165/500]  loss: 0.7878  accuracy: 75.92%
+  Epoch [166/500]  loss: 0.8043  accuracy: 75.58%
+  Epoch [167/500]  loss: 0.7958  accuracy: 74.74%
+  Epoch [168/500]  loss: 0.7971  accuracy: 75.92%
+  Epoch [169/500]  loss: 0.7908  accuracy: 76.20%
+  Epoch [170/500]  loss: 0.7853  accuracy: 75.65%
+  Epoch [171/500]  loss: 0.7719  accuracy: 77.25%
+  Epoch [172/500]  loss: 0.7721  accuracy: 75.58%
+  Epoch [173/500]  loss: 0.7869  accuracy: 77.32%
+  Epoch [174/500]  loss: 0.7557  accuracy: 77.25%
+  Epoch [175/500]  loss: 0.7747  accuracy: 78.02%
+  Epoch [176/500]  loss: 0.7839  accuracy: 77.25%
+  Epoch [177/500]  loss: 0.7625  accuracy: 77.74%
+  Epoch [178/500]  loss: 0.7797  accuracy: 76.97%
+  Epoch [179/500]  loss: 0.7671  accuracy: 77.67%
+  Epoch [180/500]  loss: 0.7879  accuracy: 75.72%
+  Epoch [181/500]  loss: 0.7728  accuracy: 77.04%
+  Epoch [182/500]  loss: 0.7679  accuracy: 76.62%
+  Epoch [183/500]  loss: 0.7712  accuracy: 76.76%
+  Epoch [184/500]  loss: 0.7736  accuracy: 76.13%
+  Epoch [185/500]  loss: 0.7739  accuracy: 76.69%
+  Epoch [186/500]  loss: 0.7687  accuracy: 77.95%
+  Epoch [187/500]  loss: 0.7526  accuracy: 78.79%
+  Epoch [188/500]  loss: 0.7697  accuracy: 77.67%
+  Epoch [189/500]  loss: 0.7655  accuracy: 77.88%
+  Epoch [190/500]  loss: 0.7616  accuracy: 76.90%
+  Epoch [191/500]  loss: 0.7567  accuracy: 78.16%
+  Epoch [192/500]  loss: 0.7464  accuracy: 79.27%
+  Epoch [193/500]  loss: 0.7711  accuracy: 77.04%
+  Epoch [194/500]  loss: 0.7533  accuracy: 77.95%
+  Epoch [195/500]  loss: 0.7560  accuracy: 77.39%
+  Epoch [196/500]  loss: 0.7710  accuracy: 77.81%
+  Epoch [197/500]  loss: 0.7552  accuracy: 78.16%
+  Epoch [198/500]  loss: 0.7716  accuracy: 77.81%
+  Epoch [199/500]  loss: 0.7572  accuracy: 78.37%
+  Epoch [200/500]  loss: 0.7410  accuracy: 80.25%
+  Epoch [201/500]  loss: 0.7489  accuracy: 79.41%
+  Epoch [202/500]  loss: 0.7326  accuracy: 79.97%
+  Epoch [203/500]  loss: 0.7343  accuracy: 79.13%
+  Epoch [204/500]  loss: 0.7500  accuracy: 79.27%
+  Epoch [205/500]  loss: 0.7486  accuracy: 79.00%
+  Epoch [206/500]  loss: 0.7326  accuracy: 80.67%
+  Epoch [207/500]  loss: 0.7426  accuracy: 78.51%
+  Epoch [208/500]  loss: 0.7252  accuracy: 79.90%
+  Epoch [209/500]  loss: 0.7364  accuracy: 80.60%
+  Epoch [210/500]  loss: 0.7329  accuracy: 80.18%
+  Epoch [211/500]  loss: 0.7438  accuracy: 80.04%
+  Epoch [212/500]  loss: 0.7251  accuracy: 81.02%
+  Epoch [213/500]  loss: 0.7575  accuracy: 79.00%
+  Epoch [214/500]  loss: 0.7402  accuracy: 78.93%
+  Epoch [215/500]  loss: 0.7427  accuracy: 79.20%
+  Epoch [216/500]  loss: 0.7341  accuracy: 80.18%
+  Epoch [217/500]  loss: 0.7461  accuracy: 79.41%
+  Epoch [218/500]  loss: 0.7386  accuracy: 79.55%
+  Epoch [219/500]  loss: 0.7434  accuracy: 78.30%
+  Epoch [220/500]  loss: 0.7456  accuracy: 79.69%
+  Epoch [221/500]  loss: 0.7309  accuracy: 80.18%
+  Epoch [222/500]  loss: 0.7476  accuracy: 79.69%
+  Epoch [223/500]  loss: 0.7471  accuracy: 79.20%
+  Epoch [224/500]  loss: 0.7306  accuracy: 80.74%
+  Epoch [225/500]  loss: 0.7557  accuracy: 77.95%
+  Epoch [226/500]  loss: 0.7141  accuracy: 81.93%
+  Epoch [227/500]  loss: 0.7216  accuracy: 79.97%
+  Epoch [228/500]  loss: 0.7212  accuracy: 80.32%
+  Epoch [229/500]  loss: 0.7153  accuracy: 81.02%
+  Epoch [230/500]  loss: 0.7146  accuracy: 82.27%
+  Epoch [231/500]  loss: 0.7147  accuracy: 82.41%
+  Epoch [232/500]  loss: 0.7034  accuracy: 81.72%
+  Epoch [233/500]  loss: 0.7345  accuracy: 79.55%
+  Epoch [234/500]  loss: 0.7191  accuracy: 81.44%
+  Epoch [235/500]  loss: 0.7122  accuracy: 81.79%
+  Epoch [236/500]  loss: 0.7313  accuracy: 81.16%
+  Epoch [237/500]  loss: 0.7093  accuracy: 83.46%
+  Epoch [238/500]  loss: 0.7129  accuracy: 82.07%
+  Epoch [239/500]  loss: 0.7187  accuracy: 82.21%
+  Epoch [240/500]  loss: 0.7207  accuracy: 81.02%
+  Epoch [241/500]  loss: 0.7197  accuracy: 81.58%
+  Epoch [242/500]  loss: 0.7041  accuracy: 82.27%
+  Epoch [243/500]  loss: 0.7159  accuracy: 80.67%
+  Epoch [244/500]  loss: 0.6969  accuracy: 82.48%
+  Epoch [245/500]  loss: 0.7241  accuracy: 81.09%
+  Epoch [246/500]  loss: 0.7058  accuracy: 83.04%
+  Epoch [247/500]  loss: 0.7099  accuracy: 82.55%
+  Epoch [248/500]  loss: 0.7051  accuracy: 83.11%
+  Epoch [249/500]  loss: 0.7171  accuracy: 81.93%
+  Epoch [250/500]  loss: 0.7106  accuracy: 82.34%
+  Epoch [251/500]  loss: 0.7144  accuracy: 81.09%
+  Epoch [252/500]  loss: 0.7149  accuracy: 80.60%
+  Epoch [253/500]  loss: 0.6882  accuracy: 83.95%
+  Epoch [254/500]  loss: 0.7005  accuracy: 83.18%
+  Epoch [255/500]  loss: 0.6905  accuracy: 83.39%
+  Epoch [256/500]  loss: 0.7087  accuracy: 82.97%
+  Epoch [257/500]  loss: 0.6930  accuracy: 82.41%
+  Epoch [258/500]  loss: 0.7024  accuracy: 83.74%
+  Epoch [259/500]  loss: 0.6943  accuracy: 83.18%
+  Epoch [260/500]  loss: 0.7042  accuracy: 84.02%
+  Epoch [261/500]  loss: 0.6944  accuracy: 81.86%
+  Epoch [262/500]  loss: 0.6899  accuracy: 83.95%
+  Epoch [263/500]  loss: 0.7127  accuracy: 83.04%
+  Epoch [264/500]  loss: 0.7074  accuracy: 82.48%
+  Epoch [265/500]  loss: 0.6841  accuracy: 82.90%
+  Epoch [266/500]  loss: 0.6881  accuracy: 84.44%
+  Epoch [267/500]  loss: 0.6885  accuracy: 84.86%
+  Epoch [268/500]  loss: 0.6828  accuracy: 85.14%
+  Epoch [269/500]  loss: 0.6901  accuracy: 83.88%
+  Epoch [270/500]  loss: 0.6980  accuracy: 83.81%
+  Epoch [271/500]  loss: 0.6836  accuracy: 83.18%
+  Epoch [272/500]  loss: 0.7093  accuracy: 81.93%
+  Epoch [273/500]  loss: 0.6821  accuracy: 83.74%
+  Epoch [274/500]  loss: 0.6856  accuracy: 84.86%
+  Epoch [275/500]  loss: 0.6790  accuracy: 84.51%
+  Epoch [276/500]  loss: 0.6643  accuracy: 85.90%
+  Epoch [277/500]  loss: 0.6770  accuracy: 84.65%
+  Epoch [278/500]  loss: 0.6868  accuracy: 84.09%
+  Epoch [279/500]  loss: 0.6747  accuracy: 84.16%
+  Epoch [280/500]  loss: 0.6753  accuracy: 84.37%
+  Epoch [281/500]  loss: 0.6739  accuracy: 84.86%
+  Epoch [282/500]  loss: 0.6795  accuracy: 84.65%
+  Epoch [283/500]  loss: 0.6589  accuracy: 84.86%
+  Epoch [284/500]  loss: 0.6662  accuracy: 85.62%
+  Epoch [285/500]  loss: 0.6826  accuracy: 84.23%
+  Epoch [286/500]  loss: 0.6754  accuracy: 84.58%
+  Epoch [287/500]  loss: 0.6675  accuracy: 84.86%
+  Epoch [288/500]  loss: 0.6931  accuracy: 83.88%
+  Epoch [289/500]  loss: 0.6724  accuracy: 85.48%
+  Epoch [290/500]  loss: 0.6687  accuracy: 85.97%
+  Epoch [291/500]  loss: 0.6826  accuracy: 84.23%
+  Epoch [292/500]  loss: 0.6541  accuracy: 86.81%
+  Epoch [293/500]  loss: 0.6698  accuracy: 85.90%
+  Epoch [294/500]  loss: 0.6906  accuracy: 84.51%
+  Epoch [295/500]  loss: 0.6711  accuracy: 84.51%
+  Epoch [296/500]  loss: 0.6695  accuracy: 85.00%
+  Epoch [297/500]  loss: 0.6616  accuracy: 86.32%
+  Epoch [298/500]  loss: 0.6672  accuracy: 86.18%
+  Epoch [299/500]  loss: 0.6693  accuracy: 86.46%
+  Epoch [300/500]  loss: 0.6508  accuracy: 87.02%
+  Epoch [301/500]  loss: 0.6659  accuracy: 86.04%
+  Epoch [302/500]  loss: 0.6572  accuracy: 86.11%
+  Epoch [303/500]  loss: 0.6517  accuracy: 87.16%
+  Epoch [304/500]  loss: 0.6703  accuracy: 87.51%
+  Epoch [305/500]  loss: 0.6587  accuracy: 85.42%
+  Epoch [306/500]  loss: 0.6630  accuracy: 86.60%
+  Epoch [307/500]  loss: 0.6534  accuracy: 86.32%
+  Epoch [308/500]  loss: 0.6570  accuracy: 85.97%
+  Epoch [309/500]  loss: 0.6355  accuracy: 87.65%
+  Epoch [310/500]  loss: 0.6572  accuracy: 87.02%
+  Epoch [311/500]  loss: 0.6767  accuracy: 85.07%
+  Epoch [312/500]  loss: 0.6666  accuracy: 85.62%
+  Epoch [313/500]  loss: 0.6527  accuracy: 85.97%
+  Epoch [314/500]  loss: 0.6618  accuracy: 86.88%
+  Epoch [315/500]  loss: 0.6582  accuracy: 86.53%
+  Epoch [316/500]  loss: 0.6468  accuracy: 87.44%
+  Epoch [317/500]  loss: 0.6368  accuracy: 88.83%
+  Epoch [318/500]  loss: 0.6534  accuracy: 86.81%
+  Epoch [319/500]  loss: 0.6589  accuracy: 86.74%
+  Epoch [320/500]  loss: 0.6584  accuracy: 87.58%
+  Epoch [321/500]  loss: 0.6510  accuracy: 86.95%
+  Epoch [322/500]  loss: 0.6452  accuracy: 87.65%
+  Epoch [323/500]  loss: 0.6402  accuracy: 87.58%
+  Epoch [324/500]  loss: 0.6366  accuracy: 88.35%
+  Epoch [325/500]  loss: 0.6533  accuracy: 87.37%
+  Epoch [326/500]  loss: 0.6558  accuracy: 87.23%
+  Epoch [327/500]  loss: 0.6485  accuracy: 87.16%
+  Epoch [328/500]  loss: 0.6494  accuracy: 86.04%
+  Epoch [329/500]  loss: 0.6320  accuracy: 88.83%
+  Epoch [330/500]  loss: 0.6365  accuracy: 88.42%
+  Epoch [331/500]  loss: 0.6423  accuracy: 87.86%
+  Epoch [332/500]  loss: 0.6400  accuracy: 87.51%
+  Epoch [333/500]  loss: 0.6493  accuracy: 88.07%
+  Epoch [334/500]  loss: 0.6467  accuracy: 88.21%
+  Epoch [335/500]  loss: 0.6413  accuracy: 87.09%
+  Epoch [336/500]  loss: 0.6439  accuracy: 86.32%
+  Epoch [337/500]  loss: 0.6456  accuracy: 87.93%
+  Epoch [338/500]  loss: 0.6400  accuracy: 87.86%
+  Epoch [339/500]  loss: 0.6450  accuracy: 87.30%
+  Epoch [340/500]  loss: 0.6458  accuracy: 87.65%
+  Epoch [341/500]  loss: 0.6397  accuracy: 88.70%
+  Epoch [342/500]  loss: 0.6377  accuracy: 87.44%
+  Epoch [343/500]  loss: 0.6379  accuracy: 87.93%
+  Epoch [344/500]  loss: 0.6272  accuracy: 87.30%
+  Epoch [345/500]  loss: 0.6445  accuracy: 88.49%
+  Epoch [346/500]  loss: 0.6463  accuracy: 87.44%
+  Epoch [347/500]  loss: 0.6484  accuracy: 88.70%
+  Epoch [348/500]  loss: 0.6242  accuracy: 89.18%
+  Epoch [349/500]  loss: 0.6126  accuracy: 89.88%
+  Epoch [350/500]  loss: 0.6424  accuracy: 87.51%
+  Epoch [351/500]  loss: 0.6233  accuracy: 89.25%
+  Epoch [352/500]  loss: 0.6302  accuracy: 88.00%
+  Epoch [353/500]  loss: 0.6416  accuracy: 88.07%
+  Epoch [354/500]  loss: 0.6421  accuracy: 88.90%
+  Epoch [355/500]  loss: 0.6332  accuracy: 88.42%
+  Epoch [356/500]  loss: 0.6285  accuracy: 89.46%
+  Epoch [357/500]  loss: 0.6207  accuracy: 89.88%
+  Epoch [358/500]  loss: 0.6305  accuracy: 89.25%
+  Epoch [359/500]  loss: 0.6172  accuracy: 89.95%
+  Epoch [360/500]  loss: 0.6357  accuracy: 88.07%
+  Epoch [361/500]  loss: 0.6316  accuracy: 88.14%
+  Epoch [362/500]  loss: 0.6221  accuracy: 89.11%
+  Epoch [363/500]  loss: 0.6318  accuracy: 88.90%
+  Epoch [364/500]  loss: 0.6189  accuracy: 89.53%
+  Epoch [365/500]  loss: 0.6129  accuracy: 89.04%
+  Epoch [366/500]  loss: 0.6474  accuracy: 86.74%
+  Epoch [367/500]  loss: 0.6430  accuracy: 87.79%
+  Epoch [368/500]  loss: 0.6180  accuracy: 89.67%
+  Epoch [369/500]  loss: 0.6277  accuracy: 88.28%
+  Epoch [370/500]  loss: 0.6298  accuracy: 88.56%
+  Epoch [371/500]  loss: 0.6341  accuracy: 87.02%
+  Epoch [372/500]  loss: 0.6186  accuracy: 89.67%
+  Epoch [373/500]  loss: 0.6140  accuracy: 90.09%
+  Epoch [374/500]  loss: 0.6381  accuracy: 87.72%
+  Epoch [375/500]  loss: 0.6174  accuracy: 89.46%
+  Epoch [376/500]  loss: 0.6140  accuracy: 89.81%
+  Epoch [377/500]  loss: 0.6010  accuracy: 91.14%
+  Epoch [378/500]  loss: 0.6119  accuracy: 90.16%
+  Epoch [379/500]  loss: 0.6221  accuracy: 89.74%
+  Epoch [380/500]  loss: 0.6168  accuracy: 90.02%
+  Epoch [381/500]  loss: 0.6112  accuracy: 89.60%
+  Epoch [382/500]  loss: 0.6251  accuracy: 89.88%
+  Epoch [383/500]  loss: 0.6257  accuracy: 89.67%
+  Epoch [384/500]  loss: 0.6489  accuracy: 88.49%
+  Epoch [385/500]  loss: 0.6109  accuracy: 91.28%
+  Epoch [386/500]  loss: 0.6107  accuracy: 91.00%
+  Epoch [387/500]  loss: 0.5926  accuracy: 91.63%
+  Epoch [388/500]  loss: 0.6261  accuracy: 90.37%
+  Epoch [389/500]  loss: 0.6114  accuracy: 90.72%
+  Epoch [390/500]  loss: 0.6136  accuracy: 90.58%
+  Epoch [391/500]  loss: 0.6099  accuracy: 90.37%
+  Epoch [392/500]  loss: 0.5996  accuracy: 90.37%
+  Epoch [393/500]  loss: 0.6079  accuracy: 90.09%
+  Epoch [394/500]  loss: 0.5972  accuracy: 91.63%
+  Epoch [395/500]  loss: 0.6136  accuracy: 89.60%
+  Epoch [396/500]  loss: 0.6134  accuracy: 89.67%
+  Epoch [397/500]  loss: 0.6126  accuracy: 90.86%
+  Epoch [398/500]  loss: 0.6202  accuracy: 90.09%
+  Epoch [399/500]  loss: 0.6044  accuracy: 90.23%
+  Epoch [400/500]  loss: 0.5989  accuracy: 91.70%
+  Epoch [401/500]  loss: 0.6125  accuracy: 90.09%
+  Epoch [402/500]  loss: 0.5885  accuracy: 91.91%
+  Epoch [403/500]  loss: 0.6241  accuracy: 89.81%
+  Epoch [404/500]  loss: 0.6101  accuracy: 91.14%
+  Epoch [405/500]  loss: 0.6014  accuracy: 90.86%
+  Epoch [406/500]  loss: 0.5970  accuracy: 90.37%
+  Epoch [407/500]  loss: 0.5998  accuracy: 91.56%
+  Epoch [408/500]  loss: 0.5966  accuracy: 91.35%
+  Epoch [409/500]  loss: 0.6011  accuracy: 91.84%
+  Epoch [410/500]  loss: 0.5967  accuracy: 91.42%
+  Epoch [411/500]  loss: 0.6020  accuracy: 91.07%
+  Epoch [412/500]  loss: 0.6028  accuracy: 91.14%
+  Epoch [413/500]  loss: 0.5984  accuracy: 91.07%
+  Epoch [414/500]  loss: 0.6068  accuracy: 89.95%
+  Epoch [415/500]  loss: 0.5952  accuracy: 91.42%
+  Epoch [416/500]  loss: 0.6028  accuracy: 90.93%
+  Epoch [417/500]  loss: 0.6006  accuracy: 90.44%
+  Epoch [418/500]  loss: 0.5971  accuracy: 90.51%
+  Epoch [419/500]  loss: 0.5955  accuracy: 91.28%
+  Epoch [420/500]  loss: 0.6105  accuracy: 89.60%
+  Epoch [421/500]  loss: 0.6063  accuracy: 90.65%
+  Epoch [422/500]  loss: 0.6069  accuracy: 91.28%
+  Epoch [423/500]  loss: 0.5967  accuracy: 91.21%
+  Epoch [424/500]  loss: 0.6030  accuracy: 90.37%
+  Epoch [425/500]  loss: 0.5968  accuracy: 90.79%
+  Epoch [426/500]  loss: 0.5885  accuracy: 91.77%
+  Epoch [427/500]  loss: 0.5862  accuracy: 92.60%
+  Epoch [428/500]  loss: 0.5936  accuracy: 91.14%
+  Epoch [429/500]  loss: 0.5883  accuracy: 93.02%
+  Epoch [430/500]  loss: 0.5764  accuracy: 92.46%
+  Epoch [431/500]  loss: 0.5982  accuracy: 91.77%
+  Epoch [432/500]  loss: 0.5962  accuracy: 91.14%
+  Epoch [433/500]  loss: 0.6035  accuracy: 90.86%
+  Epoch [434/500]  loss: 0.5882  accuracy: 91.07%
+  Epoch [435/500]  loss: 0.6020  accuracy: 90.86%
+  Epoch [436/500]  loss: 0.5818  accuracy: 92.60%
+  Epoch [437/500]  loss: 0.5877  accuracy: 91.97%
+  Epoch [438/500]  loss: 0.6085  accuracy: 90.09%
+  Epoch [439/500]  loss: 0.5962  accuracy: 91.21%
+  Epoch [440/500]  loss: 0.6186  accuracy: 90.30%
+  Epoch [441/500]  loss: 0.5988  accuracy: 91.00%
+  Epoch [442/500]  loss: 0.5976  accuracy: 90.93%
+  Epoch [443/500]  loss: 0.5920  accuracy: 91.84%
+  Epoch [444/500]  loss: 0.5897  accuracy: 91.84%
+  Epoch [445/500]  loss: 0.5895  accuracy: 92.11%
+  Epoch [446/500]  loss: 0.5705  accuracy: 92.88%
+  Epoch [447/500]  loss: 0.5830  accuracy: 91.91%
+  Epoch [448/500]  loss: 0.5821  accuracy: 91.91%
+  Epoch [449/500]  loss: 0.5866  accuracy: 92.32%
+  Epoch [450/500]  loss: 0.5955  accuracy: 90.79%
+  Epoch [451/500]  loss: 0.5924  accuracy: 91.63%
+  Epoch [452/500]  loss: 0.5899  accuracy: 92.46%
+  Epoch [453/500]  loss: 0.5864  accuracy: 92.04%
+  Epoch [454/500]  loss: 0.5858  accuracy: 91.49%
+  Epoch [455/500]  loss: 0.5903  accuracy: 91.77%
+  Epoch [456/500]  loss: 0.5928  accuracy: 91.56%
+  Epoch [457/500]  loss: 0.5959  accuracy: 91.56%
+  Epoch [458/500]  loss: 0.5797  accuracy: 93.02%
+  Epoch [459/500]  loss: 0.5892  accuracy: 91.35%
+  Epoch [460/500]  loss: 0.5817  accuracy: 91.97%
+  Epoch [461/500]  loss: 0.5849  accuracy: 92.25%
+  Epoch [462/500]  loss: 0.5812  accuracy: 92.60%
+  Epoch [463/500]  loss: 0.5796  accuracy: 92.95%
+  Epoch [464/500]  loss: 0.5836  accuracy: 91.97%
+  Epoch [465/500]  loss: 0.5783  accuracy: 92.74%
+  Epoch [466/500]  loss: 0.5768  accuracy: 92.18%
+  Epoch [467/500]  loss: 0.5884  accuracy: 92.53%
+  Epoch [468/500]  loss: 0.5964  accuracy: 91.28%
+  Epoch [469/500]  loss: 0.5830  accuracy: 93.23%
+  Epoch [470/500]  loss: 0.5717  accuracy: 92.32%
+  Epoch [471/500]  loss: 0.5869  accuracy: 92.53%
+  Epoch [472/500]  loss: 0.5784  accuracy: 92.32%
+  Epoch [473/500]  loss: 0.5730  accuracy: 92.60%
+  Epoch [474/500]  loss: 0.5766  accuracy: 93.72%
+  Epoch [475/500]  loss: 0.5809  accuracy: 92.25%
+  Epoch [476/500]  loss: 0.5784  accuracy: 93.09%
+  Epoch [477/500]  loss: 0.5714  accuracy: 92.81%
+  Epoch [478/500]  loss: 0.5860  accuracy: 92.46%
+  Epoch [479/500]  loss: 0.5889  accuracy: 91.63%
+  Epoch [480/500]  loss: 0.5727  accuracy: 92.32%
+  Epoch [481/500]  loss: 0.5662  accuracy: 93.51%
+  Epoch [482/500]  loss: 0.5868  accuracy: 92.32%
+  Epoch [483/500]  loss: 0.5659  accuracy: 93.65%
+  Epoch [484/500]  loss: 0.5706  accuracy: 93.93%
+  Epoch [485/500]  loss: 0.5745  accuracy: 92.88%
+  Epoch [486/500]  loss: 0.5728  accuracy: 92.60%
+  Epoch [487/500]  loss: 0.5780  accuracy: 93.37%
+  Epoch [488/500]  loss: 0.5772  accuracy: 92.95%
+  Epoch [489/500]  loss: 0.5819  accuracy: 91.84%
+  Epoch [490/500]  loss: 0.5790  accuracy: 92.74%
+  Epoch [491/500]  loss: 0.5668  accuracy: 93.93%
+  Epoch [492/500]  loss: 0.5687  accuracy: 93.23%
+  Epoch [493/500]  loss: 0.5738  accuracy: 93.09%
+  Epoch [494/500]  loss: 0.5872  accuracy: 92.25%
+  Epoch [495/500]  loss: 0.5752  accuracy: 92.88%
+  Epoch [496/500]  loss: 0.5800  accuracy: 93.44%
+  Epoch [497/500]  loss: 0.5740  accuracy: 93.16%
+  Epoch [498/500]  loss: 0.5841  accuracy: 92.53%
+  Epoch [499/500]  loss: 0.5754  accuracy: 92.81%
+  Epoch [500/500]  loss: 0.5835  accuracy: 92.18%
+
+======================================================================
+Testing
+======================================================================
+  Test accuracy: 65.52%
+
+  Class                      Samples  Precision   Recall       F1
+  ---------------------------------------------------------------
+  Cabernet Sauvignon             29     0.4800   0.4138   0.4444
+  Chardonnay                     32     0.5333   0.5000   0.5161
+  Malbec                         24     0.4444   0.3333   0.3810
+  Pinot Noir                     23     0.4643   0.5652   0.5098
+  Sauvignon blanc                31     0.4688   0.4839   0.4762
+  orange wine                    33     0.8125   0.7879   0.8000
+  rose wine                      89     0.8438   0.9101   0.8757
+
+  Checkpoint saved to results/v18/checkpoint.pth
+  Results saved to results/v18/results.json
+Parsing log: results/v18/slurm_364629.out
+Mode: cross_validation  |  Folds: 5  |  Total epochs parsed: 659
+Plot saved to: results/v18/training_curves.png

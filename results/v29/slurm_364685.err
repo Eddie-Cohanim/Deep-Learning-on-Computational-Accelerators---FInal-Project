@@ -1,0 +1,27 @@
+/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/torch/utils/data/dataloader.py:478: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+Downloading: "https://download.pytorch.org/models/efficientnet_b7_lukemelas-dcc49843.pth" to /home/eddiecohanim/.cache/torch/hub/checkpoints/efficientnet_b7_lukemelas-dcc49843.pth
+  0%|          | 0.00/255M [00:00<?, ?B/s]  0%|          | 768k/255M [00:00<00:36, 7.39MB/s]  1%|▏         | 3.48M/255M [00:00<00:13, 19.6MB/s]  5%|▍         | 11.9M/255M [00:00<00:05, 50.6MB/s]  9%|▊         | 21.9M/255M [00:00<00:03, 71.4MB/s] 12%|█▏        | 31.6M/255M [00:00<00:02, 82.5MB/s] 16%|█▋        | 41.6M/255M [00:00<00:02, 89.9MB/s] 20%|██        | 51.5M/255M [00:00<00:02, 94.4MB/s] 24%|██▍       | 61.3M/255M [00:00<00:02, 96.8MB/s] 28%|██▊       | 71.3M/255M [00:00<00:01, 99.3MB/s] 32%|███▏      | 80.7M/255M [00:01<00:01, 97.5MB/s] 36%|███▌      | 90.6M/255M [00:01<00:01, 99.3MB/s] 39%|███▉      | 100M/255M [00:01<00:01, 100MB/s]   43%|████▎     | 110M/255M [00:01<00:01, 101MB/s] 47%|████▋     | 120M/255M [00:01<00:01, 102MB/s] 51%|█████     | 130M/255M [00:01<00:01, 102MB/s] 55%|█████▍    | 140M/255M [00:01<00:01, 103MB/s] 59%|█████▉    | 150M/255M [00:01<00:01, 103MB/s] 63%|██████▎   | 160M/255M [00:01<00:00, 102MB/s] 67%|██████▋   | 169M/255M [00:01<00:00, 101MB/s] 70%|███████   | 179M/255M [00:02<00:00, 101MB/s] 74%|███████▍  | 189M/255M [00:02<00:00, 97.0MB/s] 78%|███████▊  | 198M/255M [00:02<00:00, 95.1MB/s] 81%|████████▏ | 207M/255M [00:02<00:00, 95.7MB/s] 85%|████████▌ | 217M/255M [00:02<00:00, 96.4MB/s] 89%|████████▉ | 227M/255M [00:02<00:00, 98.9MB/s] 93%|█████████▎| 236M/255M [00:02<00:00, 100MB/s]  97%|█████████▋| 246M/255M [00:02<00:00, 100MB/s]100%|██████████| 255M/255M [00:02<00:00, 94.5MB/s]
+plot_results.py:217: RuntimeWarning: Mean of empty slice
+  mean_val_accuracies      = np.nanmean(all_val_accuracies_padded, axis=0)
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+Traceback (most recent call last):
+  File "../../confusion matrix generator.py", line 31, in <module>
+    import pandas as pd
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/__init__.py", line 48, in <module>
+    from pandas.core.api import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/api.py", line 47, in <module>
+    from pandas.core.groupby import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/groupby/__init__.py", line 1, in <module>
+    from pandas.core.groupby.generic import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/groupby/generic.py", line 77, in <module>
+    from pandas.core.frame import DataFrame
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/frame.py", line 182, in <module>
+    from pandas.core.generic import NDFrame
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/generic.py", line 179, in <module>
+    from pandas.core.window import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/window/__init__.py", line 1, in <module>
+    from pandas.core.window.ewm import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/window/ewm.py", line 11, in <module>
+    import pandas._libs.window.aggregations as window_aggregations
+ImportError: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/_libs/window/aggregations.cpython-38-x86_64-linux-gnu.so)

@@ -1,0 +1,113 @@
+{
+    "model": {
+        "in_size": [
+            3,
+            224,
+            224
+        ],
+        "class_names": [
+            "Cider",
+            "IPA",
+            "Lager",
+            "Stout",
+            "Wheat"
+        ],
+        "channels": [
+            32,
+            32,
+            64,
+            64,
+            128,
+            128
+        ],
+        "pool_every": 2,
+        "hidden_dims": [
+            512,
+            256
+        ],
+        "activation": "relu",
+        "use_batchnorm": true,
+        "dropout_probability": 0.5,
+        "conv_kernel_size": 3,
+        "pooling_type": "max",
+        "pool_kernel_size": 2,
+        "image_normalization_mean": [
+            0.5053,
+            0.4131,
+            0.3187
+        ],
+        "image_normalization_std": [
+            0.2411,
+            0.2336,
+            0.2487
+        ]
+    },
+    "training": {
+        "num_epochs": 300,
+        "batch_size": 16,
+        "learning_rate": 5e-05,
+        "num_dataloader_workers": 4,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0005,
+        "loss_function": "CrossEntropyLoss",
+        "focal_loss_gamma": 2.0,
+        "use_class_weights": true,
+        "label_smoothing": 0.1,
+        "early_stopping_patience": 30
+    },
+    "augmentations": {
+        "enabled": true,
+        "horizontal_flip": {
+            "enabled": true,
+            "p": 0.5
+        },
+        "vertical_flip": {
+            "enabled": false,
+            "p": 0.5
+        },
+        "rotation": {
+            "enabled": true,
+            "max_degrees": 30.0,
+            "p": 1.0
+        },
+        "color_jitter": {
+            "enabled": false,
+            "brightness": 0.4,
+            "contrast": 0.4,
+            "saturation": 0.4,
+            "p": 1.0
+        },
+        "gaussian_blur": {
+            "enabled": true,
+            "sigma_min": 0.1,
+            "sigma_max": 1.5,
+            "p": 0.5
+        },
+        "perspective": {
+            "enabled": true,
+            "distortion_scale": 0.3,
+            "p": 0.7
+        },
+        "gamma": {
+            "enabled": false,
+            "gamma_min": 0.6,
+            "gamma_max": 1.5,
+            "p": 0.7
+        }
+    },
+    "cross_validation": {
+        "enabled": true,
+        "num_folds": 5
+    },
+    "pretrained_model": {
+        "enabled": false,
+        "backbone": "efficientnet_b7",
+        "freeze_backbone": true,
+        "unfreeze_after_epoch": 10,
+        "backbone_learning_rate": 5e-05,
+        "hidden_dims": [
+            256
+        ],
+        "dropout_probability": 0.5
+    }
+}

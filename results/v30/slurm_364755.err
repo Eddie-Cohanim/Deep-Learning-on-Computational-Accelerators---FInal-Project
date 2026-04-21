@@ -1,0 +1,38 @@
+/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/torch/utils/data/dataloader.py:478: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+Traceback (most recent call last):
+  File "main.py", line 444, in <module>
+    main()
+  File "main.py", line 339, in main
+    _run_cross_validation(
+  File "main.py", line 229, in _run_cross_validation
+    cv_output = cross_validator.run(
+  File "/home/eddiecohanim/FinalProject/Final Project/model/cross_validator.py", line 120, in run
+    fold_model = self._model_factory()
+  File "main.py", line 143, in factory
+    model = torch.compile(model)
+AttributeError: module 'torch' has no attribute 'compile'
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+Traceback (most recent call last):
+  File "../../confusion matrix generator.py", line 31, in <module>
+    import pandas as pd
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/__init__.py", line 48, in <module>
+    from pandas.core.api import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/api.py", line 47, in <module>
+    from pandas.core.groupby import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/groupby/__init__.py", line 1, in <module>
+    from pandas.core.groupby.generic import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/groupby/generic.py", line 77, in <module>
+    from pandas.core.frame import DataFrame
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/frame.py", line 182, in <module>
+    from pandas.core.generic import NDFrame
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/generic.py", line 179, in <module>
+    from pandas.core.window import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/window/__init__.py", line 1, in <module>
+    from pandas.core.window.ewm import (
+  File "/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/core/window/ewm.py", line 11, in <module>
+    import pandas._libs.window.aggregations as window_aggregations
+ImportError: /usr/lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/python3.8/site-packages/pandas/_libs/window/aggregations.cpython-38-x86_64-linux-gnu.so)

@@ -58,8 +58,6 @@
             "early_stopping_patience": 50
         },
         "preprocessing": {
-            "run_augmentation": true,
-            "number_of_augmented_copies_per_image": 2,
             "augmentation_rotation_max_degrees": 30.0,
             "augmentation_brightness_jitter": 0.4,
             "augmentation_contrast_jitter": 0.4,

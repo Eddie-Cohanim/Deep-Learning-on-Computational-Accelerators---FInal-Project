@@ -1,0 +1,131 @@
+
+Dataset Validation
+======================================================================
+
+  Split: train    STATUS: OK
+    Cider                             405 images
+    IPA                               345 images
+    Lager                             267 images
+    Stout                             478 images
+    Wheat                             433 images
+
+  Split: val    STATUS: OK
+    Cider                             86 images
+    IPA                               74 images
+    Lager                             57 images
+    Stout                             102 images
+    Wheat                             92 images
+
+  Split: test    STATUS: OK
+    Cider                             88 images
+    IPA                               75 images
+    Lager                             58 images
+    Stout                             104 images
+    Wheat                             94 images
+
+======================================================================
+VALIDATION RESULT: PASSED   (all splits and classes found)
+======================================================================
+
+  Config snapshot saved to results/v22/config_snapshot.json
+======================================================================
+Training
+======================================================================
+  Epoch [1/300]  loss: 2.0529  accuracy: 35.11%  val_loss: 1.2644  val_accuracy: 44.28%
+  Epoch [2/300]  loss: 1.3366  accuracy: 42.53%  val_loss: 1.2261  val_accuracy: 44.53%
+  Epoch [3/300]  loss: 1.3013  accuracy: 43.31%  val_loss: 1.2401  val_accuracy: 48.18%
+  Epoch [4/300]  loss: 1.2368  accuracy: 47.82%  val_loss: 1.1918  val_accuracy: 52.55%
+  Epoch [5/300]  loss: 1.2203  accuracy: 48.55%  val_loss: 1.4081  val_accuracy: 45.74%
+  Epoch [6/300]  loss: 1.1590  accuracy: 50.31%  val_loss: 1.1916  val_accuracy: 51.82%
+  Epoch [7/300]  loss: 1.1527  accuracy: 53.89%  val_loss: 1.1042  val_accuracy: 57.42%
+  Epoch [8/300]  loss: 1.1000  accuracy: 53.27%  val_loss: 1.1601  val_accuracy: 55.23%
+  Epoch [9/300]  loss: 1.0882  accuracy: 54.82%  val_loss: 1.0903  val_accuracy: 58.64%
+  Epoch [10/300]  loss: 1.0813  accuracy: 56.22%  val_loss: 1.1009  val_accuracy: 57.18%
+  Epoch [11/300]  loss: 1.0422  accuracy: 56.95%  val_loss: 1.0461  val_accuracy: 59.37%
+  Epoch [12/300]  loss: 1.0307  accuracy: 59.65%  val_loss: 1.0829  val_accuracy: 57.18%
+  Epoch [13/300]  loss: 0.9719  accuracy: 61.72%  val_loss: 1.1163  val_accuracy: 56.69%
+  Epoch [14/300]  loss: 0.9637  accuracy: 63.33%  val_loss: 1.0264  val_accuracy: 62.77%
+  Epoch [15/300]  loss: 0.9449  accuracy: 63.80%  val_loss: 1.0114  val_accuracy: 61.07%
+  Epoch [16/300]  loss: 0.8871  accuracy: 64.73%  val_loss: 1.0757  val_accuracy: 57.66%
+  Epoch [17/300]  loss: 0.8338  accuracy: 66.70%  val_loss: 1.0597  val_accuracy: 58.39%
+  Epoch [18/300]  loss: 0.8426  accuracy: 66.75%  val_loss: 1.0685  val_accuracy: 59.61%
+  Epoch [19/300]  loss: 0.8134  accuracy: 68.52%  val_loss: 1.0677  val_accuracy: 59.12%
+  Epoch [20/300]  loss: 0.7572  accuracy: 69.87%  val_loss: 1.0213  val_accuracy: 60.10%
+  Epoch [21/300]  loss: 0.7363  accuracy: 71.11%  val_loss: 0.9996  val_accuracy: 63.50%
+  Epoch [22/300]  loss: 0.7000  accuracy: 73.55%  val_loss: 1.0070  val_accuracy: 61.31%
+  Epoch [23/300]  loss: 0.6563  accuracy: 76.24%  val_loss: 1.0281  val_accuracy: 62.29%
+  Epoch [24/300]  loss: 0.6633  accuracy: 74.33%  val_loss: 1.0678  val_accuracy: 62.53%
+  Epoch [25/300]  loss: 0.5889  accuracy: 78.01%  val_loss: 1.1207  val_accuracy: 61.80%
+  Epoch [26/300]  loss: 0.5951  accuracy: 76.71%  val_loss: 1.0007  val_accuracy: 63.50%
+  Epoch [27/300]  loss: 0.5680  accuracy: 78.48%  val_loss: 1.3748  val_accuracy: 58.39%
+  Epoch [28/300]  loss: 0.5298  accuracy: 80.45%  val_loss: 1.1627  val_accuracy: 62.53%
+  Epoch [29/300]  loss: 0.5002  accuracy: 80.29%  val_loss: 1.1124  val_accuracy: 62.53%
+  Epoch [30/300]  loss: 0.4749  accuracy: 81.43%  val_loss: 1.1604  val_accuracy: 61.31%
+  Epoch [31/300]  loss: 0.4488  accuracy: 82.68%  val_loss: 1.1646  val_accuracy: 62.04%
+  Epoch [32/300]  loss: 0.4443  accuracy: 82.52%  val_loss: 1.1360  val_accuracy: 59.85%
+  Epoch [33/300]  loss: 0.4209  accuracy: 84.39%  val_loss: 1.2103  val_accuracy: 60.34%
+  Epoch [34/300]  loss: 0.4361  accuracy: 84.08%  val_loss: 1.2563  val_accuracy: 60.58%
+  Epoch [35/300]  loss: 0.3893  accuracy: 85.37%  val_loss: 1.2469  val_accuracy: 60.58%
+  Epoch [36/300]  loss: 0.3630  accuracy: 85.94%  val_loss: 1.2905  val_accuracy: 61.07%
+  Epoch [37/300]  loss: 0.3496  accuracy: 86.98%  val_loss: 1.2972  val_accuracy: 61.80%
+  Epoch [38/300]  loss: 0.3115  accuracy: 87.97%  val_loss: 1.3774  val_accuracy: 61.07%
+  Epoch [39/300]  loss: 0.3334  accuracy: 87.76%  val_loss: 1.4923  val_accuracy: 59.61%
+  Epoch [40/300]  loss: 0.3288  accuracy: 87.91%  val_loss: 1.2864  val_accuracy: 61.80%
+  Epoch [41/300]  loss: 0.2947  accuracy: 89.52%  val_loss: 1.8119  val_accuracy: 61.07%
+  Epoch [42/300]  loss: 0.2952  accuracy: 88.85%  val_loss: 1.3212  val_accuracy: 61.80%
+  Epoch [43/300]  loss: 0.2938  accuracy: 88.69%  val_loss: 1.4242  val_accuracy: 56.93%
+  Epoch [44/300]  loss: 0.2763  accuracy: 90.09%  val_loss: 1.4945  val_accuracy: 60.58%
+  Epoch [45/300]  loss: 0.2786  accuracy: 89.68%  val_loss: 1.3851  val_accuracy: 61.31%
+  Epoch [46/300]  loss: 0.2874  accuracy: 89.37%  val_loss: 1.4613  val_accuracy: 61.07%
+  Epoch [47/300]  loss: 0.2417  accuracy: 92.01%  val_loss: 1.3664  val_accuracy: 57.42%
+  Epoch [48/300]  loss: 0.2732  accuracy: 89.83%  val_loss: 1.3117  val_accuracy: 59.61%
+  Epoch [49/300]  loss: 0.2144  accuracy: 92.06%  val_loss: 1.6626  val_accuracy: 59.61%
+  Epoch [50/300]  loss: 0.2435  accuracy: 92.01%  val_loss: 1.4535  val_accuracy: 62.77%
+  Epoch [51/300]  loss: 0.2178  accuracy: 92.01%  val_loss: 1.5730  val_accuracy: 59.37%
+  Epoch [52/300]  loss: 0.2058  accuracy: 92.58%  val_loss: 1.7414  val_accuracy: 59.85%
+  Epoch [53/300]  loss: 0.1963  accuracy: 93.41%  val_loss: 1.6937  val_accuracy: 60.34%
+  Epoch [54/300]  loss: 0.1996  accuracy: 93.31%  val_loss: 1.5811  val_accuracy: 60.34%
+  Epoch [55/300]  loss: 0.1855  accuracy: 93.05%  val_loss: 1.6579  val_accuracy: 58.64%
+  Epoch [56/300]  loss: 0.1833  accuracy: 93.15%  val_loss: 1.6952  val_accuracy: 58.64%
+  Epoch [57/300]  loss: 0.1795  accuracy: 93.72%  val_loss: 1.6486  val_accuracy: 60.10%
+  Epoch [58/300]  loss: 0.1906  accuracy: 93.15%  val_loss: 1.6686  val_accuracy: 55.96%
+  Epoch [59/300]  loss: 0.1946  accuracy: 93.88%  val_loss: 1.5965  val_accuracy: 62.04%
+  Epoch [60/300]  loss: 0.1541  accuracy: 93.88%  val_loss: 1.6691  val_accuracy: 61.07%
+  Epoch [61/300]  loss: 0.1719  accuracy: 93.93%  val_loss: 1.6664  val_accuracy: 60.83%
+  Epoch [62/300]  loss: 0.1746  accuracy: 93.78%  val_loss: 1.6283  val_accuracy: 60.58%
+  Epoch [63/300]  loss: 0.1641  accuracy: 94.19%  val_loss: 1.5379  val_accuracy: 61.56%
+  Epoch [64/300]  loss: 0.1444  accuracy: 95.44%  val_loss: 1.7826  val_accuracy: 59.85%
+  Epoch [65/300]  loss: 0.1261  accuracy: 95.44%  val_loss: 1.7147  val_accuracy: 60.83%
+  Epoch [66/300]  loss: 0.1383  accuracy: 95.33%  val_loss: 1.9414  val_accuracy: 59.85%
+  Epoch [67/300]  loss: 0.1415  accuracy: 95.80%  val_loss: 1.6996  val_accuracy: 60.83%
+  Epoch [68/300]  loss: 0.1505  accuracy: 95.12%  val_loss: 1.7324  val_accuracy: 58.64%
+  Epoch [69/300]  loss: 0.1309  accuracy: 95.07%  val_loss: 1.8406  val_accuracy: 58.88%
+  Epoch [70/300]  loss: 0.1038  accuracy: 96.63%  val_loss: 1.9319  val_accuracy: 59.85%
+  Epoch [71/300]  loss: 0.1172  accuracy: 95.95%  val_loss: 1.7440  val_accuracy: 60.10%
+  Early stopping triggered after 71 epochs (no improvement for 50 epochs).
+
+======================================================================
+Validation
+======================================================================
+  Validation loss:     0.9996
+  Validation accuracy: 63.50%
+
+======================================================================
+Testing
+======================================================================
+  Test accuracy: 65.39%
+
+  Class                      Samples  Precision   Recall       F1
+  ---------------------------------------------------------------
+  Cider                          88     0.5040   0.7159   0.5915
+  IPA                            75     0.5797   0.5333   0.5556
+  Lager                          58     0.5152   0.2931   0.3736
+  Stout                         104     0.9681   0.8750   0.9192
+  Wheat                          94     0.6429   0.6702   0.6562
+======================================================================
+
+  Checkpoint saved to results/v22/checkpoint.pth
+  Results saved to results/v22/results.json
+Parsing log: results/v22/slurm_364653.out
+Mode: single  |  Folds: 1  |  Total epochs parsed: 71
+Plot saved to: results/v22/training_curves.png

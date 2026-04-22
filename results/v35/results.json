@@ -1,0 +1,2300 @@
+{
+    "timestamp": "2026-04-21T23:06:55.793153",
+    "training_duration_seconds": 32253.475112,
+    "mode": "cross_validation",
+    "model_type": "pretrained:resnet50",
+    "hyperparameters": {
+        "model": {
+            "in_size": [
+                3,
+                224,
+                224
+            ],
+            "class_names": [
+                "Cider",
+                "IPA",
+                "Lager",
+                "Stout",
+                "Wheat"
+            ],
+            "channels": [
+                32,
+                32,
+                64,
+                64,
+                128,
+                128
+            ],
+            "pool_every": 2,
+            "hidden_dims": [
+                512,
+                256
+            ],
+            "activation": "relu",
+            "use_batchnorm": true,
+            "dropout_probability": 0.6,
+            "conv_kernel_size": 3,
+            "pooling_type": "max",
+            "pool_kernel_size": 2,
+            "image_normalization_mean": [
+                0.5053,
+                0.4131,
+                0.3187
+            ],
+            "image_normalization_std": [
+                0.2411,
+                0.2336,
+                0.2487
+            ]
+        },
+        "training": {
+            "num_epochs": 300,
+            "batch_size": 16,
+            "learning_rate": 5e-05,
+            "num_dataloader_workers": 2,
+            "optimizer": "AdamW",
+            "weight_decay": 0.0005,
+            "loss_function": "CrossEntropyLoss",
+            "focal_loss_gamma": 2.0,
+            "use_class_weights": true,
+            "label_smoothing": 0.1,
+            "early_stopping_patience": 30
+        },
+        "cross_validation": {
+            "enabled": true,
+            "num_folds": 5
+        }
+    },
+    "augmentations": {
+        "enabled": true,
+        "horizontal_flip": {
+            "enabled": true,
+            "p": 0.5
+        },
+        "vertical_flip": {
+            "enabled": false,
+            "p": 0.5
+        },
+        "rotation": {
+            "enabled": true,
+            "max_degrees": 30.0,
+            "p": 1.0
+        },
+        "color_jitter": {
+            "enabled": false,
+            "brightness": 0.4,
+            "contrast": 0.4,
+            "saturation": 0.4,
+            "p": 1.0
+        },
+        "gaussian_blur": {
+            "enabled": true,
+            "sigma_min": 0.1,
+            "sigma_max": 1.5,
+            "p": 0.5
+        },
+        "perspective": {
+            "enabled": true,
+            "distortion_scale": 0.3,
+            "p": 0.7
+        },
+        "gamma": {
+            "enabled": false,
+            "gamma_min": 0.6,
+            "gamma_max": 1.5,
+            "p": 0.7
+        }
+    },
+    "use_class_weights": true,
+    "cross_validation": {
+        "num_folds": 5,
+        "per_fold_results": [
+            {
+                "fold": 1,
+                "val_loss": 0.9573451036583386,
+                "val_accuracy": 0.7398720682302772
+            },
+            {
+                "fold": 2,
+                "val_loss": 0.9882672862109975,
+                "val_accuracy": 0.7457264957264957
+            },
+            {
+                "fold": 3,
+                "val_loss": 0.9437720622771826,
+                "val_accuracy": 0.7371794871794872
+            },
+            {
+                "fold": 4,
+                "val_loss": 0.8871278844328008,
+                "val_accuracy": 0.7756410256410257
+            },
+            {
+                "fold": 5,
+                "val_loss": 0.9713204121896637,
+                "val_accuracy": 0.7575107296137339
+            }
+        ],
+        "mean_val_loss": 0.9495665497537966,
+        "std_val_loss": 0.03861232460704151,
+        "mean_val_accuracy": 0.7511859612782039,
+        "std_val_accuracy": 0.015748365980127205
+    },
+    "results": {
+        "test_accuracy": 0.7732696897374701,
+        "per_class_results": {
+            "Cider": {
+                "total_samples_tested": 88,
+                "true_positives": 69,
+                "false_positives": 43,
+                "false_negatives": 19,
+                "true_negatives": 288,
+                "mean_confidence": 0.8202,
+                "precision": 0.6161,
+                "recall": 0.7841,
+                "f1": 0.69
+            },
+            "IPA": {
+                "total_samples_tested": 75,
+                "true_positives": 56,
+                "false_positives": 18,
+                "false_negatives": 19,
+                "true_negatives": 326,
+                "mean_confidence": 0.8493,
+                "precision": 0.7568,
+                "recall": 0.7467,
+                "f1": 0.7517
+            },
+            "Lager": {
+                "total_samples_tested": 58,
+                "true_positives": 32,
+                "false_positives": 20,
+                "false_negatives": 26,
+                "true_negatives": 341,
+                "mean_confidence": 0.8411,
+                "precision": 0.6154,
+                "recall": 0.5517,
+                "f1": 0.5818
+            },
+            "Stout": {
+                "total_samples_tested": 104,
+                "true_positives": 95,
+                "false_positives": 2,
+                "false_negatives": 9,
+                "true_negatives": 313,
+                "mean_confidence": 0.8719,
+                "precision": 0.9794,
+                "recall": 0.9135,
+                "f1": 0.9453
+            },
+            "Wheat": {
+                "total_samples_tested": 94,
+                "true_positives": 72,
+                "false_positives": 12,
+                "false_negatives": 22,
+                "true_negatives": 313,
+                "mean_confidence": 0.8187,
+                "precision": 0.8571,
+                "recall": 0.766,
+                "f1": 0.809
+            }
+        },
+        "raw_predictions": [
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8627
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9272
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8924
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.8475
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9235
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.4442
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.5958
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.9094
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8747
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9181
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9019
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8675
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9307
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9164
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9178
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Wheat",
+                "confidence": 0.5254
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.5809
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "IPA",
+                "confidence": 0.9334
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Wheat",
+                "confidence": 0.7704
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Stout",
+                "confidence": 0.287
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.5511
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.8396
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9192
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9232
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.7358
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.7075
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9354
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9059
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.912
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.4182
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9201
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.936
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.884
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.902
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8277
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.9557
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8101
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9055
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9271
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.928
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.916
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Wheat",
+                "confidence": 0.8604
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9146
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9367
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.5852
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9142
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9206
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8645
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.6217
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.9352
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9199
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8843
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9156
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8746
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9176
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.4868
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.742
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Wheat",
+                "confidence": 0.3404
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9252
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9231
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9087
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9274
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.8539
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9107
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9224
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.8391
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9122
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9136
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9284
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9136
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9483
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9267
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.9371
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Lager",
+                "confidence": 0.8296
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9247
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9221
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9293
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.918
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9309
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.6409
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.925
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9101
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.927
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.7734
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9112
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.7352
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9245
+            },
+            {
+                "ground_truth": "Cider",
+                "predicted": "Cider",
+                "confidence": 0.9023
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9285
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8638
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.905
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.781
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8832
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.7005
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8801
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9283
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.6227
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.898
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9249
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Wheat",
+                "confidence": 0.5112
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.401
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8546
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8692
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Wheat",
+                "confidence": 0.8983
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9427
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9406
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.902
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9433
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9299
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.7718
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9346
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8794
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8944
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Lager",
+                "confidence": 0.9499
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8768
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9437
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9363
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.665
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9325
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.4647
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.4571
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Lager",
+                "confidence": 0.6728
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8978
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9445
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.534
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Wheat",
+                "confidence": 0.8792
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.941
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.5059
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9311
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.7469
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.9176
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9415
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Lager",
+                "confidence": 0.9004
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.6504
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.5577
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9062
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9363
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9346
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.938
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.7386
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Lager",
+                "confidence": 0.9079
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Wheat",
+                "confidence": 0.6195
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9384
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.9059
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.9092
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.8921
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9192
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9357
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9199
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8654
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9414
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.931
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Wheat",
+                "confidence": 0.8987
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9284
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.5923
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.8545
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9332
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Wheat",
+                "confidence": 0.8458
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9349
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9278
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.8643
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "Cider",
+                "confidence": 0.9072
+            },
+            {
+                "ground_truth": "IPA",
+                "predicted": "IPA",
+                "confidence": 0.9303
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.5163
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.916
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.4576
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9551
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Wheat",
+                "confidence": 0.7657
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "IPA",
+                "confidence": 0.9414
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.7671
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9437
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9595
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9422
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9097
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.4898
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.9156
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.8723
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.8379
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.617
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.4536
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.861
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.935
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.8567
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9587
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.9146
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Stout",
+                "confidence": 0.5247
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9531
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9256
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.6861
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.953
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9557
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9599
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9524
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.606
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Wheat",
+                "confidence": 0.4418
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.8197
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9508
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.6593
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9373
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.8863
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9532
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "IPA",
+                "confidence": 0.9296
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9047
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.8699
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.8916
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.8049
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.5174
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.6507
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "IPA",
+                "confidence": 0.5201
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.8154
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.7725
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.9167
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9515
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "IPA",
+                "confidence": 0.9186
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "IPA",
+                "confidence": 0.8101
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.5242
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.7662
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9308
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Cider",
+                "confidence": 0.75
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9412
+            },
+            {
+                "ground_truth": "Lager",
+                "predicted": "Lager",
+                "confidence": 0.9456
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9125
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.7131
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9133
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9128
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9152
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.92
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9041
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8989
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9126
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9037
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.7972
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.904
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8922
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8989
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9055
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.5603
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.912
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8971
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.897
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9002
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.887
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9097
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8967
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8884
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9146
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.4336
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9051
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9159
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9152
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9091
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9103
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9062
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9045
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9053
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9129
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.8375
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9234
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9093
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8986
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8927
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.9077
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9087
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9046
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.6366
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9161
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9091
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9035
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8959
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9142
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9145
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9134
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.7287
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.7435
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8986
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9053
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.7646
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "IPA",
+                "confidence": 0.8592
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.9274
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.909
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9134
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9078
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9144
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9098
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9025
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9168
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9119
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9172
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9089
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9023
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9159
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9051
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.893
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "IPA",
+                "confidence": 0.4862
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.5805
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9149
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9101
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9174
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9057
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9054
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9048
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.4949
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.4755
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8941
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8539
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8832
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.9124
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Cider",
+                "confidence": 0.3626
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9187
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9139
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8594
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9009
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.887
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9088
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.921
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9064
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9175
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9043
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9194
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9013
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9048
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.8963
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9166
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9056
+            },
+            {
+                "ground_truth": "Stout",
+                "predicted": "Stout",
+                "confidence": 0.9049
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8114
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Lager",
+                "confidence": 0.9509
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.4266
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.8906
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.9141
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.7616
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9004
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.9312
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9002
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8985
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8958
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.4689
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8629
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9042
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8933
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.483
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.8861
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.8338
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8944
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.4493
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.5019
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.3956
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9073
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9132
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Lager",
+                "confidence": 0.833
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.8772
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.7668
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8986
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9109
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8672
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9073
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8932
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9102
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8495
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8958
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.9235
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9033
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.9346
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.912
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8936
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8796
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.3992
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8469
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.902
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9025
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.8019
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.8681
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8941
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8947
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8498
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8939
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.8688
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.4681
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Lager",
+                "confidence": 0.5781
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "IPA",
+                "confidence": 0.9101
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8935
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.907
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8905
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8927
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8929
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.909
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9065
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9022
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.5593
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9007
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8906
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.902
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9021
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8986
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8979
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9044
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.898
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.9187
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8552
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8768
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.4873
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8983
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.4899
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.895
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8837
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9017
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8854
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.9003
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8642
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8961
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.437
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8994
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Cider",
+                "confidence": 0.8505
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8882
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8681
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.5246
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8964
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8147
+            },
+            {
+                "ground_truth": "Wheat",
+                "predicted": "Wheat",
+                "confidence": 0.8941
+            }
+        ]
+    }
+}

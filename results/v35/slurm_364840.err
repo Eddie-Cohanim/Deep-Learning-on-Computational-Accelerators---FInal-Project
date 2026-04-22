@@ -1,0 +1,3 @@
+plot_results.py:217: RuntimeWarning: Mean of empty slice
+  mean_val_accuracies      = np.nanmean(all_val_accuracies_padded, axis=0)
+No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.

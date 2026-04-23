@@ -128,9 +128,21 @@ class PretrainedModel(nn.Module):
     """
     A transfer-learning wrapper around any supported torchvision pretrained backbone.
 
+    The pretrained feature extractor is loaded with ImageNet weights. Its classification
+    head is replaced with a new head sized for the target classes. The backbone can
+    optionally be frozen during early training and unfrozen later with a smaller learning
+    rate (discriminative fine-tuning).
+
     Architecture:
         torchvision backbone (pretrained, optionally frozen)
         → replaced head: [Linear → ReLU → Dropout] * len(hidden_dims) → Linear(num_classes)
+
+    Supported backbones: resnet18/34/50/101/152, wide_resnet50_2/101_2,
+        efficientnet_b0–b7, mobilenet_v2/v3_small/v3_large,
+        densenet121/161/169/201, vgg11/13/16/19 (with/without bn).
+
+    The training, validation, and test interface is identical to CNN so that either
+    model can be passed to CrossValidator without changes.
     """
 
     def __init__(
@@ -264,7 +276,7 @@ class PretrainedModel(nn.Module):
         """
         Constructs the Kornia GPU augmentation pipeline from the augmentations config.
 
-        :return: A K.AugmentationSequential on the model's device, or None.
+        Returns None if augmentation is disabled globally or no transforms are enabled.
         """
         if not self._augmentations_config.get("enabled", True):
             return None
@@ -396,12 +408,15 @@ class PretrainedModel(nn.Module):
         self,
         dataset_path: pathlib.Path,
         val_dataset_path: pathlib.Path = None,
+        best_checkpoint_path: pathlib.Path = None,
     ) -> dict:
         """
         Trains the model on images loaded from the given folder.
 
         :param dataset_path: Path to training split with class subfolders.
         :param val_dataset_path: Optional validation split path for early stopping.
+        :param best_checkpoint_path: Optional path where the best weights are saved
+            to disk each time a new best validation loss is reached.
         :return: Dict with 'train_loss' and 'train_accuracy' lists.
         """
         train_loader = self._load_dataset(dataset_path, shuffle=True)
@@ -409,19 +424,29 @@ class PretrainedModel(nn.Module):
             self._load_dataset(val_dataset_path, shuffle=False)
             if val_dataset_path is not None else None
         )
-        return self.train_on_data_loaders(train_loader, val_loader)
+        return self.train_on_data_loaders(train_loader, val_loader, best_checkpoint_path=best_checkpoint_path)
 
     def train_on_data_loaders(
         self,
         train_data_loader: DataLoader,
         val_data_loader: DataLoader = None,
+        best_checkpoint_path: pathlib.Path = None,
+        num_epochs_override: int = None,
     ) -> dict:
         """
         Trains the model using pre-built DataLoaders.
 
+        When freeze_backbone is True and unfreeze_after_epoch > 0, the backbone is
+        automatically unfrozen at the specified epoch with discriminative learning rates.
+
         :param train_data_loader: DataLoader over the training set.
         :param val_data_loader: Optional DataLoader over the validation set.
-        :return: Dict with 'train_loss' and 'train_accuracy' lists (one value per epoch).
+        :param best_checkpoint_path: Optional path where the best weights are saved
+            to disk each time a new best validation loss is reached.
+        :param num_epochs_override: Optional fixed epoch count that overrides
+            self._num_epochs for this training run.
+        :return: Dict with 'train_loss', 'train_accuracy', and 'epochs_trained'
+            (one value per epoch for lists; int for epochs_trained).
         """
         epoch_losses = []
         epoch_accuracies = []
@@ -432,7 +457,8 @@ class PretrainedModel(nn.Module):
         best_weights = None
         backbone_has_been_unfrozen = not self._freeze_backbone
 
-        for epoch_index in range(1, self._num_epochs + 1):
+        num_epochs_to_run = num_epochs_override if num_epochs_override is not None else self._num_epochs
+        for epoch_index in range(1, num_epochs_to_run + 1):
 
             # Unfreeze backbone when the scheduled epoch is reached
             if (
@@ -450,13 +476,13 @@ class PretrainedModel(nn.Module):
 
             self.train()
             for images, labels in train_data_loader:
-                images = images.to(self._device)
-                labels = labels.to(self._device)
+                images = images.to(self._device, non_blocking=True)
+                labels = labels.to(self._device, non_blocking=True)
 
                 if self._gpu_augmentation_pipeline is not None:
                     images = self._gpu_augmentation_pipeline(images)
 
-                self._optimizer.zero_grad()
+                self._optimizer.zero_grad(set_to_none=True)
 
                 with torch.autocast(device_type=self._device.type, enabled=self._device.type == "cuda"):
                     class_scores = self.forward(images)
@@ -477,7 +503,7 @@ class PretrainedModel(nn.Module):
             epoch_accuracies.append(epoch_accuracy)
 
             print(
-                f"  Epoch [{epoch_index}/{self._num_epochs}]"
+                f"  Epoch [{epoch_index}/{num_epochs_to_run}]"
                 f"  loss: {epoch_average_loss:.4f}"
                 f"  accuracy: {epoch_accuracy * 100:.2f}%",
                 end="",
@@ -492,7 +518,9 @@ class PretrainedModel(nn.Module):
                 if current_val_loss < best_val_loss:
                     best_val_loss = current_val_loss
                     epochs_without_improvement = 0
-                    best_weights = {key: value.cpu().clone() for key, value in self.state_dict().items()}
+                    best_weights = {key: value.clone() for key, value in self.state_dict().items()}
+                    if best_checkpoint_path is not None:
+                        torch.save(best_weights, best_checkpoint_path)
                 else:
                     epochs_without_improvement += 1
 
@@ -501,12 +529,16 @@ class PretrainedModel(nn.Module):
                         f"\n  Early stopping triggered after {epoch_index} epochs"
                         f" (no improvement for {self._early_stopping_patience} epochs)."
                     )
-                    self.load_state_dict({key: value.to(self._device) for key, value in best_weights.items()})
+                    self.load_state_dict(best_weights)
                     break
 
             print()
 
-        return {"train_loss": epoch_losses, "train_accuracy": epoch_accuracies}
+        return {
+            "train_loss": epoch_losses,
+            "train_accuracy": epoch_accuracies,
+            "epochs_trained": len(epoch_losses),
+        }
 
     def validate_on_dataset(self, dataset_path: pathlib.Path) -> dict:
         """
@@ -532,8 +564,8 @@ class PretrainedModel(nn.Module):
 
         with torch.no_grad():
             for images, labels in val_data_loader:
-                images = images.to(self._device)
-                labels = labels.to(self._device)
+                images = images.to(self._device, non_blocking=True)
+                labels = labels.to(self._device, non_blocking=True)
                 class_scores = self.forward(images)
                 batch_loss = self._loss_function(class_scores, labels)
                 cumulative_loss += batch_loss.item() * images.shape[0]
@@ -572,8 +604,8 @@ class PretrainedModel(nn.Module):
 
         with torch.no_grad():
             for images, labels in test_loader:
-                images = images.to(self._device)
-                labels = labels.to(self._device)
+                images = images.to(self._device, non_blocking=True)
+                labels = labels.to(self._device, non_blocking=True)
                 class_scores = self.forward(images)
                 class_probabilities = torch.softmax(class_scores, dim=1)
                 predicted_labels = class_scores.argmax(dim=1)

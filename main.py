@@ -115,7 +115,7 @@ def _build_cnn_factory(
     :return: Callable with no arguments that returns a new CNN instance.
     """
     def factory():
-        return CNN(
+        model = CNN(
             in_size=tuple(model_config["in_size"]),
             class_names=model_config["class_names"],
             channels=model_config["channels"],
@@ -139,6 +139,7 @@ def _build_cnn_factory(
             early_stopping_patience=training_config["early_stopping_patience"],
             augmentations_config=augmentations_config,
         )
+        return model
     return factory
 
 
@@ -189,6 +190,7 @@ def _run_cross_validation(
     model_factory: callable,
     model_label: str,
     raw_config: dict,
+    checkpointing_config: dict,
 ) -> None:
     """
     Runs K-fold cross-validation and saves the results to a versioned folder.
@@ -201,12 +203,24 @@ def _run_cross_validation(
     :param model_factory: Zero-argument callable that returns a fresh model instance.
     :param model_label: Human-readable label for the model type, included in results.json.
     :param raw_config: The full config dict as loaded from config.json, saved as a snapshot.
+    :param checkpointing_config: Checkpointing block from config.json.
     """
-    experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
-    config_snapshot_path = experiment_folder_path / "config_snapshot.json"
-    with config_snapshot_path.open("w", encoding="utf-8") as config_snapshot_file:
-        json.dump(raw_config, config_snapshot_file, indent=4)
-    print(f"  Config snapshot saved to {config_snapshot_path}")
+    resume_from_version = checkpointing_config.get("resume_from_version", None)
+    save_best_checkpoint = checkpointing_config.get("save_best_checkpoint", False)
+
+    if resume_from_version is not None:
+        experiment_folder_path = pathlib.Path("results") / resume_from_version
+        fold_state_path = experiment_folder_path / "fold_state.json"
+        with fold_state_path.open(encoding="utf-8") as fold_state_file:
+            resume_fold_state = json.load(fold_state_file)
+        print(f"  Resuming {resume_from_version} from fold {resume_fold_state['next_fold_index'] + 1}")
+    else:
+        experiment_folder_path = _build_versioned_experiment_folder(pathlib.Path("results"))
+        config_snapshot_path = experiment_folder_path / "config_snapshot.json"
+        with config_snapshot_path.open("w", encoding="utf-8") as config_snapshot_file:
+            json.dump(raw_config, config_snapshot_file, indent=4)
+        print(f"  Config snapshot saved to {config_snapshot_path}")
+        resume_fold_state = None
 
     print("=" * 70)
     print(f"Cross-Validation  ({cross_validation_config['num_folds']} folds)")
@@ -227,6 +241,9 @@ def _run_cross_validation(
         train_dataset_path=dataset_root_path / "train",
         val_dataset_path=dataset_root_path / "val",
         test_dataset_path=dataset_root_path / "test",
+        experiment_folder_path=experiment_folder_path,
+        save_best_checkpoint=save_best_checkpoint,
+        resume_fold_state=resume_fold_state,
     )
     training_duration_seconds = (datetime.datetime.now() - training_start_time).total_seconds()
 
@@ -273,6 +290,9 @@ def _run_cross_validation(
 
 
 def main() -> None:
+    if torch.cuda.is_available():
+        torch.backends.cudnn.benchmark = True
+
     config_file_path = pathlib.Path("config.json")
     dataset_root_path = pathlib.Path("dataset")
 
@@ -285,6 +305,7 @@ def main() -> None:
     augmentations_config = loaded_config.get("augmentations", {"enabled": False})
     cross_validation_config = loaded_config.get("cross_validation", {"enabled": False, "num_folds": 5})
     pretrained_config = loaded_config.get("pretrained_model", {"enabled": False})
+    checkpointing_config = loaded_config.get("checkpointing", {"save_best_checkpoint": False, "resume_from_version": None})
 
     use_pretrained = pretrained_config.get("enabled", False)
 
@@ -342,6 +363,7 @@ def main() -> None:
             model_factory=model_factory,
             model_label=model_label,
             raw_config=loaded_config,
+            checkpointing_config=checkpointing_config,
         )
         return
 
@@ -357,6 +379,22 @@ def main() -> None:
     # --- 6. Build model ---
     my_model = model_factory()
 
+    resume_from_version = checkpointing_config.get("resume_from_version", None)
+    save_best_checkpoint = checkpointing_config.get("save_best_checkpoint", False)
+
+    if resume_from_version is not None:
+        warm_start_path = pathlib.Path("results") / resume_from_version / "best_checkpoint.pth"
+        if warm_start_path.exists():
+            my_model.load_checkpoint(warm_start_path)
+            print(f"  Loaded weights from {warm_start_path}")
+        else:
+            print(f"  Warning: resume_from_version is set but {warm_start_path} was not found. Starting from scratch.")
+
+    best_checkpoint_path = (
+        experiment_folder_path / "best_checkpoint.pth"
+        if save_best_checkpoint else None
+    )
+
     # --- 7. Train ---
     print("=" * 70)
     print("Training")
@@ -366,6 +404,7 @@ def main() -> None:
     my_model.train_on_dataset(
         dataset_root_path / "train",
         val_dataset_path=dataset_root_path / "val",
+        best_checkpoint_path=best_checkpoint_path,
     )
     training_duration_seconds = (datetime.datetime.now() - training_start_time).total_seconds()
 

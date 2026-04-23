@@ -1,4 +1,5 @@
 import collections
+import json
 import pathlib
 import random
 import statistics
@@ -13,7 +14,22 @@ from model.augmented_dataset import SampleListDataset
 
 
 class CrossValidator:
-    """Orchestrates stratified K-fold cross-validation for any image classifier."""
+    """
+    Orchestrates stratified K-fold cross-validation for any image classifier.
+
+    The model to train is supplied as a factory callable that takes no arguments
+    and returns a freshly initialised model. This decouples the cross-validator
+    from any specific architecture — it works with CNN, PretrainedModel, or any
+    future classifier that implements the same training interface.
+
+    The combined train and validation splits are divided into K folds. For each
+    fold, a fresh model is trained on the K-1 remaining folds and evaluated on
+    the held-out fold. After all folds are complete, a final model is trained on
+    the full train+val pool and evaluated on the held-out test set.
+
+    Results include per-fold metrics and aggregate mean ± standard deviation for
+    both validation loss and validation accuracy.
+    """
 
     def __init__(
         self,
@@ -56,14 +72,31 @@ class CrossValidator:
         train_dataset_path: pathlib.Path,
         val_dataset_path: pathlib.Path,
         test_dataset_path: pathlib.Path,
+        experiment_folder_path: pathlib.Path = None,
+        save_best_checkpoint: bool = False,
+        resume_fold_state: dict = None,
     ) -> dict:
         """
         Runs the full K-fold cross-validation pipeline.
 
+        Combines the train and validation splits into a single pool, divides it into
+        K stratified folds, trains and evaluates K models, then trains a final model
+        on the full pool and evaluates it on the held-out test set.
+
         :param train_dataset_path: Path to the training split folder.
         :param val_dataset_path: Path to the validation split folder.
         :param test_dataset_path: Path to the test split folder.
-        :return: Dictionary containing per-fold results, aggregate statistics, and final test metrics.
+        :param experiment_folder_path: Optional path to the versioned results folder.
+            When provided, fold state is persisted to disk after each fold so the run
+            can be resumed if the process is interrupted.
+        :param save_best_checkpoint: When True, saves the best weights for each fold
+            to disk whenever a new best validation loss is reached during training.
+            Requires experiment_folder_path to be set.
+        :param resume_fold_state: Optional dict loaded from a previously saved
+            fold_state.json. When provided, fold splits and completed results are
+            restored from this state and training resumes from the next unfinished fold.
+        :return: Dictionary containing per-fold results, aggregate statistics,
+            and final test metrics.
         """
         train_image_folder = ImageFolder(root=str(train_dataset_path), transform=None)
         val_image_folder = ImageFolder(root=str(val_dataset_path), transform=None)
@@ -78,11 +111,18 @@ class CrossValidator:
         all_samples: List[Tuple[str, int]] = train_image_folder.samples + val_image_folder.samples
         all_labels: List[int] = [label for _, label in all_samples]
 
-        fold_index_groups = self._create_stratified_fold_index_groups(all_labels, self._num_folds)
+        if resume_fold_state is not None:
+            fold_index_groups = resume_fold_state["fold_index_groups"]
+            per_fold_results = list(resume_fold_state["completed_folds"])
+            starting_fold_index = resume_fold_state["next_fold_index"]
+        else:
+            fold_index_groups = self._create_stratified_fold_index_groups(all_labels, self._num_folds)
+            per_fold_results = []
+            starting_fold_index = 0
+            if experiment_folder_path is not None:
+                self._save_fold_state(experiment_folder_path, fold_index_groups, [], 0)
 
-        per_fold_results = []
-
-        for fold_number in range(self._num_folds):
+        for fold_number in range(starting_fold_index, self._num_folds):
             print(f"\nFold [{fold_number + 1} / {self._num_folds}]")
             print("-" * 70)
 
@@ -97,8 +137,16 @@ class CrossValidator:
             fold_train_loader = self._build_training_data_loader(training_sample_list)
             fold_val_loader = self._build_validation_data_loader(validation_sample_list)
 
+            fold_best_checkpoint_path = None
+            if save_best_checkpoint and experiment_folder_path is not None:
+                fold_best_checkpoint_path = experiment_folder_path / f"fold_{fold_number + 1}_best_checkpoint.pth"
+
             fold_model = self._model_factory()
-            fold_model.train_on_data_loaders(fold_train_loader, fold_val_loader)
+            fold_training_result = fold_model.train_on_data_loaders(
+                fold_train_loader,
+                fold_val_loader,
+                best_checkpoint_path=fold_best_checkpoint_path,
+            )
             fold_val_results = fold_model.validate_on_data_loader(fold_val_loader)
 
             del fold_model
@@ -108,7 +156,16 @@ class CrossValidator:
                 "fold": fold_number + 1,
                 "val_loss": fold_val_results["val_loss"],
                 "val_accuracy": fold_val_results["val_accuracy"],
+                "epochs_trained": fold_training_result["epochs_trained"],
             })
+
+            if experiment_folder_path is not None:
+                self._save_fold_state(
+                    experiment_folder_path,
+                    fold_index_groups,
+                    per_fold_results,
+                    fold_number + 1,
+                )
 
             print(
                 f"\n  Fold {fold_number + 1} result: "
@@ -137,12 +194,20 @@ class CrossValidator:
         )
         print("=" * 70)
 
+        max_fold_epochs = max(fold_result["epochs_trained"] for fold_result in per_fold_results)
+        final_num_epochs = int(max_fold_epochs * 1.10)
+        print(f"\n  Max fold epochs: {max_fold_epochs}  →  Final model will train for {final_num_epochs} epochs (+10%)")
+
         torch.cuda.empty_cache()
         print("\nTraining final model on the full train+val pool...")
         print("-" * 70)
         final_train_loader = self._build_training_data_loader(all_samples)
         final_model = self._model_factory()
-        final_model.train_on_data_loaders(final_train_loader, val_data_loader=None)
+        final_model.train_on_data_loaders(
+            final_train_loader,
+            val_data_loader=None,
+            num_epochs_override=final_num_epochs,
+        )
 
         print("\n" + "=" * 70)
         print("Testing")
@@ -175,6 +240,34 @@ class CrossValidator:
             "test_results": test_results,
         }
 
+    def _save_fold_state(
+        self,
+        experiment_folder_path: pathlib.Path,
+        fold_index_groups: List[List[int]],
+        completed_folds: List[dict],
+        next_fold_index: int,
+    ) -> None:
+        """
+        Writes fold state to disk so an interrupted run can resume from the correct fold.
+
+        The file records the exact fold index groups so the same train/val splits are
+        reproduced on restart without relying on random seed replay.
+
+        :param experiment_folder_path: Versioned results folder where the file is written.
+        :param fold_index_groups: List of K lists, each holding sample indices for one fold.
+        :param completed_folds: Per-fold result dicts accumulated so far.
+        :param next_fold_index: Zero-based index of the fold that should run next.
+        """
+        fold_state = {
+            "num_folds": self._num_folds,
+            "fold_index_groups": fold_index_groups,
+            "completed_folds": completed_folds,
+            "next_fold_index": next_fold_index,
+        }
+        fold_state_path = experiment_folder_path / "fold_state.json"
+        with fold_state_path.open("w", encoding="utf-8") as fold_state_file:
+            json.dump(fold_state, fold_state_file, indent=4)
+
     def _create_stratified_fold_index_groups(
         self,
         all_labels: List[int],
@@ -182,6 +275,9 @@ class CrossValidator:
     ) -> List[List[int]]:
         """
         Divides sample indices into K stratified fold groups.
+
+        Within each class, indices are shuffled and distributed round-robin across
+        the K folds so that each fold's validation set has proportional class coverage.
 
         :param all_labels: List of integer class labels, one per sample.
         :param num_folds: Number of folds to create.
@@ -215,6 +311,9 @@ class CrossValidator:
         """
         Builds a shuffled DataLoader for a training split.
 
+        GPU augmentation is applied inside the model's training loop, so no
+        augmentation wrapper is needed at the dataset level.
+
         :param sample_list: List of (file_path, label_index) tuples for this split.
         :return: A shuffled DataLoader over the training samples.
         """
@@ -228,6 +327,7 @@ class CrossValidator:
             shuffle=True,
             num_workers=self._num_dataloader_workers,
             pin_memory=torch.device("cuda" if torch.cuda.is_available() else "cpu").type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
 
     def _build_validation_data_loader(
@@ -250,6 +350,7 @@ class CrossValidator:
             shuffle=False,
             num_workers=self._num_dataloader_workers,
             pin_memory=torch.device("cuda" if torch.cuda.is_available() else "cpu").type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
 
     def _compute_aggregate_metrics(

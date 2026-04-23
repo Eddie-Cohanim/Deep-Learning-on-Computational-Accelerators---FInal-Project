@@ -171,6 +171,10 @@ class CNN(nn.Module):
         """
         Constructs the Kornia GPU augmentation pipeline from the augmentations config.
 
+        Reads the "augmentations" block from config.json. If the top-level "enabled"
+        flag is False, or if no transforms are individually enabled, returns None.
+        Each transform is included only when its own "enabled" flag is True.
+
         :return: A K.AugmentationSequential on the model's device, or None.
         """
         if not self._augmentations_config.get("enabled", True):
@@ -245,6 +249,10 @@ class CNN(nn.Module):
         """
         Returns the augmentation configuration as stored in config.json.
 
+        This is written directly into the results.json of each experiment so
+        that the exact transforms, parameters, and probabilities used in that
+        run are always on record.
+
         :return: The augmentations config dict, or {"enabled": False} if disabled.
         """
         if self._gpu_augmentation_pipeline is None:
@@ -267,6 +275,7 @@ class CNN(nn.Module):
             shuffle=shuffle,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
 
     def _build_feature_extractor(self) -> nn.Sequential:
@@ -304,6 +313,9 @@ class CNN(nn.Module):
         """
         Determines the flattened size of the feature extractor output by running
         a single dummy tensor through it.
+
+        The random number generator state is saved and restored so that this
+        probe does not affect any random operations elsewhere in the program.
         """
         rng_state = torch.get_rng_state()
         try:
@@ -351,29 +363,59 @@ class CNN(nn.Module):
         self,
         dataset_path: pathlib.Path,
         val_dataset_path: pathlib.Path = None,
+        best_checkpoint_path: pathlib.Path = None,
     ) -> dict:
         """
         Trains the model on images loaded from the given folder.
 
+        Expects the folder structure: dataset_path/<class_name>/<image_file>
+
+        If val_dataset_path is provided and early_stopping_patience > 0, training
+        stops early when validation loss has not improved for that many epochs.
+        The best weights (lowest validation loss) are restored at the end.
+
         :param dataset_path: Path to the folder containing class subfolders.
-        :param val_dataset_path: Optional path to the validation split, used for early stopping.
-        :return: Dictionary with keys 'train_loss' and 'train_accuracy', each a list per epoch.
+        :param val_dataset_path: Optional path to the validation split, used for
+            early stopping. Required when early_stopping_patience > 0.
+        :param best_checkpoint_path: Optional path where the best weights are saved
+            to disk each time a new best validation loss is reached.
+        :return: Dictionary with keys 'train_loss' and 'train_accuracy',
+            each a list of floats with one value per epoch.
         """
         train_loader = self._load_dataset(dataset_path, shuffle=True)
         val_loader = self._load_dataset(val_dataset_path, shuffle=False) if val_dataset_path is not None else None
-        return self.train_on_data_loaders(train_loader, val_loader)
+        return self.train_on_data_loaders(train_loader, val_loader, best_checkpoint_path=best_checkpoint_path)
 
     def train_on_data_loaders(
         self,
         train_data_loader: DataLoader,
         val_data_loader: DataLoader = None,
+        best_checkpoint_path: pathlib.Path = None,
+        num_epochs_override: int = None,
     ) -> dict:
         """
         Trains the model using pre-built DataLoaders.
 
+        This is the core training implementation. train_on_dataset delegates to
+        this method after constructing its DataLoaders from disk paths.
+
+        GPU augmentation (via kornia) and mixed-precision training (via autocast
+        and GradScaler) are applied here when the device is CUDA and augmentation
+        is enabled.
+
+        If val_data_loader is provided and early_stopping_patience > 0, training
+        stops early when validation loss has not improved for that many epochs.
+        The best weights (lowest validation loss) are restored at the end.
+
         :param train_data_loader: DataLoader over the training set.
-        :param val_data_loader: Optional DataLoader over the validation set, used for early stopping.
-        :return: Dictionary with keys 'train_loss' and 'train_accuracy', each a list per epoch.
+        :param val_data_loader: Optional DataLoader over the validation set, used
+            for early stopping. Required when early_stopping_patience > 0.
+        :param best_checkpoint_path: Optional path where the best weights are saved
+            to disk each time a new best validation loss is reached.
+        :param num_epochs_override: Optional fixed epoch count that overrides
+            self._num_epochs for this training run.
+        :return: Dictionary with keys 'train_loss', 'train_accuracy', and
+            'epochs_trained', each a list of floats (or int) with one value per epoch.
         """
         epoch_losses = []
         epoch_accuracies = []
@@ -383,20 +425,21 @@ class CNN(nn.Module):
         best_val_loss = float("inf")
         best_weights = None
 
-        for epoch_index in range(1, self._num_epochs + 1):
+        num_epochs_to_run = num_epochs_override if num_epochs_override is not None else self._num_epochs
+        for epoch_index in range(1, num_epochs_to_run + 1):
             cumulative_loss = 0.0
             total_correct_predictions = 0
             total_samples = 0
 
             self.train()
             for images, labels in train_data_loader:
-                images = images.to(self._device)
-                labels = labels.to(self._device)
+                images = images.to(self._device, non_blocking=True)
+                labels = labels.to(self._device, non_blocking=True)
 
                 if self._gpu_augmentation_pipeline is not None:
                     images = self._gpu_augmentation_pipeline(images)
 
-                self._optimizer.zero_grad()
+                self._optimizer.zero_grad(set_to_none=True)
 
                 with torch.autocast(device_type=self._device.type, enabled=self._device.type == "cuda"):
                     class_scores = self.forward(images)
@@ -416,7 +459,7 @@ class CNN(nn.Module):
             epoch_losses.append(epoch_average_loss)
             epoch_accuracies.append(epoch_accuracy)
 
-            print(f"  Epoch [{epoch_index}/{self._num_epochs}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="", flush=True)
+            print(f"  Epoch [{epoch_index}/{num_epochs_to_run}]  loss: {epoch_average_loss:.4f}  accuracy: {epoch_accuracy * 100:.2f}%", end="", flush=True)
 
             if early_stopping_enabled:
                 val_results = self.validate_on_data_loader(val_data_loader)
@@ -427,18 +470,24 @@ class CNN(nn.Module):
                 if current_val_loss < best_val_loss:
                     best_val_loss = current_val_loss
                     epochs_without_improvement = 0
-                    best_weights = {key: value.cpu().clone() for key, value in self.state_dict().items()}
+                    best_weights = {key: value.clone() for key, value in self.state_dict().items()}
+                    if best_checkpoint_path is not None:
+                        torch.save(best_weights, best_checkpoint_path)
                 else:
                     epochs_without_improvement += 1
 
                 if epochs_without_improvement >= self._early_stopping_patience:
                     print(f"\n  Early stopping triggered after {epoch_index} epochs (no improvement for {self._early_stopping_patience} epochs).")
-                    self.load_state_dict({key: value.to(self._device) for key, value in best_weights.items()})
+                    self.load_state_dict(best_weights)
                     break
 
             print()
 
-        return {"train_loss": epoch_losses, "train_accuracy": epoch_accuracies}
+        return {
+            "train_loss": epoch_losses,
+            "train_accuracy": epoch_accuracies,
+            "epochs_trained": len(epoch_losses),
+        }
 
     def validate_on_dataset(self, dataset_path: pathlib.Path) -> dict:
         """
@@ -456,6 +505,9 @@ class CNN(nn.Module):
         """
         Evaluates the model using a pre-built DataLoader, without updating weights.
 
+        This is the core validation implementation. validate_on_dataset delegates
+        to this method after constructing its DataLoader from a disk path.
+
         :param val_data_loader: DataLoader over the validation set.
         :return: Dictionary with keys 'val_loss' and 'val_accuracy' as floats.
         """
@@ -466,8 +518,8 @@ class CNN(nn.Module):
 
         with torch.no_grad():
             for images, labels in val_data_loader:
-                images = images.to(self._device)
-                labels = labels.to(self._device)
+                images = images.to(self._device, non_blocking=True)
+                labels = labels.to(self._device, non_blocking=True)
                 class_scores = self.forward(images)
                 batch_loss = self._loss_function(class_scores, labels)
                 cumulative_loss += batch_loss.item() * images.shape[0]
@@ -482,10 +534,16 @@ class CNN(nn.Module):
 
     def test_on_dataset(self, dataset_path: pathlib.Path) -> dict:
         """
-        Evaluates the model on images loaded from the given folder and returns per-class metrics.
+        Evaluates the model on images loaded from the given folder and returns predictions
+        along with per-class precision, recall, F1, and sample counts.
+
+        Expects the folder structure: dataset_path/<class_name>/<image_file>
 
         :param dataset_path: Path to the folder containing class subfolders.
-        :return: Dictionary with keys 'test_accuracy', 'per_class_results', and 'raw_predictions'.
+        :return: Dictionary with keys:
+            - 'test_accuracy': overall accuracy as a float
+            - 'predictions': 1D Tensor of predicted class indices
+            - 'per_class_results': dict mapping each class name to its metrics
         """
         dataset = ImageFolder(root=str(dataset_path), transform=self._image_transforms)
         test_loader = DataLoader(
@@ -494,6 +552,7 @@ class CNN(nn.Module):
             shuffle=False,
             num_workers=self._num_dataloader_workers,
             pin_memory=self._device.type == "cuda",
+            persistent_workers=self._num_dataloader_workers > 0,
         )
         class_names_from_dataset = dataset.classes
         number_of_classes = len(class_names_from_dataset)
@@ -507,8 +566,8 @@ class CNN(nn.Module):
 
         with torch.no_grad():
             for images, labels in test_loader:
-                images = images.to(self._device)
-                labels = labels.to(self._device)
+                images = images.to(self._device, non_blocking=True)
+                labels = labels.to(self._device, non_blocking=True)
                 class_scores = self.forward(images)
                 class_probabilities = torch.softmax(class_scores, dim=1)
                 predicted_labels = class_scores.argmax(dim=1)

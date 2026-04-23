@@ -5,7 +5,12 @@ from model.Augmentations.augmentations import _SUPPORTED_IMAGE_EXTENSIONS
 
 
 class DatasetValidationReport:
-    """Holds the results of a dataset structure validation pass."""
+    """
+    Holds the results of a dataset structure validation pass.
+
+    Callers can inspect is_valid programmatically to decide whether to proceed,
+    and call print_summary() to display the results to the user.
+    """
 
     def __init__(
         self,
@@ -76,7 +81,17 @@ class DatasetValidationReport:
 
 
 class PreprocessingPipeline:
-    """Orchestrates dataset validation for a structured image classification dataset."""
+    """
+    Orchestrates dataset validation for a structured image classification dataset.
+
+    The dataset must follow this layout:
+        <dataset_root>/train/<class_name>/<image_file>
+        <dataset_root>/val/<class_name>/<image_file>
+        <dataset_root>/test/<class_name>/<image_file>
+
+    All configuration is read from config.json at construction time.
+    Augmentation is handled online during training and is not performed here.
+    """
 
     def __init__(
         self,
@@ -105,6 +120,12 @@ class PreprocessingPipeline:
     def validate_dataset(self) -> DatasetValidationReport:
         """
         Verifies that the dataset directory structure matches the configured class names.
+
+        Checks that each of train/, val/, and test/ exists, that each split contains
+        a subfolder for every name in class_names, and counts image files per class.
+
+        Does not raise on failure — all errors are captured in the returned report
+        so that callers can decide how to handle them.
 
         :return: A DatasetValidationReport describing what was found and what was missing.
         """

@@ -5,10 +5,12 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16G
 #SBATCH --cpus-per-task=2
+#SBATCH --time=24:00:00
 
 cd "/home/eddiecohanim/FinalProject/Final Project"
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate cs236781-hw
+export LD_PRELOAD=/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/libstdc++.so.6
 python -u main.py
 
 # Move slurm logs into the versioned results folder that main.py just created
@@ -16,6 +18,6 @@ LATEST_VERSION=$(ls -td results/v*/ 2>/dev/null | head -1)
 if [ -n "$LATEST_VERSION" ]; then
     mv "results/slurm_${SLURM_JOB_ID}.out" "$LATEST_VERSION" 2>/dev/null
     mv "results/slurm_${SLURM_JOB_ID}.err" "$LATEST_VERSION" 2>/dev/null
-    python -u utilities/plot_results.py "$LATEST_VERSION"
-    (cd "$LATEST_VERSION" && python -u "../../utilities/confusion matrix generator.py" results.json)
+    python -u plot_results.py "$LATEST_VERSION"
+    (cd "$LATEST_VERSION" && python -u "../../confusion matrix generator.py" results.json)
 fi

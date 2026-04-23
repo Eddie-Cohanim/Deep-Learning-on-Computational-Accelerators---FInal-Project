@@ -35,8 +35,17 @@ class Augmentation(abc.ABC):
         """
         Applies this augmentation to a random subset of images in the dataset folder.
 
-        :param dataset_path: Root folder of the dataset, with one subfolder per class.
-        :param augmented_files: Shared list of already-augmented file paths. Updated in-place.
+        Scans all class subfolders under dataset_path for image files that have not
+        yet been augmented (i.e. are not in augmented_files). Selects a random number
+        of those eligible files, applies the augmentation, saves each result next to
+        the original with a descriptive filename suffix, and appends the new file paths
+        to augmented_files.
+
+        :param dataset_path: Root folder of the dataset. Must contain one subfolder
+            per class, each holding image files:
+            dataset_path/<class_name>/<image_file>
+        :param augmented_files: Shared list of file paths (as strings) that have
+            already been augmented. Updated in-place with any new files created.
         :return: The updated augmented_files list.
         """
         augmented_files_set = set(augmented_files)
@@ -94,7 +103,13 @@ class Augmentation(abc.ABC):
 # ---------------------------------------------------------------------------
 
 class HorizontalFlipAugmentation(Augmentation):
-    """Mirrors images horizontally by reversing the column order of each row."""
+    """
+    Mirrors images horizontally by reversing the column order of each row.
+
+    Equivalent to reflecting the image across its vertical centre axis.
+    A glass of wine photographed from the left side is visually identical
+    to one photographed from the right — making this a label-safe augmentation.
+    """
 
     def _apply_to_image(self, image: Image.Image) -> Image.Image:
         pixels = np.array(image)
@@ -106,7 +121,17 @@ class HorizontalFlipAugmentation(Augmentation):
 
 
 class RotationAugmentation(Augmentation):
-    """Rotates the image by a random angle using an affine transformation matrix."""
+    """
+    Rotates the image by a random angle using an affine transformation matrix.
+
+    The rotation is performed around the image centre. Pixels that fall outside
+    the original canvas after rotation are filled with black (0, 0, 0). A small
+    angle range (default ±15°) keeps glasses upright and realistic.
+
+    Implementation: for each output pixel we compute its corresponding source
+    coordinates using the inverse rotation matrix, then sample the source image
+    with nearest-neighbour interpolation.
+    """
 
     def __init__(self, max_rotation_degrees: float = 15.0):
         """
@@ -125,7 +150,18 @@ class RotationAugmentation(Augmentation):
 
 
 class PerspectiveAugmentation(Augmentation):
-    """Applies a random perspective warp to simulate different camera angles."""
+    """
+    Applies a random perspective warp to simulate different camera angles.
+
+    A perspective transform maps four source corner points to four slightly
+    displaced destination points, producing the effect of viewing the image
+    from a different angle. This simulates overhead shots, angled bar photos,
+    and varying distances — all common in open-source beverage image sets.
+
+    Implementation: we compute the 3×3 homography matrix from the four point
+    correspondences and apply it as an inverse warp (destination → source)
+    with nearest-neighbour sampling.
+    """
 
     def __init__(self, distortion_scale: float = 0.2):
         """
@@ -191,7 +227,16 @@ class PerspectiveAugmentation(Augmentation):
 # ---------------------------------------------------------------------------
 
 class ColorJitterAugmentation(Augmentation):
-    """Randomly adjusts brightness, contrast, and saturation."""
+    """
+    Randomly adjusts brightness, contrast, and saturation.
+
+    All three operations are implemented directly on the pixel array:
+    - Brightness: scale all channels by a constant factor.
+    - Contrast:   interpolate each channel toward its mean grey value.
+    - Saturation: interpolate each pixel toward its luminance (greyscale) value.
+
+    Values are clipped to [0, 255] after each operation.
+    """
 
     def __init__(
         self,
@@ -242,7 +287,14 @@ class ColorJitterAugmentation(Augmentation):
 
 
 class GammaAugmentation(Augmentation):
-    """Applies random gamma correction to simulate different camera exposures."""
+    """
+    Applies random gamma correction to simulate different camera exposures.
+
+    Gamma correction is a non-linear operation: output = (input / 255) ^ gamma * 255.
+    Gamma < 1 brightens mid-tones (over-exposed look); gamma > 1 darkens them
+    (under-exposed, dimly-lit bar). Unlike brightness scaling, gamma affects
+    highlights and shadows differently, which better matches real camera variation.
+    """
 
     def __init__(self, gamma_range: "tuple[float, float]" = (0.7, 1.4)):
         """
@@ -265,7 +317,17 @@ class GammaAugmentation(Augmentation):
 # ---------------------------------------------------------------------------
 
 class GaussianBlurAugmentation(Augmentation):
-    """Applies a Gaussian blur to the image."""
+    """
+    Applies a Gaussian blur using a manually constructed convolution kernel.
+
+    Beverage photos taken on phones are often slightly out-of-focus, especially
+    close-up shots of foam or the glass surface. Training with blurred samples
+    prevents the model from over-relying on fine textures absent at inference time.
+
+    Implementation: build a 1D Gaussian kernel, then convolve each RGB channel
+    independently using a separable pass (row-wise then column-wise) for efficiency.
+    This is mathematically identical to a 2D Gaussian convolution.
+    """
 
     def __init__(self, max_sigma: float = 1.5):
         """

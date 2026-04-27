@@ -1,0 +1,572 @@
+
+Dataset Validation
+======================================================================
+
+  Split: train    STATUS: OK
+    Cabernet Sauvignon                131 images
+    Chardonnay                        144 images
+    Cider                             463 images
+    IPA                               395 images
+    Lager                             305 images
+    Malbec                            108 images
+    Pinot Noir                        102 images
+    Sauvignon blanc                   137 images
+    Stout                             547 images
+    Wheat                             495 images
+    orange wine                       147 images
+    rose wine                         412 images
+
+  Split: val    STATUS: OK
+    Cabernet Sauvignon                28 images
+    Chardonnay                        31 images
+    Cider                             57 images
+    IPA                               49 images
+    Lager                             38 images
+    Malbec                            23 images
+    Pinot Noir                        22 images
+    Sauvignon blanc                   29 images
+    Stout                             68 images
+    Wheat                             61 images
+    orange wine                       31 images
+    rose wine                         88 images
+
+  Split: test    STATUS: OK
+    Cabernet Sauvignon                29 images
+    Chardonnay                        32 images
+    Cider                             59 images
+    IPA                               50 images
+    Lager                             39 images
+    Malbec                            24 images
+    Pinot Noir                        23 images
+    Sauvignon blanc                   31 images
+    Stout                             69 images
+    Wheat                             63 images
+    orange wine                       33 images
+    rose wine                         89 images
+
+======================================================================
+VALIDATION RESULT: PASSED   (all splits and classes found)
+======================================================================
+
+  Class weights (inverse-frequency):
+    Cabernet Sauvignon               131 samples  weight: 1.4777
+    Chardonnay                       144 samples  weight: 1.3443
+    Cider                            463 samples  weight: 0.4181
+    IPA                              395 samples  weight: 0.4901
+    Lager                            305 samples  weight: 0.6347
+    Malbec                           108 samples  weight: 1.7924
+    Pinot Noir                       102 samples  weight: 1.8979
+    Sauvignon blanc                  137 samples  weight: 1.4130
+    Stout                            547 samples  weight: 0.3539
+    Wheat                            495 samples  weight: 0.3911
+    orange wine                      147 samples  weight: 1.3169
+    rose wine                        412 samples  weight: 0.4699
+
+Using pretrained backbone: efficientnet_b7
+  Resuming v27 from fold 4
+======================================================================
+Cross-Validation  (5 folds)
+======================================================================
+
+Fold [4 / 5]
+----------------------------------------------------------------------
+  Epoch [1/250]  loss: 2.5700  accuracy: 16.61%  val_loss: 2.6272
+  Epoch [2/250]  loss: 2.4679  accuracy: 34.47%  val_loss: 2.5515
+  Epoch [3/250]  loss: 2.3481  accuracy: 41.47%  val_loss: 2.4649
+  Epoch [4/250]  loss: 2.2383  accuracy: 45.94%  val_loss: 2.3724
+  Epoch [5/250]  loss: 2.1321  accuracy: 48.66%  val_loss: 2.3010
+  Epoch [6/250]  loss: 2.0545  accuracy: 50.80%  val_loss: 2.2409
+  Epoch [7/250]  loss: 1.9949  accuracy: 52.01%  val_loss: 2.1980
+  Epoch [8/250]  loss: 1.9410  accuracy: 52.33%  val_loss: 2.1550
+  Epoch [9/250]  loss: 1.9133  accuracy: 54.25%  val_loss: 2.1144
+  Backbone unfrozen at epoch 10 with lr=5e-05.
+  Epoch [10/250]  loss: 1.6289  accuracy: 61.28%  val_loss: 1.7022
+  Epoch [11/250]  loss: 1.4370  accuracy: 68.59%  val_loss: 1.5951
+  Epoch [12/250]  loss: 1.2980  accuracy: 75.91%  val_loss: 1.5437
+  Epoch [13/250]  loss: 1.1826  accuracy: 81.47%  val_loss: 1.5378
+  Epoch [14/250]  loss: 1.0879  accuracy: 85.53%  val_loss: 1.4996
+  Epoch [15/250]  loss: 1.0078  accuracy: 88.31%  val_loss: 1.5063
+  Epoch [16/250]  loss: 0.9603  accuracy: 90.86%  val_loss: 1.4961
+  Epoch [17/250]  loss: 0.9227  accuracy: 93.58%  val_loss: 1.5332
+  Epoch [18/250]  loss: 0.8894  accuracy: 94.76%  val_loss: 1.5449
+  Epoch [19/250]  loss: 0.8522  accuracy: 95.69%  val_loss: 1.5124
+  Epoch [20/250]  loss: 0.8296  accuracy: 96.77%  val_loss: 1.5462
+  Epoch [21/250]  loss: 0.8285  accuracy: 96.84%  val_loss: 1.5400
+  Epoch [22/250]  loss: 0.8113  accuracy: 97.76%  val_loss: 1.5477
+  Epoch [23/250]  loss: 0.8097  accuracy: 97.80%  val_loss: 1.5183
+  Epoch [24/250]  loss: 0.7969  accuracy: 98.15%  val_loss: 1.5164
+  Epoch [25/250]  loss: 0.7998  accuracy: 98.18%  val_loss: 1.5067
+  Epoch [26/250]  loss: 0.7862  accuracy: 98.53%  val_loss: 1.5196
+  Epoch [27/250]  loss: 0.7931  accuracy: 98.79%  val_loss: 1.5284
+  Epoch [28/250]  loss: 0.7828  accuracy: 98.91%  val_loss: 1.5289
+  Epoch [29/250]  loss: 0.7875  accuracy: 98.59%  val_loss: 1.5434
+  Epoch [30/250]  loss: 0.7681  accuracy: 99.23%  val_loss: 1.5422
+  Epoch [31/250]  loss: 0.7612  accuracy: 99.23%  val_loss: 1.5610
+  Epoch [32/250]  loss: 0.7639  accuracy: 99.14%  val_loss: 1.5431
+  Epoch [33/250]  loss: 0.7672  accuracy: 99.07%  val_loss: 1.5640
+  Epoch [34/250]  loss: 0.7651  accuracy: 99.11%  val_loss: 1.5569
+  Epoch [35/250]  loss: 0.7665  accuracy: 99.20%  val_loss: 1.5229
+  Epoch [36/250]  loss: 0.7544  accuracy: 99.36%  val_loss: 1.5666
+  Epoch [37/250]  loss: 0.7532  accuracy: 99.36%  val_loss: 1.5333
+  Epoch [38/250]  loss: 0.7546  accuracy: 99.14%  val_loss: 1.5362
+  Epoch [39/250]  loss: 0.7610  accuracy: 98.98%  val_loss: 1.5831
+  Epoch [40/250]  loss: 0.7730  accuracy: 98.95%  val_loss: 1.5454
+  Epoch [41/250]  loss: 0.7668  accuracy: 99.14%  val_loss: 1.5594
+  Epoch [42/250]  loss: 0.7546  accuracy: 99.33%  val_loss: 1.5418
+  Epoch [43/250]  loss: 0.7615  accuracy: 99.17%  val_loss: 1.5713
+  Epoch [44/250]  loss: 0.7501  accuracy: 99.27%  val_loss: 1.5898
+  Epoch [45/250]  loss: 0.7566  accuracy: 99.30%  val_loss: 1.5699
+  Epoch [46/250]  loss: 0.7544  accuracy: 99.36%  val_loss: 1.5916
+  Epoch [47/250]  loss: 0.7622  accuracy: 99.14%  val_loss: 1.5734
+  Epoch [48/250]  loss: 0.7469  accuracy: 99.52%  val_loss: 1.5464
+  Epoch [49/250]  loss: 0.7441  accuracy: 99.46%  val_loss: 1.5694
+  Epoch [50/250]  loss: 0.7443  accuracy: 99.68%  val_loss: 1.5554
+  Epoch [51/250]  loss: 0.7407  accuracy: 99.52%  val_loss: 1.5666
+  Epoch [52/250]  loss: 0.7416  accuracy: 99.58%  val_loss: 1.5677
+  Epoch [53/250]  loss: 0.7392  accuracy: 99.55%  val_loss: 1.5247
+  Epoch [54/250]  loss: 0.7430  accuracy: 99.46%  val_loss: 1.5522
+  Epoch [55/250]  loss: 0.7533  accuracy: 99.07%  val_loss: 1.5457
+  Epoch [56/250]  loss: 0.7449  accuracy: 99.33%  val_loss: 1.5842
+  Epoch [57/250]  loss: 0.7486  accuracy: 99.27%  val_loss: 1.6269
+  Epoch [58/250]  loss: 0.7405  accuracy: 99.58%  val_loss: 1.6134
+  Epoch [59/250]  loss: 0.7463  accuracy: 99.36%  val_loss: 1.5950
+  Epoch [60/250]  loss: 0.7359  accuracy: 99.78%  val_loss: 1.6239
+  Epoch [61/250]  loss: 0.7381  accuracy: 99.52%  val_loss: 1.5864
+  Epoch [62/250]  loss: 0.7399  accuracy: 99.55%  val_loss: 1.6271
+  Epoch [63/250]  loss: 0.7409  accuracy: 99.52%  val_loss: 1.6085
+  Epoch [64/250]  loss: 0.7404  accuracy: 99.52%  val_loss: 1.6045
+  Epoch [65/250]  loss: 0.7495  accuracy: 99.36%  val_loss: 1.6232
+  Epoch [66/250]  loss: 0.7378  accuracy: 99.62%  val_loss: 1.5671
+  Early stopping triggered after 66 epochs (no improvement for 50 epochs).
+
+  Fold 4 result: val_loss: 1.4961  val_accuracy: 72.98%
+
+Fold [5 / 5]
+----------------------------------------------------------------------
+  Epoch [1/250]  loss: 2.5706  accuracy: 15.70%  val_loss: 2.6295
+  Epoch [2/250]  loss: 2.4768  accuracy: 34.60%  val_loss: 2.5570
+  Epoch [3/250]  loss: 2.3546  accuracy: 43.79%  val_loss: 2.4659
+  Epoch [4/250]  loss: 2.2478  accuracy: 48.20%  val_loss: 2.3780
+  Epoch [5/250]  loss: 2.1526  accuracy: 50.18%  val_loss: 2.2994
+  Epoch [6/250]  loss: 2.0637  accuracy: 52.38%  val_loss: 2.2381
+  Epoch [7/250]  loss: 2.0028  accuracy: 53.62%  val_loss: 2.1882
+  Epoch [8/250]  loss: 1.9618  accuracy: 53.21%  val_loss: 2.1442
+  Epoch [9/250]  loss: 1.9180  accuracy: 54.93%  val_loss: 2.1105
+  Backbone unfrozen at epoch 10 with lr=5e-05.
+  Epoch [10/250]  loss: 1.6422  accuracy: 60.96%  val_loss: 1.6804
+  Epoch [11/250]  loss: 1.4315  accuracy: 70.22%  val_loss: 1.5997
+  Epoch [12/250]  loss: 1.2902  accuracy: 76.41%  val_loss: 1.5386
+  Epoch [13/250]  loss: 1.1854  accuracy: 81.62%  val_loss: 1.5189
+  Epoch [14/250]  loss: 1.0915  accuracy: 84.65%  val_loss: 1.4996
+  Epoch [15/250]  loss: 1.0059  accuracy: 88.83%  val_loss: 1.4946
+  Epoch [16/250]  loss: 0.9401  accuracy: 91.77%  val_loss: 1.4876
+  Epoch [17/250]  loss: 0.9121  accuracy: 93.07%  val_loss: 1.4865
+  Epoch [18/250]  loss: 0.8966  accuracy: 94.32%  val_loss: 1.4933
+  Epoch [19/250]  loss: 0.8667  accuracy: 95.66%  val_loss: 1.4713
+  Epoch [20/250]  loss: 0.8361  accuracy: 96.74%  val_loss: 1.4651
+  Epoch [21/250]  loss: 0.8293  accuracy: 97.32%  val_loss: 1.4725
+  Epoch [22/250]  loss: 0.8143  accuracy: 97.64%  val_loss: 1.4796
+  Epoch [23/250]  loss: 0.8037  accuracy: 97.67%  val_loss: 1.4928
+  Epoch [24/250]  loss: 0.8125  accuracy: 97.96%  val_loss: 1.5261
+  Epoch [25/250]  loss: 0.8058  accuracy: 98.31%  val_loss: 1.5171
+  Epoch [26/250]  loss: 0.7946  accuracy: 98.56%  val_loss: 1.5205
+  Epoch [27/250]  loss: 0.7779  accuracy: 98.82%  val_loss: 1.5086
+  Epoch [28/250]  loss: 0.7717  accuracy: 99.33%  val_loss: 1.5268
+  Epoch [29/250]  loss: 0.7727  accuracy: 98.85%  val_loss: 1.5026
+  Epoch [30/250]  loss: 0.7726  accuracy: 98.95%  val_loss: 1.4994
+  Epoch [31/250]  loss: 0.7761  accuracy: 98.60%  val_loss: 1.5512
+  Epoch [32/250]  loss: 0.7773  accuracy: 98.72%  val_loss: 1.5185
+  Epoch [33/250]  loss: 0.7604  accuracy: 99.43%  val_loss: 1.5146
+  Epoch [34/250]  loss: 0.7663  accuracy: 99.01%  val_loss: 1.5018
+  Epoch [35/250]  loss: 0.7755  accuracy: 98.60%  val_loss: 1.5220
+  Epoch [36/250]  loss: 0.7600  accuracy: 99.27%  val_loss: 1.5146
+  Epoch [37/250]  loss: 0.7529  accuracy: 99.52%  val_loss: 1.4906
+  Epoch [38/250]  loss: 0.7556  accuracy: 99.27%  val_loss: 1.4864
+  Epoch [39/250]  loss: 0.7514  accuracy: 99.52%  val_loss: 1.4866
+  Epoch [40/250]  loss: 0.7562  accuracy: 99.14%  val_loss: 1.5393
+  Epoch [41/250]  loss: 0.7488  accuracy: 99.43%  val_loss: 1.5336
+  Epoch [42/250]  loss: 0.7590  accuracy: 99.36%  val_loss: 1.5269
+  Epoch [43/250]  loss: 0.7527  accuracy: 99.33%  val_loss: 1.5207
+  Epoch [44/250]  loss: 0.7578  accuracy: 99.07%  val_loss: 1.5343
+  Epoch [45/250]  loss: 0.7545  accuracy: 99.23%  val_loss: 1.5135
+  Epoch [46/250]  loss: 0.7533  accuracy: 99.43%  val_loss: 1.5264
+  Epoch [47/250]  loss: 0.7457  accuracy: 99.17%  val_loss: 1.5513
+  Epoch [48/250]  loss: 0.7491  accuracy: 99.46%  val_loss: 1.5344
+  Epoch [49/250]  loss: 0.7488  accuracy: 99.43%  val_loss: 1.5565
+  Epoch [50/250]  loss: 0.7417  accuracy: 99.71%  val_loss: 1.5441
+  Epoch [51/250]  loss: 0.7433  accuracy: 99.52%  val_loss: 1.5551
+  Epoch [52/250]  loss: 0.7460  accuracy: 99.62%  val_loss: 1.5970
+  Epoch [53/250]  loss: 0.7420  accuracy: 99.46%  val_loss: 1.5385
+  Epoch [54/250]  loss: 0.7470  accuracy: 99.39%  val_loss: 1.5672
+  Epoch [55/250]  loss: 0.7412  accuracy: 99.59%  val_loss: 1.5158
+  Epoch [56/250]  loss: 0.7427  accuracy: 99.65%  val_loss: 1.5319
+  Epoch [57/250]  loss: 0.7374  accuracy: 99.65%  val_loss: 1.5641
+  Epoch [58/250]  loss: 0.7373  accuracy: 99.62%  val_loss: 1.5863
+  Epoch [59/250]  loss: 0.7371  accuracy: 99.65%  val_loss: 1.6031
+  Epoch [60/250]  loss: 0.7336  accuracy: 99.71%  val_loss: 1.5676
+  Epoch [61/250]  loss: 0.7468  accuracy: 99.39%  val_loss: 1.5852
+  Epoch [62/250]  loss: 0.7335  accuracy: 99.68%  val_loss: 1.5596
+  Epoch [63/250]  loss: 0.7302  accuracy: 99.71%  val_loss: 1.6014
+  Epoch [64/250]  loss: 0.7335  accuracy: 99.59%  val_loss: 1.6114
+  Epoch [65/250]  loss: 0.7454  accuracy: 99.43%  val_loss: 1.5913
+  Epoch [66/250]  loss: 0.7329  accuracy: 99.65%  val_loss: 1.6023
+  Epoch [67/250]  loss: 0.7319  accuracy: 99.74%  val_loss: 1.6310
+  Epoch [68/250]  loss: 0.7337  accuracy: 99.74%  val_loss: 1.6015
+  Epoch [69/250]  loss: 0.7371  accuracy: 99.49%  val_loss: 1.6489
+  Epoch [70/250]  loss: 0.7374  accuracy: 99.59%  val_loss: 1.6181
+  Early stopping triggered after 70 epochs (no improvement for 50 epochs).
+
+  Fold 5 result: val_loss: 1.4651  val_accuracy: 74.94%
+
+======================================================================
+Cross-Validation Summary
+======================================================================
+    Fold      Val Loss      Val Accuracy
+  ----------------------------------------
+       1        1.3632            72.77%
+       2        1.2963            76.63%
+       3        1.2779            77.01%
+       4        1.4961            72.98%
+       5        1.4651            74.94%
+  ----------------------------------------
+    Mean        1.3797 ± 0.0980        74.87% ± 1.98%
+======================================================================
+
+  Max fold epochs: 250  →  Final model will train for 275 epochs (+10%)
+
+Training final model on the full train+val pool...
+----------------------------------------------------------------------
+  Epoch [1/275]  loss: 2.5593  accuracy: 18.69%
+  Epoch [2/275]  loss: 2.4386  accuracy: 37.92%
+  Epoch [3/275]  loss: 2.2941  accuracy: 44.52%
+  Epoch [4/275]  loss: 2.1581  accuracy: 48.40%
+  Epoch [5/275]  loss: 2.0659  accuracy: 50.22%
+  Epoch [6/275]  loss: 1.9926  accuracy: 51.62%
+  Epoch [7/275]  loss: 1.9287  accuracy: 53.44%
+  Epoch [8/275]  loss: 1.8844  accuracy: 53.98%
+  Epoch [9/275]  loss: 1.8529  accuracy: 55.43%
+  Backbone unfrozen at epoch 10 with lr=5e-05.
+  Epoch [10/275]  loss: 1.5993  accuracy: 62.44%
+  Epoch [11/275]  loss: 1.4102  accuracy: 70.75%
+  Epoch [12/275]  loss: 1.2786  accuracy: 77.01%
+  Epoch [13/275]  loss: 1.1756  accuracy: 81.74%
+  Epoch [14/275]  loss: 1.0840  accuracy: 86.04%
+  Epoch [15/275]  loss: 1.0004  accuracy: 89.90%
+  Epoch [16/275]  loss: 0.9449  accuracy: 92.15%
+  Epoch [17/275]  loss: 0.9155  accuracy: 93.20%
+  Epoch [18/275]  loss: 0.8864  accuracy: 94.76%
+  Epoch [19/275]  loss: 0.8578  accuracy: 95.58%
+  Epoch [20/275]  loss: 0.8326  accuracy: 96.65%
+  Epoch [21/275]  loss: 0.8200  accuracy: 97.29%
+  Epoch [22/275]  loss: 0.8166  accuracy: 97.21%
+  Epoch [23/275]  loss: 0.7937  accuracy: 98.39%
+  Epoch [24/275]  loss: 0.7957  accuracy: 98.39%
+  Epoch [25/275]  loss: 0.8014  accuracy: 97.83%
+  Epoch [26/275]  loss: 0.7991  accuracy: 98.39%
+  Epoch [27/275]  loss: 0.7822  accuracy: 98.75%
+  Epoch [28/275]  loss: 0.7843  accuracy: 98.64%
+  Epoch [29/275]  loss: 0.7743  accuracy: 98.70%
+  Epoch [30/275]  loss: 0.7603  accuracy: 99.00%
+  Epoch [31/275]  loss: 0.7664  accuracy: 99.05%
+  Epoch [32/275]  loss: 0.7669  accuracy: 98.93%
+  Epoch [33/275]  loss: 0.7770  accuracy: 98.44%
+  Epoch [34/275]  loss: 0.7612  accuracy: 99.18%
+  Epoch [35/275]  loss: 0.7556  accuracy: 99.34%
+  Epoch [36/275]  loss: 0.7638  accuracy: 99.44%
+  Epoch [37/275]  loss: 0.7730  accuracy: 98.90%
+  Epoch [38/275]  loss: 0.7538  accuracy: 99.31%
+  Epoch [39/275]  loss: 0.7469  accuracy: 99.46%
+  Epoch [40/275]  loss: 0.7521  accuracy: 99.28%
+  Epoch [41/275]  loss: 0.7597  accuracy: 99.34%
+  Epoch [42/275]  loss: 0.7546  accuracy: 99.18%
+  Epoch [43/275]  loss: 0.7562  accuracy: 99.23%
+  Epoch [44/275]  loss: 0.7446  accuracy: 99.57%
+  Epoch [45/275]  loss: 0.7532  accuracy: 99.39%
+  Epoch [46/275]  loss: 0.7506  accuracy: 99.41%
+  Epoch [47/275]  loss: 0.7571  accuracy: 99.21%
+  Epoch [48/275]  loss: 0.7516  accuracy: 99.31%
+  Epoch [49/275]  loss: 0.7470  accuracy: 99.54%
+  Epoch [50/275]  loss: 0.7496  accuracy: 99.41%
+  Epoch [51/275]  loss: 0.7501  accuracy: 99.26%
+  Epoch [52/275]  loss: 0.7462  accuracy: 99.39%
+  Epoch [53/275]  loss: 0.7393  accuracy: 99.46%
+  Epoch [54/275]  loss: 0.7347  accuracy: 99.49%
+  Epoch [55/275]  loss: 0.7416  accuracy: 99.59%
+  Epoch [56/275]  loss: 0.7372  accuracy: 99.51%
+  Epoch [57/275]  loss: 0.7419  accuracy: 99.51%
+  Epoch [58/275]  loss: 0.7458  accuracy: 99.26%
+  Epoch [59/275]  loss: 0.7448  accuracy: 99.28%
+  Epoch [60/275]  loss: 0.7421  accuracy: 99.28%
+  Epoch [61/275]  loss: 0.7411  accuracy: 99.69%
+  Epoch [62/275]  loss: 0.7329  accuracy: 99.54%
+  Epoch [63/275]  loss: 0.7446  accuracy: 99.51%
+  Epoch [64/275]  loss: 0.7395  accuracy: 99.36%
+  Epoch [65/275]  loss: 0.7420  accuracy: 99.44%
+  Epoch [66/275]  loss: 0.7316  accuracy: 99.85%
+  Epoch [67/275]  loss: 0.7341  accuracy: 99.49%
+  Epoch [68/275]  loss: 0.7351  accuracy: 99.46%
+  Epoch [69/275]  loss: 0.7579  accuracy: 99.23%
+  Epoch [70/275]  loss: 0.7442  accuracy: 99.23%
+  Epoch [71/275]  loss: 0.7375  accuracy: 99.49%
+  Epoch [72/275]  loss: 0.7316  accuracy: 99.67%
+  Epoch [73/275]  loss: 0.7399  accuracy: 99.57%
+  Epoch [74/275]  loss: 0.7353  accuracy: 99.62%
+  Epoch [75/275]  loss: 0.7340  accuracy: 99.59%
+  Epoch [76/275]  loss: 0.7343  accuracy: 99.67%
+  Epoch [77/275]  loss: 0.7381  accuracy: 99.54%
+  Epoch [78/275]  loss: 0.7435  accuracy: 99.39%
+  Epoch [79/275]  loss: 0.7435  accuracy: 99.46%
+  Epoch [80/275]  loss: 0.7337  accuracy: 99.62%
+  Epoch [81/275]  loss: 0.7329  accuracy: 99.59%
+  Epoch [82/275]  loss: 0.7301  accuracy: 99.62%
+  Epoch [83/275]  loss: 0.7311  accuracy: 99.67%
+  Epoch [84/275]  loss: 0.7300  accuracy: 99.62%
+  Epoch [85/275]  loss: 0.7279  accuracy: 99.67%
+  Epoch [86/275]  loss: 0.7324  accuracy: 99.72%
+  Epoch [87/275]  loss: 0.7265  accuracy: 99.64%
+  Epoch [88/275]  loss: 0.7330  accuracy: 99.41%
+  Epoch [89/275]  loss: 0.7263  accuracy: 99.62%
+  Epoch [90/275]  loss: 0.7311  accuracy: 99.54%
+  Epoch [91/275]  loss: 0.7317  accuracy: 99.64%
+  Epoch [92/275]  loss: 0.7289  accuracy: 99.74%
+  Epoch [93/275]  loss: 0.7315  accuracy: 99.54%
+  Epoch [94/275]  loss: 0.7328  accuracy: 99.51%
+  Epoch [95/275]  loss: 0.7349  accuracy: 99.39%
+  Epoch [96/275]  loss: 0.7419  accuracy: 99.39%
+  Epoch [97/275]  loss: 0.7373  accuracy: 99.67%
+  Epoch [98/275]  loss: 0.7340  accuracy: 99.64%
+  Epoch [99/275]  loss: 0.7314  accuracy: 99.74%
+  Epoch [100/275]  loss: 0.7271  accuracy: 99.74%
+  Epoch [101/275]  loss: 0.7315  accuracy: 99.64%
+  Epoch [102/275]  loss: 0.7305  accuracy: 99.67%
+  Epoch [103/275]  loss: 0.7323  accuracy: 99.67%
+  Epoch [104/275]  loss: 0.7217  accuracy: 99.85%
+  Epoch [105/275]  loss: 0.7274  accuracy: 99.82%
+  Epoch [106/275]  loss: 0.7320  accuracy: 99.57%
+  Epoch [107/275]  loss: 0.7318  accuracy: 99.69%
+  Epoch [108/275]  loss: 0.7245  accuracy: 99.77%
+  Epoch [109/275]  loss: 0.7258  accuracy: 99.77%
+  Epoch [110/275]  loss: 0.7237  accuracy: 99.80%
+  Epoch [111/275]  loss: 0.7268  accuracy: 99.69%
+  Epoch [112/275]  loss: 0.7297  accuracy: 99.72%
+  Epoch [113/275]  loss: 0.7346  accuracy: 99.67%
+  Epoch [114/275]  loss: 0.7280  accuracy: 99.64%
+  Epoch [115/275]  loss: 0.7276  accuracy: 99.69%
+  Epoch [116/275]  loss: 0.7345  accuracy: 99.51%
+  Epoch [117/275]  loss: 0.7295  accuracy: 99.64%
+  Epoch [118/275]  loss: 0.7225  accuracy: 99.85%
+  Epoch [119/275]  loss: 0.7258  accuracy: 99.80%
+  Epoch [120/275]  loss: 0.7290  accuracy: 99.64%
+  Epoch [121/275]  loss: 0.7277  accuracy: 99.64%
+  Epoch [122/275]  loss: 0.7282  accuracy: 99.77%
+  Epoch [123/275]  loss: 0.7240  accuracy: 99.82%
+  Epoch [124/275]  loss: 0.7269  accuracy: 99.69%
+  Epoch [125/275]  loss: 0.7237  accuracy: 99.64%
+  Epoch [126/275]  loss: 0.7301  accuracy: 99.57%
+  Epoch [127/275]  loss: 0.7258  accuracy: 99.72%
+  Epoch [128/275]  loss: 0.7259  accuracy: 99.69%
+  Epoch [129/275]  loss: 0.7263  accuracy: 99.64%
+  Epoch [130/275]  loss: 0.7322  accuracy: 99.59%
+  Epoch [131/275]  loss: 0.7323  accuracy: 99.51%
+  Epoch [132/275]  loss: 0.7230  accuracy: 99.69%
+  Epoch [133/275]  loss: 0.7210  accuracy: 99.85%
+  Epoch [134/275]  loss: 0.7264  accuracy: 99.69%
+  Epoch [135/275]  loss: 0.7307  accuracy: 99.54%
+  Epoch [136/275]  loss: 0.7246  accuracy: 99.64%
+  Epoch [137/275]  loss: 0.7236  accuracy: 99.69%
+  Epoch [138/275]  loss: 0.7255  accuracy: 99.77%
+  Epoch [139/275]  loss: 0.7245  accuracy: 99.74%
+  Epoch [140/275]  loss: 0.7201  accuracy: 99.87%
+  Epoch [141/275]  loss: 0.7208  accuracy: 99.87%
+  Epoch [142/275]  loss: 0.7208  accuracy: 99.87%
+  Epoch [143/275]  loss: 0.7267  accuracy: 99.62%
+  Epoch [144/275]  loss: 0.7234  accuracy: 99.87%
+  Epoch [145/275]  loss: 0.7196  accuracy: 99.80%
+  Epoch [146/275]  loss: 0.7240  accuracy: 99.59%
+  Epoch [147/275]  loss: 0.7222  accuracy: 99.67%
+  Epoch [148/275]  loss: 0.7285  accuracy: 99.57%
+  Epoch [149/275]  loss: 0.7337  accuracy: 99.54%
+  Epoch [150/275]  loss: 0.7253  accuracy: 99.77%
+  Epoch [151/275]  loss: 0.7230  accuracy: 99.72%
+  Epoch [152/275]  loss: 0.7385  accuracy: 99.21%
+  Epoch [153/275]  loss: 0.7304  accuracy: 99.59%
+  Epoch [154/275]  loss: 0.7242  accuracy: 99.59%
+  Epoch [155/275]  loss: 0.7268  accuracy: 99.67%
+  Epoch [156/275]  loss: 0.7231  accuracy: 99.74%
+  Epoch [157/275]  loss: 0.7234  accuracy: 99.74%
+  Epoch [158/275]  loss: 0.7213  accuracy: 99.87%
+  Epoch [159/275]  loss: 0.7255  accuracy: 99.74%
+  Epoch [160/275]  loss: 0.7271  accuracy: 99.64%
+  Epoch [161/275]  loss: 0.7240  accuracy: 99.67%
+  Epoch [162/275]  loss: 0.7301  accuracy: 99.62%
+  Epoch [163/275]  loss: 0.7245  accuracy: 99.92%
+  Epoch [164/275]  loss: 0.7248  accuracy: 99.74%
+  Epoch [165/275]  loss: 0.7232  accuracy: 99.87%
+  Epoch [166/275]  loss: 0.7206  accuracy: 99.92%
+  Epoch [167/275]  loss: 0.7204  accuracy: 99.90%
+  Epoch [168/275]  loss: 0.7197  accuracy: 99.90%
+  Epoch [169/275]  loss: 0.7211  accuracy: 99.85%
+  Epoch [170/275]  loss: 0.7187  accuracy: 99.72%
+  Epoch [171/275]  loss: 0.7286  accuracy: 99.72%
+  Epoch [172/275]  loss: 0.7340  accuracy: 99.46%
+  Epoch [173/275]  loss: 0.7282  accuracy: 99.67%
+  Epoch [174/275]  loss: 0.7274  accuracy: 99.57%
+  Epoch [175/275]  loss: 0.7248  accuracy: 99.77%
+  Epoch [176/275]  loss: 0.7210  accuracy: 99.87%
+  Epoch [177/275]  loss: 0.7208  accuracy: 99.74%
+  Epoch [178/275]  loss: 0.7233  accuracy: 99.77%
+  Epoch [179/275]  loss: 0.7307  accuracy: 99.64%
+  Epoch [180/275]  loss: 0.7188  accuracy: 99.87%
+  Epoch [181/275]  loss: 0.7203  accuracy: 99.74%
+  Epoch [182/275]  loss: 0.7233  accuracy: 99.64%
+  Epoch [183/275]  loss: 0.7266  accuracy: 99.62%
+  Epoch [184/275]  loss: 0.7209  accuracy: 99.82%
+  Epoch [185/275]  loss: 0.7226  accuracy: 99.87%
+  Epoch [186/275]  loss: 0.7197  accuracy: 99.85%
+  Epoch [187/275]  loss: 0.7197  accuracy: 99.82%
+  Epoch [188/275]  loss: 0.7216  accuracy: 99.64%
+  Epoch [189/275]  loss: 0.7208  accuracy: 99.69%
+  Epoch [190/275]  loss: 0.7244  accuracy: 99.69%
+  Epoch [191/275]  loss: 0.7210  accuracy: 99.80%
+  Epoch [192/275]  loss: 0.7207  accuracy: 99.74%
+  Epoch [193/275]  loss: 0.7213  accuracy: 99.80%
+  Epoch [194/275]  loss: 0.7236  accuracy: 99.77%
+  Epoch [195/275]  loss: 0.7222  accuracy: 99.80%
+  Epoch [196/275]  loss: 0.7260  accuracy: 99.72%
+  Epoch [197/275]  loss: 0.7250  accuracy: 99.80%
+  Epoch [198/275]  loss: 0.7281  accuracy: 99.59%
+  Epoch [199/275]  loss: 0.7240  accuracy: 99.57%
+  Epoch [200/275]  loss: 0.7236  accuracy: 99.85%
+  Epoch [201/275]  loss: 0.7238  accuracy: 99.69%
+  Epoch [202/275]  loss: 0.7289  accuracy: 99.72%
+  Epoch [203/275]  loss: 0.7248  accuracy: 99.69%
+  Epoch [204/275]  loss: 0.7212  accuracy: 99.82%
+  Epoch [205/275]  loss: 0.7263  accuracy: 99.74%
+  Epoch [206/275]  loss: 0.7263  accuracy: 99.72%
+  Epoch [207/275]  loss: 0.7209  accuracy: 99.85%
+  Epoch [208/275]  loss: 0.7215  accuracy: 99.74%
+  Epoch [209/275]  loss: 0.7210  accuracy: 99.87%
+  Epoch [210/275]  loss: 0.7218  accuracy: 99.87%
+  Epoch [211/275]  loss: 0.7242  accuracy: 99.80%
+  Epoch [212/275]  loss: 0.7159  accuracy: 99.87%
+  Epoch [213/275]  loss: 0.7272  accuracy: 99.80%
+  Epoch [214/275]  loss: 0.7233  accuracy: 99.80%
+  Epoch [215/275]  loss: 0.7240  accuracy: 99.85%
+  Epoch [216/275]  loss: 0.7218  accuracy: 99.77%
+  Epoch [217/275]  loss: 0.7220  accuracy: 99.77%
+  Epoch [218/275]  loss: 0.7206  accuracy: 99.77%
+  Epoch [219/275]  loss: 0.7204  accuracy: 99.74%
+  Epoch [220/275]  loss: 0.7179  accuracy: 99.80%
+  Epoch [221/275]  loss: 0.7272  accuracy: 99.62%
+  Epoch [222/275]  loss: 0.7255  accuracy: 99.67%
+  Epoch [223/275]  loss: 0.7209  accuracy: 99.90%
+  Epoch [224/275]  loss: 0.7189  accuracy: 99.90%
+  Epoch [225/275]  loss: 0.7220  accuracy: 99.87%
+  Epoch [226/275]  loss: 0.7278  accuracy: 99.62%
+  Epoch [227/275]  loss: 0.7276  accuracy: 99.41%
+  Epoch [228/275]  loss: 0.7241  accuracy: 99.67%
+  Epoch [229/275]  loss: 0.7203  accuracy: 99.74%
+  Epoch [230/275]  loss: 0.7247  accuracy: 99.77%
+  Epoch [231/275]  loss: 0.7269  accuracy: 99.62%
+  Epoch [232/275]  loss: 0.7240  accuracy: 99.64%
+  Epoch [233/275]  loss: 0.7201  accuracy: 99.77%
+  Epoch [234/275]  loss: 0.7228  accuracy: 99.90%
+  Epoch [235/275]  loss: 0.7168  accuracy: 99.90%
+  Epoch [236/275]  loss: 0.7200  accuracy: 99.82%
+  Epoch [237/275]  loss: 0.7293  accuracy: 99.74%
+  Epoch [238/275]  loss: 0.7204  accuracy: 99.80%
+  Epoch [239/275]  loss: 0.7210  accuracy: 99.80%
+  Epoch [240/275]  loss: 0.7203  accuracy: 99.80%
+  Epoch [241/275]  loss: 0.7217  accuracy: 99.74%
+  Epoch [242/275]  loss: 0.7172  accuracy: 99.77%
+  Epoch [243/275]  loss: 0.7184  accuracy: 99.85%
+  Epoch [244/275]  loss: 0.7250  accuracy: 99.74%
+  Epoch [245/275]  loss: 0.7233  accuracy: 99.69%
+  Epoch [246/275]  loss: 0.7240  accuracy: 99.69%
+  Epoch [247/275]  loss: 0.7173  accuracy: 99.82%
+  Epoch [248/275]  loss: 0.7180  accuracy: 99.87%
+  Epoch [249/275]  loss: 0.7195  accuracy: 99.85%
+  Epoch [250/275]  loss: 0.7270  accuracy: 99.74%
+  Epoch [251/275]  loss: 0.7213  accuracy: 99.85%
+  Epoch [252/275]  loss: 0.7225  accuracy: 99.72%
+  Epoch [253/275]  loss: 0.7256  accuracy: 99.64%
+  Epoch [254/275]  loss: 0.7246  accuracy: 99.74%
+  Epoch [255/275]  loss: 0.7219  accuracy: 99.74%
+  Epoch [256/275]  loss: 0.7198  accuracy: 99.82%
+  Epoch [257/275]  loss: 0.7174  accuracy: 99.80%
+  Epoch [258/275]  loss: 0.7148  accuracy: 99.95%
+  Epoch [259/275]  loss: 0.7213  accuracy: 99.77%
+  Epoch [260/275]  loss: 0.7179  accuracy: 99.72%
+  Epoch [261/275]  loss: 0.7208  accuracy: 99.82%
+  Epoch [262/275]  loss: 0.7210  accuracy: 99.90%
+  Epoch [263/275]  loss: 0.7217  accuracy: 99.77%
+  Epoch [264/275]  loss: 0.7206  accuracy: 99.92%
+  Epoch [265/275]  loss: 0.7226  accuracy: 99.74%
+  Epoch [266/275]  loss: 0.7220  accuracy: 99.69%
+  Epoch [267/275]  loss: 0.7146  accuracy: 99.92%
+  Epoch [268/275]  loss: 0.7179  accuracy: 99.87%
+  Epoch [269/275]  loss: 0.7187  accuracy: 99.72%
+  Epoch [270/275]  loss: 0.7199  accuracy: 99.74%
+  Epoch [271/275]  loss: 0.7199  accuracy: 99.82%
+  Epoch [272/275]  loss: 0.7199  accuracy: 99.77%
+  Epoch [273/275]  loss: 0.7231  accuracy: 99.80%
+  Epoch [274/275]  loss: 0.7195  accuracy: 99.80%
+  Epoch [275/275]  loss: 0.7224  accuracy: 99.85%
+
+======================================================================
+Testing
+======================================================================
+  Test accuracy: 75.23%
+
+  Class                      Samples  Precision   Recall       F1
+  ---------------------------------------------------------------
+  Cabernet Sauvignon             29     0.5278   0.6552   0.5846
+  Chardonnay                     32     0.6098   0.7812   0.6849
+  Cider                          59     0.7333   0.7458   0.7395
+  IPA                            50     0.5606   0.7400   0.6379
+  Lager                          39     0.8261   0.4872   0.6129
+  Malbec                         24     0.4000   0.3333   0.3636
+  Pinot Noir                     23     0.6500   0.5652   0.6047
+  Sauvignon blanc                31     0.7083   0.5484   0.6182
+  Stout                          69     0.9041   0.9565   0.9296
+  Wheat                          63     0.8276   0.7619   0.7934
+  orange wine                    33     0.8710   0.8182   0.8438
+  rose wine                      89     0.9438   0.9438   0.9438
+
+  Checkpoint saved to results/v27/checkpoint.pth
+  Results saved to results/v27/results.json
+Parsing log: results/v27/slurm_364920.out
+Mode: cross_validation  |  Folds: 2  |  Total epochs parsed: 136
+Plot saved to: results/v27/training_curves.png
+
+================================================================================
+  RESULTS — 2026-04-26T01:03:41.071786
+  Model: AdamW lr=5e-05  epochs=250  batch=16
+  Val accuracy: 0.7487   Test accuracy: 0.7523   Val loss: 1.3797
+================================================================================
+                 Class   Samples     TP     FN     FP      TN   Precision    Recall        F1       IoU       AUC
+-----------------------------------------------------------------------------------------------------------------
+Chardonnay                    32     25      7     16     493      0.6098    0.7812    0.6849    0.5208    0.8107
+Sauvignon blanc               31     17     14      7     503      0.7083    0.5484    0.6182    0.4474    0.6662
+orange wine                   33     27      6      4     504      0.8710    0.8182    0.8438    0.7298    0.9043
+rose wine                     89     84      5      5     447      0.9438    0.9438    0.9438    0.8936    0.9762
+Cabernet Sauvignon            29     19     10     17     495      0.5278    0.6552    0.5846    0.4130    0.7419
+Malbec                        24      8     16     12     505      0.4000    0.3333    0.3636    0.2222    0.5307
+Pinot Noir                    23     13     10      7     511      0.6500    0.5652    0.6047    0.4334    0.6401
+Wheat                         63     48     15     10     468      0.8276    0.7619    0.7934    0.6576    0.9351
+Cider                         59     44     15     16     466      0.7333    0.7458    0.7395    0.5867    0.9471
+IPA                           50     37     13     29     462      0.5606    0.7400    0.6379    0.4683    0.9344
+Lager                         39     19     20      4     498      0.8261    0.4872    0.6129    0.4419    0.9052
+Stout                         69     66      3      7     465      0.9041    0.9565    0.9296    0.8685    0.9742
+-----------------------------------------------------------------------------------------------------------------
+
+  Macro Avg  — Precision: 0.7135  Recall: 0.6947  F1: 0.6964  IoU: 0.5569
+
+Saved: per_class_metrics.csv
+Saved: plot_1_metrics_bar_chart.png
+Saved: plot_2_summary_scorecards.png
+Saved: plot_3_iou_vs_f1_scatter.png
+Saved: plot_4_experiment_config.png
+Saved: plot_5_confusion_matrix.png
+
+Done.

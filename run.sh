@@ -13,7 +13,6 @@ conda activate cs236781-hw
 export LD_PRELOAD=/home/eddiecohanim/miniconda3/envs/cs236781-hw/lib/libstdc++.so.6
 python -u main.py
 
-# Move slurm logs into the versioned results folder that main.py just created
 LATEST_VERSION=$(ls -td results/v*/ 2>/dev/null | head -1)
 if [ -n "$LATEST_VERSION" ]; then
     mv "results/slurm_${SLURM_JOB_ID}.out" "$LATEST_VERSION" 2>/dev/null

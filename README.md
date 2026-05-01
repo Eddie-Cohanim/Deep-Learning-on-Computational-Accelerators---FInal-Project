@@ -50,7 +50,9 @@ dataset/
 
 ## YOLO Preprocessing Pipeline
 
-Raw images contain backgrounds, cluttered scenes, and irrelevant objects. This pipeline detects the glass or bottle in each image using YOLO, crops it out, and leaves you with a clean dataset. Run these steps in order from the project root.
+Raw images contain backgrounds, cluttered scenes, and irrelevant objects. This pipeline detects the glass or bottle in each image using YOLO, crops it out, and leaves you with a clean dataset.
+
+The utility scripts accept all paths as arguments and can be run from anywhere. The exception is `rename_images.py`, which locates the dataset relative to its own file location and always resolves correctly regardless of where you call it from.
 
 ---
 
@@ -128,7 +130,7 @@ Move the `cropped images/` folder into `dataset/`, then run:
 python utilities/rename_images.py
 ```
 
-This standardizes filenames to `{class_name}{index}.png` across the whole cropped dataset.
+This standardizes filenames to `{class_name}{index}.png` across the whole cropped dataset. The script resolves the dataset path relative to its own location, so it works correctly regardless of where you call it from.
 
 ---
 
@@ -137,18 +139,19 @@ This standardizes filenames to `{class_name}{index}.png` across the whole croppe
 Split the cropped images into train/val/test:
 
 ```bash
-python utilities/dataset_splitter.py
+python utilities/dataset_splitter.py --source <path> --dest <path> --train 80
 ```
 
-Open the script first and set the split ratios and source/destination paths to match your setup. The output is the `dataset/` structure training expects.
+Pass the source folder (your cropped images) and destination (where `train/`, `val/`, `test/` will be created). The output is the `dataset/` structure training expects.
 
 ---
 
 ## Running Training
 
-Once the dataset is in place and `config.json` is set up:
+**`main.py` must be run from the project root.** It resolves `config.json`, `dataset/`, and `results/` relative to the working directory.
 
 ```bash
+cd /path/to/project
 python main.py
 ```
 
@@ -156,7 +159,7 @@ The script validates the dataset structure, builds the model, runs training (wit
 
 ### Submitting to a SLURM Cluster
 
-Two scripts are provided for submitting jobs via SLURM.
+Both scripts `cd` into the project directory themselves, so they can be submitted from anywhere on the server.
 
 **`run.sh`** — trains the model on a GPU node:
 

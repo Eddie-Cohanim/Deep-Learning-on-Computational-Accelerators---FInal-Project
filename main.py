@@ -232,7 +232,7 @@ def _run_cross_validation(
         image_normalization_mean=model_config["image_normalization_mean"],
         image_normalization_std=model_config["image_normalization_std"],
         batch_size=training_config["batch_size"],
-        num_dataloader_workers=training_config["num_dataloader_workers"],
+        num_workers=training_config["num_dataloader_workers"],
         model_factory=model_factory,
     )
 

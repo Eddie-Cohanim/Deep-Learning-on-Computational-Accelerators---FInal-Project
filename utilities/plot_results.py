@@ -324,7 +324,7 @@ def resolve_target(target_argument: Optional[str]) -> tuple:
       - Path to a results version directory (e.g. results/v9)
       - None → uses the most recently modified version directory
     """
-    base_results_dir = Path(__file__).parent / "results"
+    base_results_dir = Path(__file__).parent.parent / "results"
 
     if target_argument is None:
         version_directories = [
@@ -339,8 +339,8 @@ def resolve_target(target_argument: Optional[str]) -> tuple:
 
     target_path = Path(target_argument)
     if not target_path.is_absolute():
-        # Try relative to script location first, then CWD
-        relative_to_script = Path(__file__).parent / target_path
+        # Try relative to project root first, then CWD
+        relative_to_script = Path(__file__).parent.parent / target_path
         if relative_to_script.exists():
             target_path = relative_to_script
 
@@ -363,27 +363,13 @@ def resolve_target(target_argument: Optional[str]) -> tuple:
 
 
 def main() -> None:
-    argument_parser = argparse.ArgumentParser(
-        description="Plot training curves (loss, val loss, train accuracy) from a Slurm training log."
-    )
-    argument_parser.add_argument(
-        "target",
-        nargs="?",
-        default=None,
-        help=(
-            "Path to a results.json file, a .out log file, a results version directory "
-            "(e.g. results/v9), or omit to auto-select the most recent version."
-        ),
-    )
-    argument_parser.add_argument(
-        "--output",
-        default=None,
-        help="Output image file path. Defaults to <results_dir>/training_curves.png",
-    )
-    parsed_args = argument_parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("target", nargs="?", default=None)
+    parser.add_argument("--output", default=None)
+    args = parser.parse_args()
 
     try:
-        results_directory, log_file_path = resolve_target(parsed_args.target)
+        results_directory, log_file_path = resolve_target(args.target)
     except (FileNotFoundError, ValueError) as resolution_error:
         print(f"Error: {resolution_error}", file=sys.stderr)
         sys.exit(1)
@@ -402,7 +388,7 @@ def main() -> None:
         f"Total epochs parsed: {total_epoch_count}"
     )
 
-    output_image_path = Path(parsed_args.output) if parsed_args.output else results_directory / "training_curves.png"
+    output_image_path = Path(args.output) if args.output else results_directory / "training_curves.png"
     plot_training_curves(parsed_data, results_json, output_image_path, version_label)
 
 

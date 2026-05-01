@@ -297,30 +297,11 @@ def run_visualization(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Visualize YOLO detections by drawing bounding boxes on images."
-    )
-    parser.add_argument(
-        "detections_json",
-        help="Path to the JSON detections file produced by yolo_detector.py.",
-    )
-    parser.add_argument(
-        "--output-folder", "-o",
-        default=None,
-        help="Folder to save annotated images. Defaults to a 'visualized' subfolder next to the JSON file.",
-    )
-    parser.add_argument(
-        "--box-thickness", "-t",
-        type=int,
-        default=3,
-        help="Pixel width of the bounding box borders. Default: 3",
-    )
-    parser.add_argument(
-        "--font-size", "-f",
-        type=int,
-        default=16,
-        help="Font size for class label text. Default: 16",
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("detections_json")
+    parser.add_argument("--output-folder", "-o", default=None)
+    parser.add_argument("--box-thickness", "-t", type=int, default=3)
+    parser.add_argument("--font-size", "-f", type=int, default=16)
 
     args = parser.parse_args()
 

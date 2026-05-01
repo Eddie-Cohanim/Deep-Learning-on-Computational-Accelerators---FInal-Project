@@ -1,8 +1,7 @@
-import os
 import pathlib
 
 
-CROPPED_IMAGES_ROOT = pathlib.Path("dataset") / "cropped images"
+CROPPED_IMAGES_ROOT = pathlib.Path(__file__).parent.parent / "dataset" / "cropped images"
 
 
 def rename_images_in_label_directory(label_directory: pathlib.Path) -> None:

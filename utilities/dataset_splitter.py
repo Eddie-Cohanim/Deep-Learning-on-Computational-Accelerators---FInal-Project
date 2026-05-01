@@ -3,21 +3,10 @@ import pathlib
 import random
 import shutil
 
-from model.Augmentations.augmentation import _SUPPORTED_IMAGE_EXTENSIONS
+_SUPPORTED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp"}
 
 
 class DatasetSplitter:
-    """
-    Splits a folder of class-labelled images into train, validation, and test sets.
-
-    Expects the source folder to contain one subfolder per class, each holding
-    image files:
-        <source_folder>/<class_name>/<image_file>
-
-    Images are shuffled randomly before splitting. The train percentage is
-    specified by the caller; the remainder is divided evenly between val and test.
-    Files are copied to the destination folders, leaving the source untouched.
-    """
 
     def __init__(
         self,
@@ -27,15 +16,6 @@ class DatasetSplitter:
         test_destination_path: pathlib.Path,
         train_percentage: int,
     ) -> None:
-        """
-        :param source_folder_path: Folder containing one subfolder per class.
-        :param train_destination_path: Root destination folder for training images.
-        :param val_destination_path: Root destination folder for validation images.
-        :param test_destination_path: Root destination folder for test images.
-        :param train_percentage: Integer percentage of images assigned to train (e.g. 80).
-            The remaining percentage is split evenly between val and test.
-        :raises ValueError: If train_percentage is not between 1 and 98 inclusive.
-        """
         if not 1 <= train_percentage <= 98:
             raise ValueError(
                 f"train_percentage must be between 1 and 98, got {train_percentage}."
@@ -49,124 +29,67 @@ class DatasetSplitter:
         self._remaining_fraction = (1.0 - self._train_fraction) / 2.0
 
     def split(self) -> None:
-        """
-        Performs the split across all class subfolders found in the source folder.
+        class_dirs = [entry for entry in self._source_folder_path.iterdir() if entry.is_dir()]
 
-        For each class subfolder, all image files are collected, shuffled, then
-        divided into train / val / test according to the configured fractions.
-        Each image is copied into the corresponding destination subfolder.
-
-        Destination class subfolders are created automatically if they do not exist.
-        """
-        class_subfolders = [
-            entry for entry in self._source_folder_path.iterdir()
-            if entry.is_dir()
-        ]
-
-        if not class_subfolders:
+        if not class_dirs:
             print(f"No class subfolders found in {self._source_folder_path}. Nothing to split.")
             return
 
-        for class_folder_path in sorted(class_subfolders):
-            class_name = class_folder_path.name
-            all_image_paths = [
-                file_path
-                for file_path in class_folder_path.iterdir()
-                if file_path.is_file() and file_path.suffix.lower() in _SUPPORTED_IMAGE_EXTENSIONS
+        for class_dir in sorted(class_dirs):
+            name = class_dir.name
+            images = [
+                path for path in class_dir.rglob("*")
+                if path.is_file() and path.suffix.lower() in _SUPPORTED_IMAGE_EXTENSIONS
             ]
 
-            if not all_image_paths:
-                print(f"  [{class_name}] No images found. Skipping.")
+            if not images:
+                print(f"  [{name}] No images found. Skipping.")
                 continue
 
-            random.shuffle(all_image_paths)
+            random.shuffle(images)
 
-            total_image_count = len(all_image_paths)
-            train_cutoff_index = int(total_image_count * self._train_fraction)
-            val_cutoff_index = train_cutoff_index + int(total_image_count * self._remaining_fraction)
+            n_total = len(images)
+            train_end = int(n_total * self._train_fraction)
+            val_end = train_end + int(n_total * self._remaining_fraction)
 
-            train_image_paths = all_image_paths[:train_cutoff_index]
-            val_image_paths = all_image_paths[train_cutoff_index:val_cutoff_index]
-            test_image_paths = all_image_paths[val_cutoff_index:]
+            train_imgs = images[:train_end]
+            val_imgs = images[train_end:val_end]
+            test_imgs = images[val_end:]
 
-            self._copy_images_to_destination(train_image_paths, self._train_destination_path / class_name)
-            self._copy_images_to_destination(val_image_paths, self._val_destination_path / class_name)
-            self._copy_images_to_destination(test_image_paths, self._test_destination_path / class_name)
+            self._copy_to(train_imgs, self._train_destination_path / name)
+            self._copy_to(val_imgs, self._val_destination_path / name)
+            self._copy_to(test_imgs, self._test_destination_path / name)
 
-            print(
-                f"  [{class_name}]  "
-                f"train: {len(train_image_paths)}  "
-                f"val: {len(val_image_paths)}  "
-                f"test: {len(test_image_paths)}"
-            )
+            print(f"  [{name}]  train: {len(train_imgs)}  val: {len(val_imgs)}  test: {len(test_imgs)}")
 
-    def _copy_images_to_destination(
-        self,
-        image_paths: list,
-        destination_folder_path: pathlib.Path,
-    ) -> None:
-        """
-        Copies a list of image files into the given destination folder.
-
-        Creates the destination folder if it does not already exist.
-
-        :param image_paths: List of source image file paths to copy.
-        :param destination_folder_path: Folder to copy the images into.
-        """
-        destination_folder_path.mkdir(parents=True, exist_ok=True)
-        for image_path in image_paths:
-            shutil.copy2(image_path, destination_folder_path / image_path.name)
+    def _copy_to(self, paths: list, dest: pathlib.Path) -> None:
+        dest.mkdir(parents=True, exist_ok=True)
+        for path in paths:
+            shutil.copy2(path, dest / path.name)
 
 
 if __name__ == "__main__":
-    argument_parser = argparse.ArgumentParser(
-        description=(
-            "Split a folder of class-labelled images into train, val, and test sets. "
-            "The source folder must contain one subfolder per class. "
-            "The train percentage is specified; the remainder is split evenly between val and test."
-        )
-    )
-    argument_parser.add_argument(
-        "--source",
-        required=True,
-        help="Path to the source folder containing one subfolder per class.",
-    )
-    argument_parser.add_argument(
-        "--train",
-        required=True,
-        help="Destination path for training images.",
-    )
-    argument_parser.add_argument(
-        "--val",
-        required=True,
-        help="Destination path for validation images.",
-    )
-    argument_parser.add_argument(
-        "--test",
-        required=True,
-        help="Destination path for test images.",
-    )
-    argument_parser.add_argument(
-        "--train-percent",
-        type=int,
-        required=True,
-        help="Integer percentage of images to assign to the training set (e.g. 80).",
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", required=True)
+    parser.add_argument("--train", required=True)
+    parser.add_argument("--val", required=True)
+    parser.add_argument("--test", required=True)
+    parser.add_argument("--train-percent", type=int, required=True)
 
-    parsed_arguments = argument_parser.parse_args()
+    args = parser.parse_args()
 
     splitter = DatasetSplitter(
-        source_folder_path=pathlib.Path(parsed_arguments.source),
-        train_destination_path=pathlib.Path(parsed_arguments.train),
-        val_destination_path=pathlib.Path(parsed_arguments.val),
-        test_destination_path=pathlib.Path(parsed_arguments.test),
-        train_percentage=parsed_arguments.train_percent,
+        source_folder_path=pathlib.Path(args.source),
+        train_destination_path=pathlib.Path(args.train),
+        val_destination_path=pathlib.Path(args.val),
+        test_destination_path=pathlib.Path(args.test),
+        train_percentage=args.train_percent,
     )
 
-    print(f"Splitting dataset from: {parsed_arguments.source}")
-    print(f"  Train ({parsed_arguments.train_percent}%) -> {parsed_arguments.train}")
-    print(f"  Val   ({(100 - parsed_arguments.train_percent) // 2}%) -> {parsed_arguments.val}")
-    print(f"  Test  ({(100 - parsed_arguments.train_percent) // 2}%) -> {parsed_arguments.test}")
+    print(f"Splitting dataset from: {args.source}")
+    print(f"  Train ({args.train_percent}%) -> {args.train}")
+    print(f"  Val   ({(100 - args.train_percent) // 2}%) -> {args.val}")
+    print(f"  Test  ({(100 - args.train_percent) // 2}%) -> {args.test}")
     print()
 
     splitter.split()

@@ -1,7 +1,7 @@
 import json
 import pathlib
 
-from model.Augmentations.augmentations import _SUPPORTED_IMAGE_EXTENSIONS
+_SUPPORTED_IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp"}
 
 
 class DatasetValidationReport:

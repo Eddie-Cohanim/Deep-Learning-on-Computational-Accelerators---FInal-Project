@@ -4,180 +4,184 @@ A convolutional neural network for classifying types of beer and wine from image
 
 ---
 
-## Configuration
+## Setup
 
-All model and training parameters are set in `config.json`. The main pipeline reads this file and passes the values directly to the CNN constructor. No parameters are hardcoded.
+```bash
+pip install -r requirements.txt
+```
 
----
+If you're running the YOLO preprocessing pipeline, you'll also need:
 
-## Model Parameters
-
-### `in_size`
-The shape of a single input image as `[channels, height, width]`.
-- `channels`: `3` for RGB images, `1` for grayscale
-- Common sizes: `[3, 64, 64]`, `[3, 128, 128]`, `[3, 224, 224]`, `[3, 256, 256]`
-- Larger sizes preserve more detail but require more memory and computation
-- All images loaded from disk are automatically resized to match this
-
-### `class_names`
-An ordered list of class label strings. Each entry must exactly match the name of a subfolder in the dataset directory.
-- Example: `["beer_lager", "beer_stout", "wine_red", "wine_white"]`
-- The index of each name is the integer label the model outputs (e.g. `beer_lager = 0`, `beer_stout = 1`)
-- Must be filled in before training — the list is empty by default
-
-### `channels`
-A list of integers defining the number of output channels for each convolutional layer. The length of this list determines the total number of conv layers.
-- Use powers of 2: `16, 32, 64, 128, 256, 512`
-- More channels = more capacity to learn complex patterns, but slower training and more memory
-- A typical progression doubles the channels every few layers: `[32, 32, 64, 64, 128, 128]`
-- Typical range per layer: `16–512`
-
-### `pool_every`
-How many convolutional layers to apply before each pooling step.
-- Example: `2` means pool after every 2 conv layers
-- Must be less than or equal to `len(channels)`
-- Typical range: `1–4`
-- More pooling = faster spatial reduction, smaller feature maps, less memory
-
-### `hidden_dims`
-A list of integers defining the output size of each fully-connected hidden layer in the classifier head. Sits between the flattened feature map and the final output layer.
-- Use powers of 2: `64, 128, 256, 512, 1024`
-- Fewer or smaller dims = less overfitting, faster inference
-- Typical range per layer: `64–1024`
-- Example: `[512, 256]` creates two hidden layers of size 512 and 256
-
-### `activation`
-The activation function applied after each convolutional and hidden linear layer.
-
-| Value | Description |
-|---|---|
-| `relu` | Standard default. Fast and effective. Sets negative values to zero |
-| `lrelu` | Leaky ReLU. Like relu but negative values get a small slope (0.01x). Reduces dead neurons |
-| `tanh` | Squashes output to (-1, 1). Can work well in shallow networks |
-| `sigmoid` | Squashes output to (0, 1). Rarely used in hidden layers |
-| `softmax` | Converts scores to probabilities that sum to 1. Designed for output layers, not hidden layers |
-
-`relu` is recommended for most cases.
-
-### `use_batchnorm`
-Whether to apply Batch Normalization after each convolutional layer.
-- `true` or `false`
-- Batch normalization normalizes the output of each layer, stabilizing and speeding up training
-- Recommended for most cases, especially deeper networks
-
-### `dropout_probability`
-The probability of randomly zeroing out a neuron during training in the classifier head. Acts as a regularizer to reduce overfitting.
-- `0.0` disables dropout entirely
-- Typical range: `0.2–0.5`
-- Higher values = stronger regularization. Too high can hurt accuracy
-
-### `conv_kernel_size`
-The size of the sliding window used in each convolutional layer. Must be an odd integer.
-- `3` is the standard and most widely used choice
-- `5` or `7` can capture wider spatial patterns but are slower
-- Padding is automatically set to `kernel_size // 2` to preserve spatial dimensions
-
-### `pooling_type`
-The type of pooling applied after every `pool_every` conv layers.
-
-| Value | Description |
-|---|---|
-| `max` | Takes the maximum value in each window. Standard for classification. Preserves dominant features |
-| `avg` | Takes the average value in each window. Smoother but can lose sharp features |
-
-### `pool_kernel_size`
-The size of the pooling window.
-- `2` halves the spatial dimensions at each pooling step (most common)
-- `3` reduces more aggressively
-
-### `image_normalization_mean`
-Per-channel mean subtracted from each image during preprocessing. A 3-element list of floats.
-- ImageNet values `[0.485, 0.456, 0.406]` work well for natural photos
-- Use `[0.5, 0.5, 0.5]` as a simpler alternative
-
-### `image_normalization_std`
-Per-channel standard deviation used to scale each image during preprocessing. A 3-element list of floats.
-- ImageNet values `[0.229, 0.224, 0.225]` work well for natural photos
-- Use `[0.5, 0.5, 0.5]` as a simpler alternative
+```bash
+pip install ultralytics opencv-python imagehash pillow-heif
+```
 
 ---
 
-## Training Parameters
+## Data Preparation
 
-### `num_epochs`
-The number of full passes over the training dataset.
-- Typical range: `10–200`
-- More epochs = more training time and risk of overfitting
-- Recommended to monitor validation accuracy and stop when it plateaus
+Start by collecting raw images, one subfolder per class:
 
-### `batch_size`
-The number of images processed together in one forward/backward pass. Use powers of 2.
-- Typical range: `8–128`
-- Larger batches = faster training but more GPU memory required
-- If training crashes with out-of-memory errors, reduce this value
+```
+raw_images/
+├── Cabernet Sauvignon/
+├── Chardonnay/
+├── IPA/
+└── ...
+```
 
-### `learning_rate`
-Controls how large each weight update step is during training.
-- Typical range: `0.00001–0.01`
-- Common starting points: `0.001` for Adam/AdamW, `0.01` for SGD
-- Too high = unstable training (loss diverges). Too low = very slow convergence
+Subfolder names must exactly match the `class_names` list in `config.json`.
 
-### `num_dataloader_workers`
-The number of background processes used to load images from disk in parallel.
-- `0` loads images in the main process (safest, use this if you encounter errors on Windows)
-- `4` is a good default on multi-core machines
-- Range: `0–8`
-
-### `optimizer`
-The optimization algorithm used to update model weights during training.
-
-| Value | Description |
-|---|---|
-| `Adam` | Adaptive learning rate. Safe default, works well out of the box |
-| `AdamW` | Like Adam but with improved weight decay regularization. Often outperforms Adam |
-| `SGD` | Stochastic Gradient Descent. Simpler, can generalize better with careful tuning |
-| `RMSprop` | Adaptive, good for noisy or sparse gradients |
-
-### `loss_function`
-The function used to measure how wrong the model's predictions are during training.
-
-| Value | Description |
-|---|---|
-| `CrossEntropyLoss` | Standard for multi-class classification. Internally applies softmax. Recommended |
-| `NLLLoss` | Negative log-likelihood. Requires the model to output log-probabilities (pair with LogSoftmax) |
-
----
-
-## Dataset Structure
-
-Images must be organized as one subfolder per class:
+After preprocessing (see below), the dataset needs to be split into `train/`, `val/`, and `test/` before training can begin:
 
 ```
 dataset/
 ├── train/
-│   ├── beer_lager/
-│   │   ├── image_001.png
-│   │   └── ...
-│   ├── beer_stout/
-│   │   └── ...
-│   └── wine_red/
-│       └── ...
+│   ├── Cabernet Sauvignon/
+│   ├── Chardonnay/
+│   └── ...
 ├── val/
 │   └── ...
 └── test/
     └── ...
 ```
 
-The subfolder names must exactly match the entries in `class_names` in `config.json`.
+---
+
+## YOLO Preprocessing Pipeline
+
+Raw images contain backgrounds, cluttered scenes, and irrelevant objects. This pipeline detects the glass or bottle in each image using YOLO, crops it out, and leaves you with a clean dataset. Run these steps in order from the project root.
 
 ---
 
-## Augmentation
+### Step 1 — Convert to PNG
 
-Offline augmentation classes are available in the `model/` directory. Run augmentation on the training set before training to expand the dataset. Each augmentation saves new image files alongside the originals.
+If your images are in mixed formats (HEIC, WebP, AVIF, etc.), normalize them all to PNG first:
 
-| Class | File | Effect |
-|---|---|---|
-| `HorizontalFlipAugmentation` | `horizontal_flip_augmentation.py` | Mirrors images horizontally |
-| `RotationAugmentation` | `rotation_augmentation.py` | Rotates by a random angle within a configured range |
-| `ColorJitterAugmentation` | `color_jitter_augmentation.py` | Randomly adjusts brightness, contrast, and saturation |
+```bash
+python utilities/convert_to_png.py <path/to/raw_images> -r
+```
+
+The originals are deleted after a successful conversion. Use `-o <output_dir>` to write to a separate folder instead.
+
+---
+
+### Step 2 — Remove Duplicates
+
+Before running detection, remove near-duplicate images that would contaminate train/test splits:
+
+```bash
+python utilities/duplicate_finder.py <path/to/raw_images> -r
+```
+
+A timestamped report is saved listing all duplicate groups. Review it and delete the ones you don't want to keep before moving on.
+
+---
+
+### Step 3 — Detect Objects
+
+Run YOLO over the dataset to locate the objects of interest in each image:
+
+```bash
+python utilities/yolo_detector.py <path/to/raw_images> \
+    --model yolo11n.pt \
+    --confidence 0.25 \
+    --target-classes cup "wine glass" \
+    --recursive
+```
+
+The model weights download automatically on first run. The output is a `detections.json` file mapping each image to its detected bounding boxes.
+
+---
+
+### Step 4 — Verify Detections (Optional)
+
+Draw the bounding boxes on the images and take a look before cropping:
+
+```bash
+python utilities/yolo_visualizer.py <path/to/detections.json> \
+    --output-folder <path/to/visualized>
+```
+
+If detections look off, go back to Step 3 and adjust `--confidence` or `--target-classes`.
+
+---
+
+### Step 5 — Crop
+
+Extract each detected region from the original images and group them by class:
+
+```bash
+python utilities/crop_yolo.py <path/to/raw_images> <path/to/detections.json> \
+    --confidence-threshold 0.5
+```
+
+The output lands in a `cropped images/` subfolder inside the input folder, with one subfolder per detected class name.
+
+---
+
+### Step 6 — Rename
+
+Move the `cropped images/` folder into `dataset/`, then run:
+
+```bash
+python utilities/rename_images.py
+```
+
+This standardizes filenames to `{class_name}{index}.png` across the whole cropped dataset.
+
+---
+
+### Step 7 — Split
+
+Split the cropped images into train/val/test:
+
+```bash
+python utilities/dataset_splitter.py
+```
+
+Open the script first and set the split ratios and source/destination paths to match your setup. The output is the `dataset/` structure training expects.
+
+---
+
+## Running Training
+
+Once the dataset is in place and `config.json` is set up:
+
+```bash
+python main.py
+```
+
+The script validates the dataset structure, builds the model, runs training (with cross-validation if enabled), and saves results to a new versioned folder under `results/`. To resume from a checkpoint, set `resume_from_checkpoint` in `config.json` to the path of an existing `checkpoint.pth`.
+
+### Submitting to a SLURM Cluster
+
+Two scripts are provided for submitting jobs via SLURM.
+
+**`run.sh`** — trains the model on a GPU node:
+
+```bash
+sbatch run.sh
+```
+
+Requests 1 GPU, 16 GB RAM, and up to 24 hours. After training completes, it automatically generates training curve plots and confusion matrices, then moves everything (including the SLURM logs) into the versioned results folder.
+
+**`run_confusion_matrices.sh`** — regenerates confusion matrices for any results folder that's missing them, without re-running training:
+
+```bash
+sbatch run_confusion_matrices.sh
+```
+
+Requests 2 CPUs and 8 GB RAM (no GPU needed). It scans every `results/v*/` folder and runs the confusion matrix generator on any that have a `results.json` but no plots yet.
+
+---
+
+## Configuration
+
+Everything is controlled through `config.json`. The key sections are:
+
+- **Model** — input size, class names, conv channels, pooling, hidden layers, activation, batchnorm, dropout
+- **Training** — epochs, batch size, learning rate, weight decay, optimizer, loss function, class weights, label smoothing, early stopping, dataloader workers
+- **Augmentations** — horizontal flip, rotation, gaussian blur, perspective transform (each with `enabled` and `probability` flags)
+- **Cross-validation** — enable K-fold CV and set the number of folds
+- **Pretrained model** — swap the custom CNN for a pretrained backbone (e.g. ResNet50) and optionally freeze it

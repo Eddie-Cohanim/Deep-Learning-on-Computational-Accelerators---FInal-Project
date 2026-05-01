@@ -19,5 +19,5 @@ if [ -n "$LATEST_VERSION" ]; then
     mv "results/slurm_${SLURM_JOB_ID}.out" "$LATEST_VERSION" 2>/dev/null
     mv "results/slurm_${SLURM_JOB_ID}.err" "$LATEST_VERSION" 2>/dev/null
     python -u plot_results.py "$LATEST_VERSION"
-    (cd "$LATEST_VERSION" && python -u "../../confusion matrix generator.py" results.json)
+    (cd "$LATEST_VERSION" && python -u "../../utilities/confusion matrix generator.py" results.json)
 fi

@@ -64,7 +64,16 @@ raw_preds      = results.get("raw_predictions", data.get("raw_predictions", None
 # 2.  CLASSES & COLORS
 # ──────────────────────────────────────────────────────────────────────────────
 
-CLASSES = model_cfg.get("class_names", list(per_class_raw.keys()))
+_json_classes = set(model_cfg.get("class_names", list(per_class_raw.keys())))
+_display_order = [
+    "Chardonnay", "Sauvignon blanc",
+    "orange wine",
+    "rose wine",
+    "Cabernet Sauvignon", "Malbec", "Pinot Noir",
+    "Wheat", "Cider", "IPA", "Lager", "Stout",
+]
+CLASSES = [c for c in _display_order if c in _json_classes] + \
+          [c for c in model_cfg.get("class_names", list(per_class_raw.keys())) if c not in set(_display_order)]
 
 # Auto-assign colors — wine palette
 PALETTE = [

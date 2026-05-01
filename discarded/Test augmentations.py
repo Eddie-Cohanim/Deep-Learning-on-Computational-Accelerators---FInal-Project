@@ -1,12 +1,3 @@
-"""
-Run this script from inside the Augmentations folder to visually inspect every augmentation.
-
-Usage:
-    python test_augmentations.py --image "path/to/your/image.png"
-
-Results are saved to a tmp_augmentations/ folder created next to this script.
-"""
-
 import argparse
 import pathlib
 
@@ -17,8 +8,8 @@ from augmentations import DEFAULT_AUGMENTATIONS
 AUGMENTATIONS = DEFAULT_AUGMENTATIONS
 
 def main():
-    parser = argparse.ArgumentParser(description="Visually test all augmentations on a single image.")
-    parser.add_argument("--image", required=True, help="Path to an input image.")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--image", required=True)
     args = parser.parse_args()
 
     image_path = pathlib.Path(args.image)

@@ -71,13 +71,11 @@ def collect_files(inputs: list[str], recursive: bool) -> list[Path]:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Convert images (JPEG, AVIF, WEBP, HEIC, …) to PNG."
-    )
-    parser.add_argument("inputs", nargs="+", help="Files or directories to convert")
-    parser.add_argument("-o", "--output-dir", help="Directory to write PNGs into")
-    parser.add_argument("-r", "--recursive", action="store_true", help="Recurse into directories")
-    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing PNG files")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("inputs", nargs="+")
+    parser.add_argument("-o", "--output-dir")
+    parser.add_argument("-r", "--recursive", action="store_true")
+    parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
 
     output_dir = Path(args.output_dir) if args.output_dir else None

@@ -396,33 +396,11 @@ def find_duplicates(
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Find duplicate images using multi-algorithm perceptual hashing."
-    )
-    parser.add_argument(
-        "folder",
-        help="Path to the folder to scan for duplicate images.",
-    )
-    parser.add_argument(
-        "--threshold", "-t",
-        type=int,
-        default=1,
-        help="Max Hamming distance across ALL selected algorithms. "
-             "0 = exact match, higher = more lenient. Default: 1",
-    )
-    parser.add_argument(
-        "--algorithms", "-a",
-        nargs="+",
-        choices=ALL_ALGORITHM_NAMES,
-        default=ALL_ALGORITHM_NAMES,
-        help="Hash algorithms to use (default: all four). "
-             "Images must match on ALL selected algorithms.",
-    )
-    parser.add_argument(
-        "--recursive", "-r",
-        action="store_true",
-        help="Scan subfolders recursively.",
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("folder")
+    parser.add_argument("--threshold", "-t", type=int, default=1)
+    parser.add_argument("--algorithms", "-a", nargs="+", choices=ALL_ALGORITHM_NAMES, default=ALL_ALGORITHM_NAMES)
+    parser.add_argument("--recursive", "-r", action="store_true")
 
     args = parser.parse_args()
 

@@ -269,38 +269,12 @@ def run_detection(
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Run YOLO object detection on a folder of images and save results to JSON."
-    )
-    parser.add_argument(
-        "folder",
-        help="Path to the folder containing images to scan.",
-    )
-    parser.add_argument(
-        "--model", "-m",
-        default="yolo11n.pt",
-        help="YOLO model name or path to weights file. Default: yolo11n.pt",
-    )
-    parser.add_argument(
-        "--confidence", "-c",
-        type=float,
-        default=0.25,
-        help="Minimum confidence threshold for detections (0.0 to 1.0). Default: 0.25",
-    )
-    parser.add_argument(
-        "--target-classes",
-        nargs="+",
-        default=DEFAULT_TARGET_CLASS_NAMES,
-        help=(
-            "Filter detections to specific class names. "
-            f"Default: {DEFAULT_TARGET_CLASS_NAMES}"
-        ),
-    )
-    parser.add_argument(
-        "--recursive", "-r",
-        action="store_true",
-        help="Scan subfolders recursively.",
-    )
+    parser = argparse.ArgumentParser()
+    parser.add_argument("folder")
+    parser.add_argument("--model", "-m", default="yolo11n.pt")
+    parser.add_argument("--confidence", "-c", type=float, default=0.25)
+    parser.add_argument("--target-classes", nargs="+", default=DEFAULT_TARGET_CLASS_NAMES)
+    parser.add_argument("--recursive", "-r", action="store_true")
 
     args = parser.parse_args()
 
